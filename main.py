@@ -17,25 +17,28 @@ from services import (
 BASE_DIR = Path(__file__).resolve().parent
 
 def seed_if_empty():
-    with connect() as conn:
-        count = conn.execute("SELECT COUNT(*) FROM containers").fetchone()[0]
-        if count == 0:
-            conn.executemany("""
-                INSERT INTO containers(id,name,location,raee_type,max_capacity_kg,occupied_kg,height_cm,distance_cm)
-                VALUES(:id,:name,:location,:raee_type,:max_capacity_kg,:occupied_kg,:height_cm,:distance_cm)
-            """, CONTAINERS)
-            for m in MANAGERS:
-                conn.execute("""
-                    INSERT INTO managers(id,name,raee_types,max_capacity_kg,occupied_kg,distance_km,authorized)
-                    VALUES(?,?,?,?,?,?,?)
-                """, (m["id"], m["name"], json.dumps(m["raee_types"]), m["max_capacity_kg"],
-                      m["occupied_kg"], m["distance_km"], int(m["authorized"])))
-            conn.commit()
-            log_event("info", "Datos de demostración inicializados.")
+    try:
+        init_db()
+        with connect() as conn:
+            count = conn.execute("SELECT COUNT(*) FROM containers").fetchone()[0]
+            if count == 0:
+                conn.executemany("""
+                    INSERT INTO containers(id,name,location,raee_type,max_capacity_kg,occupied_kg,height_cm,distance_cm)
+                    VALUES(:id,:name,:location,:raee_type,:max_capacity_kg,:occupied_kg,:height_cm,:distance_cm)
+                """, CONTAINERS)
+                for m in MANAGERS:
+                    conn.execute("""
+                        INSERT INTO managers(id,name,raee_types,max_capacity_kg,occupied_kg,distance_km,authorized)
+                        VALUES(?,?,?,?,?,?,?)
+                    """, (m["id"], m["name"], json.dumps(m["raee_types"]), m["max_capacity_kg"],
+                          m["occupied_kg"], m["distance_km"], int(m["authorized"])))
+                conn.commit()
+                log_event("info", "Datos de demostración inicializados.")
+    except Exception as e:
+        print(f"Error inicializando BD: {e}")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    init_db()
     seed_if_empty()
     yield
 
@@ -71,12 +74,18 @@ def request_collection(container_id: int):
         raise HTTPException(status_code=404, detail="Contenedor no encontrado")
     return RedirectResponse(url="/?notice=Solicitud+de+recoleccion+procesada", status_code=303)
 
-@app.get("/api/status")
-def api_status():
+@app.get("/", response_class=HTMLResponse)
+def dashboard(request: Request, notice: str = ""):
+    seed_if_empty()  # Asegura que la BD existe e incluye datos demo
     containers = get_containers()
-    return {"containers": containers, "count": len(containers),
-            "critical_count": sum(c["status"] == "Crítico" for c in containers),
-            "attention_count": sum(c["status"] == "Atención" for c in containers)}
+    total = len(containers)
+    critical = sum(1 for c in containers if c["status"] == "Crítico")
+    attention = sum(1 for c in containers if c["status"] == "Atención")
+    return templates.TemplateResponse(request=request, name="index.html", context={
+        "request": request, "containers": containers, "managers": get_managers(),
+        "events": get_events(8), "requests": get_requests(8),
+        "total": total, "critical": critical, "attention": attention, "notice": notice
+    })
 
 @app.post("/api/simulate/{container_id}")
 def api_simulate(container_id: int):
