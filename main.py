@@ -1,4 +1,5 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
 from fastapi import FastAPI, Request, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -11,6 +12,9 @@ from services import (
     get_containers, get_managers, get_events, get_requests,
     simulate_reading, create_request, log_event
 )
+
+# --- RUTA BASE ABSOLUTA ---
+BASE_DIR = Path(__file__).resolve().parent
 
 def seed_if_empty():
     with connect() as conn:
@@ -36,8 +40,10 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(title="Agora RAEE", description="Prototipo educativo de gestión comunitaria de RAEE", version="0.1.0", lifespan=lifespan)
-app.mount("/static", StaticFiles(directory="static"), name="static")
-templates = Jinja2Templates(directory="templates")
+
+# --- AQUÍ ESTÁ EL CAMBIO CLAVE (Rutas Absolutas con BASE_DIR) ---
+app.mount("/static", StaticFiles(directory=str(BASE_DIR / "static")), name="static")
+templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
 @app.get("/", response_class=HTMLResponse)
 def dashboard(request: Request, notice: str = ""):
