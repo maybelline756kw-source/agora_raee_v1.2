@@ -1,4 +1,4 @@
-from .database import connect
+from database import connect
 import json
 import random
 
