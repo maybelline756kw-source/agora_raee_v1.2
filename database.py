@@ -1,7 +1,12 @@
+import os
 import sqlite3
 from pathlib import Path
 
-DB_PATH = Path(__file__).resolve().parent.parent / "data" / "agora_raee.db"
+# Si estamos en Vercel, usamos /tmp; si estamos en local, usamos la carpeta data
+if os.environ.get("VERCEL"):
+    DB_PATH = Path("/tmp/agora_raee.db")
+else:
+    DB_PATH = Path(__file__).resolve().parent / "data" / "agora_raee.db"
 
 def connect():
     DB_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -53,6 +58,3 @@ def init_db():
             )
         """)
         conn.commit()
-
-def rowdict(row):
-    return dict(row) if row else None
