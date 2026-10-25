@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ágora RAEE | Gestión comunitaria de residuos electrónicos</title>
+  <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">MARKETPLACE INTERINSTITUCIONAL Y COMUNITARIO</p>
+      <h1>Ágora <span>RAEE</span></h1>
+      <p class="subtitle">Gestión y disposición responsable de residuos de aparatos eléctricos y electrónicos</p>
+    </div>
+    <a class="api-link" href="/docs" target="_blank" rel="noreferrer">Explorar API ↗</a>
+  </header>
+
+  <main class="container">
+    {% if notice %}<div class="notice">✓ {{ notice.replace('+', ' ') }}</div>{% endif %}
+    <section class="metrics">
+      <article class="metric"><span>Puntos de recolección</span><strong>{{ total }}</strong><small>registrados en la demo</small></article>
+      <article class="metric"><span>Alertas críticas</span><strong class="{% if critical %}red-text{% endif %}">{{ critical }}</strong><small>ocupación ≥ 85% (umbral demo)</small></article>
+      <article class="metric"><span>Requieren atención</span><strong class="{% if attention %}amber-text{% endif %}">{{ attention }}</strong><small>ocupación ≥ 60% (umbral demo)</small></article>
+    </section>
+
+    <div class="section-heading">
+      <div><p class="eyebrow">MÓDULO 01</p><h2>Contenedores inteligentes</h2></div>
+      <p>Simulación del sensor de distancia tipo HC-SR04</p>
+    </div>
+    <section class="container-grid">
+      {% for c in containers %}
+      <article class="container-card">
+        <div class="card-top">
+          <div class="device-icon">⌁</div>
+          <span class="status status-{{ c.status|lower }}">{{ c.status }}</span>
+        </div>
+        <h3>{{ c.name }}</h3>
+        <p class="muted">{{ c.location }} · {{ c.raee_type.replace('_', ' ') }}</p>
+        <div class="fill-row"><span>Nivel de ocupación</span><strong>{{ c.occupancy_percent }}%</strong></div>
+        <div class="progress"><div class="progress-fill {% if c.status == 'Crítico' %}fill-red{% elif c.status == 'Atención' %}fill-amber{% endif %}" style="width: {{ c.occupancy_percent }}%"></div></div>
+        <div class="data-pair"><span>Ocupado <b>{{ c.occupied_kg }} kg</b></span><span>Disponible <b>{{ c.available_kg }} kg</b></span></div>
+        <div class="sensor-note">Distancia simulada: <b>{{ c.distance_cm }} cm</b></div>
+        <div class="actions">
+          <form method="post" action="/simulate/{{ c.id }}"><button class="button secondary" type="submit">Simular lectura</button></form>
+          <form method="post" action="/requests/{{ c.id }}"><button class="button primary" type="submit">Solicitar recolección</button></form>
+        </div>
+      </article>
+      {% endfor %}
+    </section>
+
+    <div class="section-heading">
+      <div><p class="eyebrow">MÓDULO 02</p><h2>Matching de gestores</h2></div>
+      <p>Datos ficticios para demostrar compatibilidad y capacidad</p>
+    </div>
+    <section class="table-wrap">
+      <table>
+        <thead><tr><th>Gestor</th><th>Tipos aceptados</th><th>Capacidad libre</th><th>Distancia demo</th><th>Condición</th></tr></thead>
+        <tbody>
+        {% for m in managers %}
+          <tr>
+            <td><strong>{{ m.name }}</strong></td>
+            <td>{{ m.raee_types|join(', ')|replace('_',' ') }}</td>
+            <td>{{ m.available_kg }} kg</td><td>{{ m.distance_km }} km</td>
+            <td>{% if m.authorized %}<span class="pill good">Autorizado (demo)</span>{% else %}<span class="pill neutral">No autorizado</span>{% endif %}</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </section>
+
+    <div class="two-col">
+      <section>
+        <div class="section-heading compact"><div><p class="eyebrow">MÓDULO 03</p><h2>Solicitudes recientes</h2></div></div>
+        <div class="list-card">
+          {% for r in requests %}
+            <div class="list-item"><div><strong>Solicitud #{{ r.id }} · {{ r.container_name }}</strong><p>{{ r.requested_kg }} kg · {{ r.created_at }}</p></div><span class="small-status">{{ r.status }}</span></div>
+          {% else %}<p class="muted empty">Aún no hay solicitudes. Usa el botón de un contenedor para crear una.</p>{% endfor %}
+        </div>
+      </section>
+      <section>
+        <div class="section-heading compact"><div><p class="eyebrow">MÓDULO 04</p><h2>Bitácora de eventos</h2></div></div>
+        <div class="list-card">
+          {% for e in events %}
+            <div class="list-item"><div><strong>{{ e.message }}</strong><p>{{ e.created_at }}</p></div><span class="event-dot dot-{{ e.level }}"></span></div>
+          {% else %}<p class="muted empty">Sin eventos registrados.</p>{% endfor %}
+        </div>
+      </section>
+    </div>
+    <footer>
+      <strong>Prototipo académico · versión 0.1</strong>
+      <p>Los sensores, gestores, distancias, capacidades y resultados son simulados. No se envían residuos ni se contacta a gestores reales.</p>
+    </footer>
+  </main>
+</body>
+</html>
