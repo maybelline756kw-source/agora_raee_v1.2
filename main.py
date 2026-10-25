@@ -5,9 +5,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import json
 
-from .database import connect, init_db
-from .seed import CONTAINERS, MANAGERS
-from .services import (
+from database import connect, init_db
+from seed import CONTAINERS, MANAGERS
+from services import (
     get_containers, get_managers, get_events, get_requests,
     simulate_reading, create_request, log_event
 )
