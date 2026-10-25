@@ -36,8 +36,8 @@ async def lifespan(app: FastAPI):
     yield
 
 app = FastAPI(title="Agora RAEE", description="Prototipo educativo de gestión comunitaria de RAEE", version="0.1.0", lifespan=lifespan)
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
-templates = Jinja2Templates(directory="app/templates")
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
 def dashboard(request: Request, notice: str = ""):
