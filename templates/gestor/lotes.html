@@ -1,0 +1,203 @@
+
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Lotes disponibles | Ágora RAEE</title>
+
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+
+    <header class="topbar"
+        style="background: linear-gradient(135deg, #2f855a, #48bb78); color: white;">
+
+        <div>
+            <p class="eyebrow" style="color: #e2f8f0;">
+                MARKETPLACE INTERINSTITUCIONAL Y COMUNITARIO
+            </p>
+
+            <h1>Postulación y <span>lotes RAEE</span></h1>
+
+            <p class="subtitle" style="color: #e2f8f0;">
+                Consulta y postúlate a lotes de residuos disponibles.
+            </p>
+        </div>
+
+        <a class="api-link"
+           href="/form/gestor"
+           style="background: rgba(255,255,255,0.2); color: white;">
+            ← Volver al menú
+        </a>
+
+    </header>
+
+
+    <main class="container">
+
+        <section class="section-heading">
+
+            <div>
+                <p class="eyebrow">GESTIÓN DE RESIDUOS</p>
+                <h2>Lotes disponibles</h2>
+            </div>
+
+            <p>
+                Consulta los residuos reportados por los diferentes actores
+                del sistema y revisa las características de cada lote antes
+                de realizar una postulación.
+            </p>
+
+        </section>
+
+
+        <!-- RESUMEN -->
+
+        <section style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        ">
+
+            <article class="container-card">
+                <p class="muted">Lotes disponibles</p>
+                <h2>{{ lotes|length }}</h2>
+            </article>
+
+            <article class="container-card">
+                <p class="muted">Lotes compatibles</p>
+                <h2>{{ compatibles }}</h2>
+            </article>
+
+            <article class="container-card">
+                <p class="muted">Mis postulaciones</p>
+                <h2>{{ postulaciones }}</h2>
+            </article>
+
+        </section>
+
+
+        <!-- LISTADO DE LOTES -->
+
+        <section>
+
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">OPORTUNIDADES DE GESTIÓN</p>
+                    <h2>Listado de lotes</h2>
+                </div>
+            </div>
+
+
+            {% if lotes %}
+
+            <div style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+                gap: 1.5rem;
+            ">
+
+                {% for lote in lotes %}
+
+                <article class="container-card"
+                    style="border-top: 4px solid
+                    {% if lote.compatible %}#2f855a{% else %}#d69e2e{% endif %};">
+
+                    <div class="device-icon">♻️</div>
+
+                    <h3>{{ lote.nombre }}</h3>
+
+                    <p class="muted">
+                        Código: {{ lote.id }}
+                    </p>
+
+                    <p>
+                        <strong>Tipo de residuo:</strong>
+                        {{ lote.tipo }}
+                    </p>
+
+                    <p>
+                        <strong>Cantidad:</strong>
+                        {{ lote.cantidad }} kg
+                    </p>
+
+                    <p>
+                        <strong>Ubicación:</strong>
+                        {{ lote.ubicacion }}
+                    </p>
+
+                    <p>
+                        <strong>Estado:</strong>
+                        {{ lote.estado }}
+                    </p>
+
+                    {% if lote.compatible %}
+
+                    <p style="color: #2f855a; font-weight: bold;">
+                        ✓ Compatible con tu perfil
+                    </p>
+
+                    <form method="POST"
+                          action="/form/gestor/lotes/{{ lote.id }}/postular">
+
+                        <button type="submit"
+                                class="button primary"
+                                style="width: 100%; margin-top: 1rem;">
+                            Postularme al lote
+                        </button>
+
+                    </form>
+
+                    {% else %}
+
+                    <p style="color: #b7791f; font-weight: bold;">
+                        ⚠ No cumple los criterios de compatibilidad
+                    </p>
+
+                    <button class="button secondary"
+                            disabled
+                            style="width: 100%; margin-top: 1rem;">
+                        No disponible para postulación
+                    </button>
+
+                    {% endif %}
+
+                </article>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <article class="container-card">
+                <h3>No hay lotes disponibles</h3>
+
+                <p class="muted">
+                    Actualmente no existen lotes registrados para consulta.
+                </p>
+            </article>
+
+            {% endif %}
+
+        </section>
+
+
+        <footer>
+            <strong>Ágora RAEE · Prototipo académico · Versión 0.1</strong>
+
+            <p>
+                La información y las postulaciones corresponden
+                a una simulación con fines educativos.
+            </p>
+        </footer>
+
+    </main>
+
+</body>
+</html>
