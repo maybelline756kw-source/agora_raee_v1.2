@@ -1,0 +1,212 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ciudadanía | Ágora RAEE</title>
+
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <style>
+        body {
+            background: #f3f7f3;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        .citizen-header {
+            background: #245c43;
+            color: white;
+            padding: 22px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .citizen-header h1 {
+            margin: 0;
+        }
+
+        .citizen-header a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .citizen-container {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            background: #e0eee3;
+            padding: 35px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        .welcome h2 {
+            color: #245c43;
+            font-size: 30px;
+            margin-top: 0;
+        }
+
+        .welcome p {
+            color: #466653;
+            line-height: 1.6;
+            max-width: 700px;
+        }
+
+        .citizen-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 22px;
+        }
+
+        .citizen-card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+            border: 1px solid #e0e9e1;
+            display: flex;
+            flex-direction: column;
+            min-height: 215px;
+        }
+
+        .citizen-card .symbol {
+            font-size: 35px;
+            margin-bottom: 15px;
+        }
+
+        .citizen-card h3 {
+            color: #245c43;
+            margin: 0 0 10px;
+        }
+
+        .citizen-card p {
+            color: #63736a;
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .citizen-button {
+            display: inline-block;
+            text-align: center;
+            background: #2d7952;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .citizen-button:hover {
+            background: #205b3d;
+        }
+
+        .citizen-footer {
+            text-align: center;
+            color: #718077;
+            padding: 25px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+            .welcome h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="citizen-header">
+    <h1>♻ Ágora RAEE</h1>
+    <a href="/">Volver al inicio</a>
+</header>
+
+<main class="citizen-container">
+
+    <section class="welcome">
+        <h2>¡Hola! Bienvenido a Ágora RAEE</h2>
+
+        <p>
+            Contribuye al cuidado del medio ambiente mediante
+            la gestión responsable de los residuos de aparatos
+            eléctricos y electrónicos.
+        </p>
+
+        <p>
+            Desde este espacio puedes registrar tus residuos,
+            solicitar su recolección y encontrar puntos de entrega
+            disponibles para tu comunidad.
+        </p>
+    </section>
+
+    <section class="citizen-grid">
+
+        <article class="citizen-card">
+            <div class="symbol">📋</div>
+
+            <h3>Registrar RAEE</h3>
+
+            <p>
+                Registra los aparatos eléctricos y electrónicos
+                que deseas entregar para su adecuada gestión.
+            </p>
+
+            <a href="/form/ciudadania/registrar"
+               class="citizen-button">
+                Registrar residuo
+            </a>
+        </article>
+
+        <article class="citizen-card">
+            <div class="symbol">🚚</div>
+
+            <h3>Solicitar recolección</h3>
+
+            <p>
+                Solicita la recolección de tus residuos electrónicos
+                para facilitar su traslado a un gestor autorizado.
+            </p>
+
+            <a href="/form/ciudadania/recoleccion"
+               class="citizen-button">
+                Solicitar recolección
+            </a>
+        </article>
+
+        <article class="citizen-card">
+            <div class="symbol">📍</div>
+
+            <h3>Consultar puntos de entrega</h3>
+
+            <p>
+                Consulta los puntos de recepción y entrega
+                disponibles para disponer adecuadamente de tus RAEE.
+            </p>
+
+            <a href="/form/ciudadania/puntos"
+               class="citizen-button">
+                Ver puntos de entrega
+            </a>
+        </article>
+
+    </section>
+
+</main>
+
+<footer class="citizen-footer">
+    Ágora RAEE — Por una gestión responsable de los residuos electrónicos.
+</footer>
+
+</body>
+</html>
