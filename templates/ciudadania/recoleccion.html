@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitar recolección | Ágora RAEE</title>
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <style>
+        .collection-container {
+            max-width: 1050px;
+            margin: 35px auto;
+            padding: 25px;
+        }
+
+        .collection-card {
+            background: white;
+            border-radius: 12px;
+            padding: 22px;
+            margin-bottom: 18px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+        }
+
+        .collection-card h3 {
+            margin-top: 0;
+            color: #174b70;
+        }
+
+        .collection-card p {
+            margin: 8px 0;
+        }
+
+        .collection-button {
+            background: #176b87;
+            color: white;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .collection-button:hover {
+            background: #10546c;
+        }
+
+        .notice {
+            background: #dcfce7;
+            color: #166534;
+            padding: 14px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: #fff3cd;
+            color: #856404;
+            font-size: 13px;
+        }
+
+        .empty-message {
+            background: #f1f5f9;
+            padding: 20px;
+            border-radius: 10px;
+            color: #475569;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="collection-container">
+
+        <h1>Solicitar recolección</h1>
+
+        <p>
+            Selecciona uno de los residuos RAEE que hayas registrado
+            para iniciar el proceso de recolección.
+        </p>
+
+        {% if notice %}
+            <div class="notice">
+                {{ notice }}
+            </div>
+        {% endif %}
+
+        <h2>Mis residuos registrados</h2>
+
+        {% if records %}
+
+            {% for record in records %}
+
+                <section class="collection-card">
+
+                    <h3>{{ record["equipment_type"] }}</h3>
+
+                    <p>
+                        <strong>Identificador:</strong>
+                        #{{ record["id"] }}
+                    </p>
+
+                    <p>
+                        <strong>Cantidad:</strong>
+                        {{ record["quantity"] }}
+                    </p>
+
+                    <p>
+                        <strong>Condición:</strong>
+                        {{ record["condition"] }}
+                    </p>
+
+                    <p>
+                        <strong>Procedencia:</strong>
+                        {{ record["origin"] }}
+                    </p>
+
+                    <p>
+                        <strong>Dirección:</strong>
+                        {{ record["address"] }}
+                    </p>
+
+                    <form
+                        method="POST"
+                        action="/form/ciudadania/recoleccion"
+                        onsubmit="return confirm('¿Deseas solicitar la recolección de este residuo?');"
+                    >
+                        <input
+                            type="hidden"
+                            name="record_id"
+                            value="{{ record['id'] }}"
+                        >
+
+                        <button
+                            type="submit"
+                            class="collection-button"
+                        >
+                            Solicitar recolección
+                        </button>
+                    </form>
+
+                </section>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty-message">
+                Todavía no tienes residuos registrados.
+                Primero debes completar el formulario de registro RAEE.
+            </div>
+
+        {% endif %}
+
+
+        <h2>Mis solicitudes</h2>
+
+        {% if requests %}
+
+            {% for item in requests %}
+
+                <section class="collection-card">
+
+                    <h3>Solicitud #{{ item["id"] }}</h3>
+
+                    <p>
+                        <strong>Residuo:</strong>
+                        {{ item["equipment_type"] }}
+                    </p>
+
+                    <p>
+                        <strong>Cantidad:</strong>
+                        {{ item["quantity"] }}
+                    </p>
+
+                    <p>
+                        <strong>Estado:</strong>
+                        <span class="status">
+                            {{ item["status"] }}
+                        </span>
+                    </p>
+
+                    <p>
+                        <strong>Verificación:</strong>
+                        {{ item["verification_status"] }}
+                    </p>
+
+                    <p>
+                        <strong>Fecha:</strong>
+                        {{ item["created_at"] }}
+                    </p>
+
+                </section>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="empty-message">
+                Aún no has realizado solicitudes de recolección.
+            </div>
+
+        {% endif %}
+
+        <p>
+            <a href="/form/ciudadania">
+                Volver al menú de Ciudadanía
+            </a>
+        </p>
+
+    </main>
+
+</body>
+</html>
