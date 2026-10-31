@@ -11,9 +11,8 @@ from database import connect, init_db
 from seed import CONTAINERS, MANAGERS
 from services import (
     get_containers, get_managers, get_events, get_requests,
-    simulate_reading, create_request, log_event
+    simulate_reading, create_request, log_event, matching
 )
-
 # --- RUTA BASE ABSOLUTA ---
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -153,41 +152,38 @@ def gestor_registro_form(request: Request):
         name="gestor/registro.html",
         context={"request": request}
     )
-
 @app.get("/form/gestor/lotes", response_class=HTMLResponse)
 def gestor_lotes(request: Request):
 
-    lotes = [
-        {
-            "id": 1,
-            "nombre": "Lote de computadores",
-            "tipo": "Computadores",
-            "cantidad": 120,
-            "ubicacion": "Fusagasugá",
-            "estado": "Disponible",
-            "compatible": True
-        },
-        {
-            "id": 2,
-            "nombre": "Lote de electrodomésticos",
-            "tipo": "Electrodomésticos",
-            "cantidad": 250,
-            "ubicacion": "Silvania",
-            "estado": "Disponible",
-            "compatible": False
-        },
-        {
-            "id": 3,
-            "nombre": "Lote de periféricos",
-            "tipo": "Periféricos",
-            "cantidad": 80,
-            "ubicacion": "Fusagasugá",
-            "estado": "Disponible",
-            "compatible": True
-        }
-    ]
+    # Consultar los contenedores registrados
+    containers = get_containers()
 
-    compatibles = sum(1 for lote in lotes if lote["compatible"])
+    lotes = []
+
+    # Evaluar compatibilidad de cada lote con los gestores
+    for container in containers:
+
+        matches = matching(container)
+
+        compatible = any(
+            manager["eligible"]
+            for manager in matches
+        )
+
+        lotes.append({
+            "id": container["id"],
+            "nombre": container["name"],
+            "tipo": container["raee_type"],
+            "cantidad": container["occupied_kg"],
+            "ubicacion": container["location"],
+            "estado": container["status"],
+            "compatible": compatible
+        })
+
+    # Calcular estadísticas
+    compatibles = sum(
+        1 for lote in lotes if lote["compatible"]
+    )
 
     return templates.TemplateResponse(
         request=request,
@@ -196,7 +192,7 @@ def gestor_lotes(request: Request):
             "request": request,
             "lotes": lotes,
             "compatibles": compatibles,
-            "postulaciones": 0
+            "postulaciones": len(get_requests())
         }
     )
     
