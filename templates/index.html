@@ -17,6 +17,24 @@
   </header>
 
   <main class="container">
+    
+    <!-- NUEVA SECCIÓN: Selector de Formularios por Perfil / Rol -->
+    <section class="section-heading">
+      <div>
+        <p class="eyebrow">ACCESO RÁPIDO</p>
+        <h2>Selecciona tu perfil o formulario</h2>
+      </div>
+      <p>Elige una opción para registrar solicitudes o gestionar datos según tu rol</p>
+    </section>
+
+    <div class="role-buttons-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+      <a href="/form/gestor" class="button primary" style="text-align: center; text-decoration: none; padding: 1rem;">Gestor</a>
+      <a href="/form/ciudadania" class="button secondary" style="text-align: center; text-decoration: none; padding: 1rem;">Ciudadanía</a>
+      <a href="/form/instituciones" class="button primary" style="text-align: center; text-decoration: none; padding: 1rem; background-color: #2b6cb0;">Instituciones</a>
+      <a href="/form/tecnico" class="button secondary" style="text-align: center; text-decoration: none; padding: 1rem; background-color: #4a5568; color: white;">Técnico</a>
+    </div>
+    <!-- FIN DE LA NUEVA SECCIÓN -->
+
     {% if notice %}<div class="notice">✓ {{ notice.replace('+', ' ') }}</div>{% endif %}
     <section class="metrics">
       <article class="metric"><span>Puntos de recolección</span><strong>{{ total }}</strong><small>registrados en la demo</small></article>
