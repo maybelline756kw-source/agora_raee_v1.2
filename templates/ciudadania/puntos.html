@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Puntos de entrega | Ágora RAEE</title>
+
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <style>
+        .points-container {
+            max-width: 1100px;
+            margin: 35px auto;
+            padding: 25px;
+        }
+
+        .points-intro {
+            color: #526477;
+            margin-bottom: 25px;
+        }
+
+        .points-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 20px;
+        }
+
+        .point-card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+            border-left: 5px solid #176b87;
+        }
+
+        .point-card h3 {
+            color: #174b70;
+            margin-top: 0;
+        }
+
+        .point-card p {
+            margin: 9px 0;
+            line-height: 1.5;
+        }
+
+        .point-type {
+            display: inline-block;
+            background: #e0f2fe;
+            color: #075985;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .coordinates {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .empty-message {
+            background: #f1f5f9;
+            padding: 22px;
+            border-radius: 10px;
+            color: #475569;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #176b87;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <main class="points-container">
+
+        <h1>Puntos de entrega RAEE</h1>
+
+        <p class="points-intro">
+            Consulta los puntos habilitados para entregar tus residuos
+            de aparatos eléctricos y electrónicos y contribuir a su
+            adecuada gestión ambiental.
+        </p>
+
+        {% if points %}
+
+            <div class="points-grid">
+
+                {% for point in points %}
+
+                    <article class="point-card">
+
+                        <h3>{{ point["name"] }}</h3>
+
+                        <span class="point-type">
+                            {{ point["point_type"] }}
+                        </span>
+
+                        <p>
+                            <strong>Dirección:</strong><br>
+                            {{ point["address"] }}
+                        </p>
+
+                        <p>
+                            <strong>Zona:</strong>
+                            {{ point["zone_type"] or "No clasificada" }}
+                        </p>
+
+                        {% if point["description"] %}
+                            <p>
+                                <strong>Descripción:</strong><br>
+                                {{ point["description"] }}
+                            </p>
+                        {% endif %}
+
+                        {% if point["latitude"] is not none
+                              and point["longitude"] is not none %}
+
+                            <p class="coordinates">
+                                <strong>Coordenadas:</strong><br>
+                                {{ point["latitude"] }},
+                                {{ point["longitude"] }}
+                            </p>
+
+                        {% else %}
+
+                            <p class="coordinates">
+                                Ubicación geográfica pendiente de registrar.
+                            </p>
+
+                        {% endif %}
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-message">
+                Actualmente no hay puntos de entrega activos registrados
+                en el sistema.
+            </div>
+
+        {% endif %}
+
+        <a href="/form/ciudadania" class="back-link">
+            ← Volver al menú de Ciudadanía
+        </a>
+
+    </main>
+
+</body>
+</html>
