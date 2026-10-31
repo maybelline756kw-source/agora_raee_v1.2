@@ -895,3 +895,36 @@ def ciudadania_solicitar_recoleccion(
         url="/form/ciudadania/registrar?notice=RAEE+registrado+correctamente",
         status_code=303
     )
+
+# ==========================================
+# CIUDADANIA - CONSULTAR PUNTOS DE ENTREGA
+# ==========================================
+
+@app.get("/form/ciudadania/puntos", response_class=HTMLResponse)
+def ciudadania_puntos(request: Request):
+
+    with connect() as conn:
+        points = conn.execute("""
+            SELECT
+                id,
+                name,
+                address,
+                point_type,
+                zone_type,
+                latitude,
+                longitude,
+                coordinate_source,
+                description
+            FROM delivery_points
+            WHERE active = 1
+            ORDER BY name ASC
+        """).fetchall()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="ciudadania/puntos.html",
+        context={
+            "request": request,
+            "points": points
+        }
+    )
