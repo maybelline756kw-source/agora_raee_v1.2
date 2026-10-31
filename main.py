@@ -630,3 +630,11 @@ def ciudadania_menu(request: Request):
         }
     )
 
+@app.get("/form/ciudadania/registrar", response_class=HTMLResponse)
+def ciudadania_registrar(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="ciudadania/registrar.html",
+        context={"request": request}
+    )
+
