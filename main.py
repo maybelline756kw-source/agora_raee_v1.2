@@ -573,3 +573,44 @@ def gestor_rutas(request: Request):
         }
     )
 
+# ==========================================
+# MODULO DE GEOREFERENCIACION
+# ==========================================
+
+@app.get("/form/gestor/georreferenciacion", response_class=HTMLResponse)
+def gestor_georreferenciacion(request: Request):
+
+    with connect() as conn:
+
+        containers = conn.execute("""
+            SELECT id, name, location, latitude, longitude,
+                   zone_type, coordinate_source
+            FROM containers
+            ORDER BY id
+        """).fetchall()
+
+        managers = conn.execute("""
+            SELECT id, name, address, latitude, longitude,
+                   zone_type, coordinate_source
+            FROM managers
+            ORDER BY id
+        """).fetchall()
+
+        delivery_points = conn.execute("""
+            SELECT *
+            FROM delivery_points
+            WHERE active = 1
+            ORDER BY id
+        """).fetchall()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="gestor/georreferenciacion.html",
+        context={
+            "request": request,
+            "containers": [dict(c) for c in containers],
+            "managers": [dict(m) for m in managers],
+            "delivery_points": [dict(p) for p in delivery_points]
+        }
+    )
+
