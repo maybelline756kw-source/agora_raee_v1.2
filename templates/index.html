@@ -7,18 +7,19 @@
   <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-  <header class="topbar">
+  <!-- ENCABEZADO MODIFICADO A MORADO BONITO -->
+  <header class="topbar" style="background: linear-gradient(135deg, #5b21b6, #7c3aed); color: white;">
     <div>
-      <p class="eyebrow">MARKETPLACE INTERINSTITUCIONAL Y COMUNITARIO</p>
+      <p class="eyebrow" style="color: #e9d5ff;">MARKETPLACE INTERINSTITUCIONAL Y COMUNITARIO</p>
       <h1>Ágora <span>RAEE</span></h1>
-      <p class="subtitle">Gestión y disposición responsable de residuos de aparatos eléctricos y electrónicos</p>
+      <p class="subtitle" style="color: #f3e8ff;">Gestión y disposición responsable de residuos de aparatos eléctricos y electrónicos</p>
     </div>
-    <a class="api-link" href="/docs" target="_blank" rel="noreferrer">Explorar API ↗</a>
+    <a class="api-link" href="/docs" target="_blank" rel="noreferrer" style="background: rgba(255, 255, 255, 0.2); color: white;">Explorar API ↗</a>
   </header>
 
   <main class="container">
     
-    <!-- NUEVA SECCIÓN: Selector de Formularios por Perfil / Rol -->
+    <!-- SECCIÓN DE BOTONES CON LOS COLORES SOLICITADOS -->
     <section class="section-heading">
       <div>
         <p class="eyebrow">ACCESO RÁPIDO</p>
@@ -28,12 +29,19 @@
     </section>
 
     <div class="role-buttons-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-      <a href="/form/gestor" class="button primary" style="text-align: center; text-decoration: none; padding: 1rem;">Gestor</a>
-      <a href="/form/ciudadania" class="button secondary" style="text-align: center; text-decoration: none; padding: 1rem;">Ciudadanía</a>
-      <a href="/form/instituciones" class="button primary" style="text-align: center; text-decoration: none; padding: 1rem; background-color: #2b6cb0;">Instituciones</a>
-      <a href="/form/tecnico" class="button secondary" style="text-align: center; text-decoration: none; padding: 1rem; background-color: #4a5568; color: white;">Técnico</a>
+      <!-- Gestor: Verde -->
+      <a href="/form/gestor" class="button" style="text-align: center; text-decoration: none; padding: 1rem; background-color: #2f855a; color: white; border-radius: 6px; font-weight: 600;">Gestor</a>
+      
+      <!-- Ciudadanía: Azul -->
+      <a href="/form/ciudadania" class="button" style="text-align: center; text-decoration: none; padding: 1rem; background-color: #3182ce; color: white; border-radius: 6px; font-weight: 600;">Ciudadanía</a>
+      
+      <!-- Instituciones: Amarillo -->
+      <a href="/form/instituciones" class="button" style="text-align: center; text-decoration: none; padding: 1rem; background-color: #d69e2e; color: white; border-radius: 6px; font-weight: 600;">Instituciones</a>
+      
+      <!-- Técnico: Gris -->
+      <a href="/form/tecnico" class="button" style="text-align: center; text-decoration: none; padding: 1rem; background-color: #4a5568; color: white; border-radius: 6px; font-weight: 600;">Técnico</a>
     </div>
-    <!-- FIN DE LA NUEVA SECCIÓN -->
+    <!-- FIN DE LA SECCIÓN DE BOTONES -->
 
     {% if notice %}<div class="notice">✓ {{ notice.replace('+', ' ') }}</div>{% endif %}
     <section class="metrics">
