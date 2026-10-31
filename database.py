@@ -1,4 +1,68 @@
-                   distance_cm REAL NOT NULL
+import os
+import sqlite3
+from pathlib import Path
+
+
+# ==========================================
+# CONFIGURACION DE LA BASE DE DATOS
+# ==========================================
+
+if os.environ.get("VERCEL"):
+    DB_PATH = Path("/tmp/agora_raee.db")
+else:
+    DB_PATH = Path(__file__).resolve().parent / "data" / "agora_raee.db"
+
+
+def connect():
+    """Abre una conexión con SQLite y permite acceder a las filas por nombre."""
+    DB_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+
+    return conn
+
+
+def add_missing_columns(conn, table_name, columns):
+    """
+    Agrega columnas que todavía no existen en una tabla.
+    Permite actualizar la estructura sin borrar los registros existentes.
+    """
+    existing_columns = {
+        row["name"]
+        for row in conn.execute(f"PRAGMA table_info({table_name})")
+    }
+
+    for column, definition in columns.items():
+        if column not in existing_columns:
+            conn.execute(
+                f"ALTER TABLE {table_name} ADD COLUMN {column} {definition}"
+            )
+
+
+# ==========================================
+# INICIALIZACION Y MIGRACIONES
+# ==========================================
+
+def init_db():
+    """Crea las tablas del sistema y aplica migraciones necesarias."""
+
+    with connect() as conn:
+
+        # ----------------------------------
+        # TABLA: CONTAINERS
+        # ----------------------------------
+
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS containers (
+                id INTEGER PRIMARY KEY,
+                name TEXT NOT NULL,
+                location TEXT NOT NULL,
+                raee_type TEXT NOT NULL,
+                max_capacity_kg REAL NOT NULL,
+                occupied_kg REAL NOT NULL,
+                height_cm REAL NOT NULL,
+                distance_cm REAL NOT NULL
             )
         """)
 
@@ -126,3 +190,4 @@
         conn.commit()
 
     print("Estructura de la base de datos verificada correctamente.")
+
