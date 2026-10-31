@@ -707,9 +707,80 @@ def ciudadania_menu(request: Request):
     )
 
 @app.get("/form/ciudadania/registrar", response_class=HTMLResponse)
-def ciudadania_registrar(request: Request):
+def ciudadania_registrar(request: Request, notice: str = ""):
     return templates.TemplateResponse(
         request=request,
         name="ciudadania/registrar.html",
-        context={"request": request}
+        context={
+            "request": request,
+            "notice": notice
+        }
+    )
+
+
+@app.post("/form/ciudadania/registrar")
+def ciudadania_registrar_submit(
+    equipment_type: str = Form(...),
+    quantity: int = Form(...),
+    condition: str = Form(...),
+    origin: str = Form(...),
+    registration_date: str = Form(...),
+    characteristics: str = Form(""),
+    generator_type: str = Form(...),
+    generator_name: str = Form(...),
+    document_number: str = Form(...),
+    phone: str = Form(...),
+    email: str = Form(""),
+    address: str = Form(...)
+):
+    if quantity < 1:
+        raise HTTPException(
+            status_code=400,
+            detail="La cantidad debe ser de al menos una unidad."
+        )
+
+    with connect() as conn:
+        cursor = conn.execute("""
+            INSERT INTO raee_records (
+                equipment_type,
+                quantity,
+                condition,
+                origin,
+                registration_date,
+                characteristics,
+                generator_type,
+                generator_name,
+                document_number,
+                phone,
+                email,
+                address,
+                status
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            equipment_type,
+            quantity,
+            condition,
+            origin,
+            registration_date,
+            characteristics,
+            generator_type,
+            generator_name,
+            document_number,
+            phone,
+            email,
+            address,
+            "Registrado"
+        ))
+
+        record_id = cursor.lastrowid
+
+    log_event(
+        "info",
+        f"Nuevo registro RAEE #{record_id}: {equipment_type} ({quantity} unidad/es)"
+    )
+
+    return RedirectResponse(
+        url="/form/ciudadania/registrar?notice=RAEE+registrado+correctamente",
+        status_code=303
     )
