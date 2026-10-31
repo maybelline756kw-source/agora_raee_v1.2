@@ -187,6 +187,35 @@ def init_db():
             )
         """)
 
+        # ----------------------------------
+        # TABLA: RAEE_RECORDS
+        # ----------------------------------
+
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS raee_records (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+                equipment_type TEXT NOT NULL,
+                quantity INTEGER NOT NULL,
+                condition TEXT NOT NULL,
+                origin TEXT NOT NULL,
+                registration_date TEXT NOT NULL,
+
+                characteristics TEXT,
+
+                generator_type TEXT NOT NULL,
+                generator_name TEXT NOT NULL,
+                document_number TEXT NOT NULL,
+                phone TEXT NOT NULL,
+                email TEXT,
+                address TEXT NOT NULL,
+
+                status TEXT NOT NULL DEFAULT 'Registrado',
+
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
         conn.commit()
 
     print("Estructura de la base de datos verificada correctamente.")
