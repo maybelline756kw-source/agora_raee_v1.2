@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Georreferenciación - Ágora RAEE</title>
+
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <style>
+        .geo-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .geo-item {
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #dce5df;
+            border-radius: 8px;
+        }
+
+        .geo-item h4 {
+            margin: 0 0 8px;
+            color: #245c43;
+        }
+
+        .geo-label {
+            font-weight: bold;
+        }
+
+        .demo-tag {
+            display: inline-block;
+            background: #fff0d5;
+            color: #8a5a00;
+            padding: 4px 9px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .real-tag {
+            display: inline-block;
+            background: #d9f3e4;
+            color: #17643c;
+            padding: 4px 9px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="topbar">
+    <h1>Ágora RAEE | Georreferenciación</h1>
+    <a href="/form/gestor">Volver al menú</a>
+</header>
+
+<main class="container">
+
+    <section class="section-heading">
+        <h2>Ubicación geográfica de los actores</h2>
+
+        <p>
+            Consulta las ubicaciones de los contenedores,
+            gestores y puntos de entrega de residuos electrónicos.
+        </p>
+    </section>
+
+    <section class="geo-card">
+        <h3>Contenedores RAEE</h3>
+
+        {% for item in containers %}
+        <div class="geo-item">
+            <h4>{{ item.name }}</h4>
+
+            <p>
+                <span class="geo-label">Ubicación:</span>
+                {{ item.location }}
+            </p>
+
+            <p>
+                <span class="geo-label">Zona:</span>
+                {{ item.zone_type }}
+            </p>
+
+            <p>
+                <span class="geo-label">Latitud:</span>
+                {{ item.latitude }}
+            </p>
+
+            <p>
+                <span class="geo-label">Longitud:</span>
+                {{ item.longitude }}
+            </p>
+
+            {% if item.coordinate_source == "demo" %}
+                <span class="demo-tag">Coordenadas simuladas</span>
+            {% else %}
+                <span class="real-tag">Ubicación real</span>
+            {% endif %}
+        </div>
+        {% else %}
+        <p>No hay contenedores registrados.</p>
+        {% endfor %}
+    </section>
+
+    <section class="geo-card">
+        <h3>Gestores autorizados</h3>
+
+        {% for item in managers %}
+        <div class="geo-item">
+            <h4>{{ item.name }}</h4>
+
+            <p>
+                <span class="geo-label">Dirección:</span>
+                {{ item.address }}
+            </p>
+
+            <p>
+                <span class="geo-label">Zona:</span>
+                {{ item.zone_type }}
+            </p>
+
+            <p>
+                <span class="geo-label">Coordenadas:</span>
+                {{ item.latitude }}, {{ item.longitude }}
+            </p>
+
+            {% if item.coordinate_source == "demo" %}
+                <span class="demo-tag">Coordenadas simuladas</span>
+            {% else %}
+                <span class="real-tag">Ubicación real</span>
+            {% endif %}
+        </div>
+        {% else %}
+        <p>No hay gestores registrados.</p>
+        {% endfor %}
+    </section>
+
+    <section class="geo-card">
+        <h3>Puntos de recolección y entrega</h3>
+
+        {% for item in delivery_points %}
+        <div class="geo-item">
+            <h4>{{ item.name }}</h4>
+
+            <p>
+                <span class="geo-label">Dirección:</span>
+                {{ item.address }}
+            </p>
+
+            <p>
+                <span class="geo-label">Tipo de punto:</span>
+                {{ item.point_type }}
+            </p>
+
+            <p>
+                <span class="geo-label">Zona:</span>
+                {{ item.zone_type }}
+            </p>
+
+            <p>
+                <span class="geo-label">Coordenadas:</span>
+                {{ item.latitude }}, {{ item.longitude }}
+            </p>
+
+            <p>{{ item.description }}</p>
+
+            {% if item.coordinate_source == "demo" %}
+                <span class="demo-tag">Coordenadas simuladas</span>
+            {% else %}
+                <span class="real-tag">Ubicación real</span>
+            {% endif %}
+        </div>
+        {% else %}
+        <p>No hay puntos de entrega registrados.</p>
+        {% endfor %}
+    </section>
+
+</main>
+
+</body>
+</html>
