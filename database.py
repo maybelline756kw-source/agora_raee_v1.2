@@ -58,3 +58,90 @@ def init_db():
             )
         """)
         conn.commit()
+
+
+        # ==========================================
+        # CAMPOS GEOGRAFICOS PARA CONTENEDORES
+        # ==========================================
+
+        container_columns = {
+            "latitude": "REAL",
+            "longitude": "REAL",
+            "zone_type": "TEXT DEFAULT 'No clasificada'",
+            "coordinate_source": "TEXT DEFAULT 'demo'"
+        }
+
+        for column, definition in container_columns.items():
+            existing = [
+                row["name"]
+                for row in conn.execute("PRAGMA table_info(containers)")
+            ]
+
+            if column not in existing:
+                conn.execute(
+                    f"ALTER TABLE containers ADD COLUMN {column} {definition}"
+                )
+
+        # ==========================================
+        # CAMPOS GEOGRAFICOS PARA GESTORES
+        # ==========================================
+
+        manager_columns = {
+            "address": "TEXT",
+            "latitude": "REAL",
+            "longitude": "REAL",
+            "zone_type": "TEXT DEFAULT 'No clasificada'",
+            "coordinate_source": "TEXT DEFAULT 'demo'"
+        }
+
+        for column, definition in manager_columns.items():
+            existing = [
+                row["name"]
+                for row in conn.execute("PRAGMA table_info(managers)")
+            ]
+
+            if column not in existing:
+                conn.execute(
+                    f"ALTER TABLE managers ADD COLUMN {column} {definition}"
+                )
+
+        # ==========================================
+        # TABLA DE PUNTOS DE ENTREGA
+        # ==========================================
+
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS delivery_points (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                address TEXT NOT NULL,
+                point_type TEXT NOT NULL,
+                zone_type TEXT NOT NULL,
+                latitude REAL,
+                longitude REAL,
+                coordinate_source TEXT NOT NULL DEFAULT 'demo',
+                description TEXT,
+                active INTEGER NOT NULL DEFAULT 1
+            )
+        """)
+
+        # ==========================================
+        # TABLA DE RUTAS
+        # ==========================================
+
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS routes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                container_id INTEGER NOT NULL,
+                delivery_point_id INTEGER,
+                manager_id INTEGER,
+                distance_km REAL,
+                status TEXT NOT NULL DEFAULT 'Pendiente',
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (container_id) REFERENCES containers(id),
+                FOREIGN KEY (delivery_point_id) REFERENCES delivery_points(id),
+                FOREIGN KEY (manager_id) REFERENCES managers(id)
+            )
+        """)
+
+        conn.commit()
+
