@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rutas de gestión - Ágora RAEE</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+
+    <header class="topbar">
+        <h1>Ágora RAEE | Rutas de gestión</h1>
+        <a href="/form/gestor">Volver al menú</a>
+    </header>
+
+    <main class="container">
+
+        <section class="section-heading">
+            <h2>Georreferenciación y logística</h2>
+            <p>
+                Consulta los puntos de recolección, gestores y lugares
+                de entrega registrados en el sistema.
+            </p>
+        </section>
+
+        <section class="container-card">
+            <h3>Contenedores RAEE</h3>
+
+            {% for container in containers %}
+            <article>
+                <h4>{{ container.name }}</h4>
+                <p>Ubicación: {{ container.location }}</p>
+                <p>Zona: {{ container.zone_type }}</p>
+                <p>Latitud: {{ container.latitude }}</p>
+                <p>Longitud: {{ container.longitude }}</p>
+                <p>Origen de coordenadas: {{ container.coordinate_source }}</p>
+            </article>
+            {% else %}
+            <p>No hay contenedores registrados.</p>
+            {% endfor %}
+        </section>
+
+        <section class="container-card">
+            <h3>Gestores RAEE</h3>
+
+            {% for manager in managers %}
+            <article>
+                <h4>{{ manager.name }}</h4>
+                <p>Dirección: {{ manager.address }}</p>
+                <p>Zona: {{ manager.zone_type }}</p>
+                <p>Latitud: {{ manager.latitude }}</p>
+                <p>Longitud: {{ manager.longitude }}</p>
+            </article>
+            {% else %}
+            <p>No hay gestores registrados.</p>
+            {% endfor %}
+        </section>
+
+        <section class="container-card">
+            <h3>Puntos de entrega</h3>
+
+            {% for point in delivery_points %}
+            <article>
+                <h4>{{ point.name }}</h4>
+                <p>Dirección: {{ point.address }}</p>
+                <p>Tipo: {{ point.point_type }}</p>
+                <p>Zona: {{ point.zone_type }}</p>
+                <p>Latitud: {{ point.latitude }}</p>
+                <p>Longitud: {{ point.longitude }}</p>
+                <p>{{ point.description }}</p>
+            </article>
+            {% else %}
+            <p>No hay puntos de entrega registrados.</p>
+            {% endfor %}
+        </section>
+
+    </main>
+
+</body>
+</html>
