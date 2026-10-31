@@ -1,177 +1,496 @@
+```html
 <!doctype html>
 <html lang="es">
+
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Ágora RAEE | Gestión comunitaria de residuos electrónicos</title>
-  <link rel="stylesheet" href="/static/styles.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Ágora RAEE | Gestión comunitaria</title>
+
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
+
 <body>
-  <!-- ENCABEZADO MODIFICADO A MORADO BONITO -->
-  <header class="topbar" style="background: linear-gradient(135deg, #5b21b6, #7c3aed); color: white;">
-    <div>
-      <p class="eyebrow" style="color: #e9d5ff;">MARKETPLACE INTERINSTITUCIONAL Y COMUNITARIO</p>
-      <h1>Ágora <span>RAEE</span></h1>
-      <p class="subtitle" style="color: #f3e8ff;">Gestión y disposición responsable de residuos de aparatos eléctricos y electrónicos</p>
-    </div>
-    <a class="api-link" href="/docs" target="_blank" rel="noreferrer" style="background: rgba(255, 255, 255, 0.2); color: white;">Explorar API ↗</a>
-  </header>
 
-  <main class="container">
-    
-    <!-- SECCIÓN DE BOTONES CON LOS COLORES SOLICITADOS -->
-    <section class="section-heading">
-      <div>
-        <p class="eyebrow">ACCESO RÁPIDO</p>
-        <h2>Selecciona tu perfil o formulario</h2>
-      </div>
-      <p>Elige una opción para registrar solicitudes o gestionar datos según tu rol</p>
-    </section>
+    <!-- ================================== -->
+    <!-- ENCABEZADO PRINCIPAL -->
+    <!-- ================================== -->
 
-    <div class="role-buttons-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-      <!-- Gestor: Verde -->
-      <a href="/form/gestor" class="button" style="text-align: center; text-decoration: none; padding: 1rem; background-color: #2f855a; color: white; border-radius: 6px; font-weight: 600;">Gestor</a>
-      
-      <!-- Ciudadanía: Azul -->
-      <a href="/form/ciudadania" class="button" style="text-align: center; text-decoration: none; padding: 1rem; background-color: #3182ce; color: white; border-radius: 6px; font-weight: 600;">Ciudadanía</a>
-      
-      <!-- Instituciones: Amarillo -->
-      <a href="/form/instituciones" class="button" style="text-align: center; text-decoration: none; padding: 1rem; background-color: #d69e2e; color: white; border-radius: 6px; font-weight: 600;">Instituciones</a>
-      
-      <!-- Técnico: Gris -->
-      <a href="/form/tecnico" class="button" style="text-align: center; text-decoration: none; padding: 1rem; background-color: #4a5568; color: white; border-radius: 6px; font-weight: 600;">Técnico</a>
-    </div>
-    <!-- FIN DE LA SECCIÓN DE BOTONES -->
+    <header class="topbar"
+        style="background: linear-gradient(135deg, #5b21b6, #7c3aed); color: white;">
 
-    {% if notice %}<div class="notice">✓ {{ notice.replace('+', ' ') }}</div>{% endif %}
-    <section class="metrics">
-      <article class="metric"><span>Puntos de recolección</span><strong>{{ total }}</strong><small>registrados en la demo</small></article>
-      <article class="metric"><span>Alertas críticas</span><strong class="{% if critical %}red-text{% endif %}">{{ critical }}</strong><small>ocupación ≥ 85% (umbral demo)</small></article>
-      <article class="metric"><span>Requieren atención</span><strong class="{% if attention %}amber-text{% endif %}">{{ attention }}</strong><small>ocupación ≥ 60% (umbral demo)</small></article>
-    </section>
+        <div>
+            <p class="eyebrow" style="color: #e9d5ff;">
+                MARKETPLACE INTERINSTITUCIONAL Y COMUNITARIO
+            </p>
 
-    <div class="section-heading">
-      <div><p class="eyebrow">MÓDULO 01</p><h2>Contenedores inteligentes</h2></div>
-      <p>Simulación del sensor de distancia tipo HC-SR04</p>
-    </div>
-    <section class="container-grid">
-      {% for c in containers %}
-      <article class="container-card">
-        <div class="card-top">
-          <div class="device-icon">⌁</div>
-          <span class="status status-{{ c.status|lower }}">{{ c.status }}</span>
+            <h1>Ágora <span>RAEE</span></h1>
+
+            <p class="subtitle" style="color: #f3e8ff;">
+                Gestión y disposición responsable de residuos de
+                aparatos eléctricos y electrónicos
+            </p>
         </div>
-        <h3>{{ c.name }}</h3>
-        <p class="muted">{{ c.location }} · {{ c.raee_type.replace('_', ' ') }}</p>
-        <div class="fill-row"><span>Nivel de ocupación</span><strong>{{ c.occupancy_percent }}%</strong></div>
-        <div class="progress"><div class="progress-fill {% if c.status == 'Crítico' %}fill-red{% elif c.status == 'Atención' %}fill-amber{% endif %}" style="width: {{ c.occupancy_percent }}%"></div></div>
-        <div class="data-pair"><span>Ocupado <b>{{ c.occupied_kg }} kg</b></span><span>Disponible <b>{{ c.available_kg }} kg</b></span></div>
-        <div class="sensor-note">Distancia simulada: <b>{{ c.distance_cm }} cm</b></div>
-        <div class="actions">
-          <form method="post" action="/simulate/{{ c.id }}"><button class="button secondary" type="submit">Simular lectura</button></form>
-          <form method="post" action="/requests/{{ c.id }}"><button class="button primary" type="submit">Solicitar recolección</button></form>
-        </div>
-      </article>
-      {% endfor %}
-    </section>
 
-    <div class="section-heading">
-      <div><p class="eyebrow">MÓDULO 02</p><h2>Matching de gestores</h2></div>
-      <p>Datos ficticios para demostrar compatibilidad y capacidad</p>
-    </div>
-    <section class="table-wrap">
-      <table>
-        <thead><tr><th>Gestor</th><th>Tipos aceptados</th><th>Capacidad libre</th><th>Distancia demo</th><th>Condición</th></tr></thead>
-        <tbody>
-        {% for m in managers %}
-          <tr>
-            <td><strong>{{ m.name }}</strong></td>
-            <td>{{ m.raee_types|join(', ')|replace('_',' ') }}</td>
-            <td>{{ m.available_kg }} kg</td><td>{{ m.distance_km }} km</td>
-            <td>{% if m.authorized %}<span class="pill good">Autorizado (demo)</span>{% else %}<span class="pill neutral">No autorizado</span>{% endif %}</td>
-          </tr>
-        {% endfor %}
-        </tbody>
-      </table>
-    </section>
+        <a class="api-link"
+           href="/docs"
+           target="_blank"
+           rel="noreferrer"
+           style="background: rgba(255,255,255,0.2); color: white;">
+            Explorar API ↗
+        </a>
 
-    <div class="two-col">
-      <section>
-        <div class="section-heading compact"><div><p class="eyebrow">MÓDULO 03</p><h2>Solicitudes recientes</h2></div></div>
-        <div class="list-card">
-          {% for r in requests %}
-            <div class="list-item"><div><strong>Solicitud #{{ r.id }} · {{ r.container_name }}</strong><p>{{ r.requested_kg }} kg · {{ r.created_at }}</p></div><span class="small-status">{{ r.status }}</span></div>
-          {% else %}<p class="muted empty">Aún no hay solicitudes. Usa el botón de un contenedor para crear una.</p>{% endfor %}
+    </header>
+
+
+    <main class="container">
+
+        <!-- ================================== -->
+        <!-- ACCESO A LOS PERFILES -->
+        <!-- ================================== -->
+
+        <section class="section-heading">
+
+            <div>
+                <p class="eyebrow">ACCESO RÁPIDO</p>
+                <h2>Selecciona tu perfil</h2>
+            </div>
+
+            <p>
+                Elige una opción para acceder a las funcionalidades
+                correspondientes a tu rol.
+            </p>
+
+        </section>
+
+
+        <div class="role-buttons-grid"
+             style="display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 1rem;
+                    margin-bottom: 2rem;">
+
+            <!-- PERFIL GESTOR -->
+
+            <a href="/form/gestor"
+               class="button"
+               style="text-align: center;
+                      text-decoration: none;
+                      padding: 1rem;
+                      background-color: #2f855a;
+                      color: white;
+                      border-radius: 6px;
+                      font-weight: 600;">
+
+                Gestor
+
+            </a>
+
+
+            <!-- PERFIL CIUDADANÍA -->
+
+            <a href="/form/ciudadania"
+               class="button"
+               style="text-align: center;
+                      text-decoration: none;
+                      padding: 1rem;
+                      background-color: #3182ce;
+                      color: white;
+                      border-radius: 6px;
+                      font-weight: 600;">
+
+                Ciudadanía
+
+            </a>
+
+
+            <!-- PERFIL INSTITUCIONES -->
+
+            <a href="/form/instituciones"
+               class="button"
+               style="text-align: center;
+                      text-decoration: none;
+                      padding: 1rem;
+                      background-color: #d69e2e;
+                      color: white;
+                      border-radius: 6px;
+                      font-weight: 600;">
+
+                Instituciones
+
+            </a>
+
+
+            <!-- PERFIL TÉCNICO -->
+
+            <a href="/form/tecnico"
+               class="button"
+               style="text-align: center;
+                      text-decoration: none;
+                      padding: 1rem;
+                      background-color: #4a5568;
+                      color: white;
+                      border-radius: 6px;
+                      font-weight: 600;">
+
+                Técnico
+
+            </a>
+
         </div>
-      </section>
-      <section>
-        <div class="section-heading compact"><div><p class="eyebrow">MÓDULO 04</p><h2>Bitácora de eventos</h2></div></div>
-        <div class="list-card">
-          {% for e in events %}
-            <div class="list-item"><div><strong>{{ e.message }}</strong><p>{{ e.created_at }}</p></div><span class="event-dot dot-{{ e.level }}"></span></div>
-          {% else %}<p class="muted empty">Sin eventos registrados.</p>{% endfor %}
+
+
+        <!-- ================================== -->
+        <!-- MENSAJES DEL SISTEMA -->
+        <!-- ================================== -->
+
+        {% if notice %}
+        <div class="notice">
+            ✓ {{ notice.replace('+', ' ') }}
         </div>
-      </section>
-    </div>
-    <footer>
-      <strong>Prototipo académico · versión 0.1</strong>
-      <p>Los sensores, gestores, distancias, capacidades y resultados son simulados. No se envían residuos ni se contacta a gestores reales.</p>
-    </footer>
-  </main>
+        {% endif %}
+
+
+        <!-- ================================== -->
+        <!-- MÉTRICAS GENERALES -->
+        <!-- ================================== -->
+
+        <section class="metrics">
+
+            <article class="metric">
+                <span>Puntos de recolección</span>
+                <strong>{{ total }}</strong>
+                <small>Registrados en la demo</small>
+            </article>
+
+            <article class="metric">
+                <span>Alertas críticas</span>
+
+                <strong class="{% if critical %}red-text{% endif %}">
+                    {{ critical }}
+                </strong>
+
+                <small>Ocupación ≥ 85%</small>
+            </article>
+
+            <article class="metric">
+                <span>Requieren atención</span>
+
+                <strong class="{% if attention %}amber-text{% endif %}">
+                    {{ attention }}
+                </strong>
+
+                <small>Ocupación ≥ 60%</small>
+            </article>
+
+        </section>
+
+
+        <!-- ================================== -->
+        <!-- MÓDULO 01: CONTENEDORES -->
+        <!-- ================================== -->
+
+        <div class="section-heading">
+
+            <div>
+                <p class="eyebrow">MÓDULO 01</p>
+                <h2>Contenedores inteligentes</h2>
+            </div>
+
+            <p>Simulación del sensor de distancia tipo HC-SR04</p>
+
+        </div>
+
+
+        <section class="container-grid">
+
+            {% for c in containers %}
+
+            <article class="container-card">
+
+                <div class="card-top">
+
+                    <div class="device-icon">⌁</div>
+
+                    <span class="status status-{{ c.status|lower }}">
+                        {{ c.status }}
+                    </span>
+
+                </div>
+
+                <h3>{{ c.name }}</h3>
+
+                <p class="muted">
+                    {{ c.location }} ·
+                    {{ c.raee_type.replace('_', ' ') }}
+                </p>
+
+                <div class="fill-row">
+                    <span>Nivel de ocupación</span>
+                    <strong>{{ c.occupancy_percent }}%</strong>
+                </div>
+
+                <div class="progress">
+
+                    <div class="progress-fill
+                        {% if c.status == 'Crítico' %}fill-red
+                        {% elif c.status == 'Atención' %}fill-amber
+                        {% endif %}"
+
+                        style="width: {{ c.occupancy_percent }}%">
+                    </div>
+
+                </div>
+
+                <div class="data-pair">
+
+                    <span>
+                        Ocupado <b>{{ c.occupied_kg }} kg</b>
+                    </span>
+
+                    <span>
+                        Disponible <b>{{ c.available_kg }} kg</b>
+                    </span>
+
+                </div>
+
+                <div class="sensor-note">
+                    Distancia simulada:
+                    <b>{{ c.distance_cm }} cm</b>
+                </div>
+
+                <div class="actions">
+
+                    <form method="post"
+                          action="/simulate/{{ c.id }}">
+
+                        <button class="button secondary" type="submit">
+                            Simular lectura
+                        </button>
+
+                    </form>
+
+                    <form method="post"
+                          action="/requests/{{ c.id }}">
+
+                        <button class="button primary" type="submit">
+                            Solicitar recolección
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </article>
+
+            {% endfor %}
+
+        </section>
+
+
+        <!-- ================================== -->
+        <!-- MÓDULO 02: MATCHING DE GESTORES -->
+        <!-- ================================== -->
+
+        <div class="section-heading">
+
+            <div>
+                <p class="eyebrow">MÓDULO 02</p>
+                <h2>Matching de gestores</h2>
+            </div>
+
+            <p>
+                Datos ficticios para demostrar compatibilidad y capacidad
+            </p>
+
+        </div>
+
+
+        <section class="table-wrap">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Gestor</th>
+                        <th>Tipos aceptados</th>
+                        <th>Capacidad libre</th>
+                        <th>Distancia demo</th>
+                        <th>Condición</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for m in managers %}
+
+                    <tr>
+
+                        <td><strong>{{ m.name }}</strong></td>
+
+                        <td>
+                            {{ m.raee_types|join(', ')|replace('_', ' ') }}
+                        </td>
+
+                        <td>{{ m.available_kg }} kg</td>
+
+                        <td>{{ m.distance_km }} km</td>
+
+                        <td>
+
+                            {% if m.authorized %}
+
+                            <span class="pill good">
+                                Autorizado (demo)
+                            </span>
+
+                            {% else %}
+
+                            <span class="pill neutral">
+                                No autorizado
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </section>
+
+
+        <!-- ================================== -->
+        <!-- MÓDULO 03 Y 04 -->
+        <!-- ================================== -->
+
+        <div class="two-col">
+
+            <!-- SOLICITUDES -->
+
+            <section>
+
+                <div class="section-heading compact">
+
+                    <div>
+                        <p class="eyebrow">MÓDULO 03</p>
+                        <h2>Solicitudes recientes</h2>
+                    </div>
+
+                </div>
+
+                <div class="list-card">
+
+                    {% for r in requests %}
+
+                    <div class="list-item">
+
+                        <div>
+
+                            <strong>
+                                Solicitud #{{ r.id }} ·
+                                {{ r.container_name }}
+                            </strong>
+
+                            <p>
+                                {{ r.requested_kg }} kg ·
+                                {{ r.created_at }}
+                            </p>
+
+                        </div>
+
+                        <span class="small-status">
+                            {{ r.status }}
+                        </span>
+
+                    </div>
+
+                    {% else %}
+
+                    <p class="muted empty">
+                        Aún no hay solicitudes.
+                        Usa el botón de un contenedor para crear una.
+                    </p>
+
+                    {% endfor %}
+
+                </div>
+
+            </section>
+
+
+            <!-- BITÁCORA -->
+
+            <section>
+
+                <div class="section-heading compact">
+
+                    <div>
+                        <p class="eyebrow">MÓDULO 04</p>
+                        <h2>Bitácora de eventos</h2>
+                    </div>
+
+                </div>
+
+                <div class="list-card">
+
+                    {% for e in events %}
+
+                    <div class="list-item">
+
+                        <div>
+
+                            <strong>{{ e.message }}</strong>
+
+                            <p>{{ e.created_at }}</p>
+
+                        </div>
+
+                        <span class="event-dot dot-{{ e.level }}"></span>
+
+                    </div>
+
+                    {% else %}
+
+                    <p class="muted empty">
+                        Sin eventos registrados.
+                    </p>
+
+                    {% endfor %}
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+        <!-- ================================== -->
+        <!-- PIE DE PÁGINA -->
+        <!-- ================================== -->
+
+        <footer>
+
+            <strong>Prototipo académico · versión 0.1</strong>
+
+            <p>
+                Los sensores, gestores, distancias, capacidades y
+                resultados son simulados. No se envían residuos ni
+                se contacta a gestores reales.
+            </p>
+
+        </footer>
+
+    </main>
+
 </body>
 </html>
-
-#Menu para el Gestor
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8">
-  <title>Panel de Gestor | Ágora RAEE</title>
-  <link rel="stylesheet" href="/static/styles.css">
-</head>
-<body>
-  <header class="topbar" style="background: linear-gradient(135deg, #2f855a, #48bb78); color: white;">
-    <div>
-      <p class="eyebrow" style="color: #e2f8f0;">MÓDULO DE GESTORES</p>
-      <h1>Panel de <span>Gestión</span></h1>
-    </div>
-    <a class="api-link" href="/" style="background: rgba(255, 255, 255, 0.2); color: white;">← Volver al inicio</a>
-  </header>
-
-  <main class="container">
-    <section class="section-heading">
-      <h2>Selecciona una opción del proceso</h2>
-      <p>Administra tus registros, lotes asignados, rutas y georreferenciación.</p>
-    </section>
-
-    <!-- Menú de opciones estilo tarjetas / botones grandes -->
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
-      
-      <div class="container-card" style="border-top: 4px solid #2f855a;">
-        <h3>1. Registro de Empresa</h3>
-        <p class="muted">Datos de empresa, autorizaciones, capacidad, cobertura y servicios ofrecidos.</p>
-        <a href="/form/gestor/registro" class="button primary" style="display: block; text-align: center; margin-top: 1rem; text-decoration: none;">Ir al formulario</a>
-      </div>
-
-      <div class="container-card" style="border-top: 4px solid #3182ce;">
-        <h3>2. Postulación y Lotes</h3>
-        <p class="muted">RAEE de lote asignado, actor responsable, compatibilidad, capacidad, ubicación y estado.</p>
-        <a href="/form/gestor/lotes" class="button secondary" style="display: block; text-align: center; margin-top: 1rem; text-decoration: none;">Ver lotes y postularse</a>
-      </div>
-
-      <div class="container-card" style="border-top: 4px solid #d69e2e;">
-        <h3>3. Rutas de Gestión</h3>
-        <p class="muted">Determinación de tratamiento: Reparar, Reutilizar, Aprovechar o Disponer.</p>
-        <a href="/form/gestor/rutas" class="button primary" style="display: block; text-align: center; margin-top: 1rem; text-decoration: none; background-color: #d69e2e;">Gestionar rutas</a>
-      </div>
-
-      <div class="container-card" style="border-top: 4px solid #4a5568;">
-        <h3>4. Georreferenciación</h3>
-        <p class="muted">Ubicación, actores, puntos de entrega, distancia y clasificación rural/urbana.</p>
-        <a href="/form/gestor/georreferenciacion" class="button secondary" style="display: block; text-align: center; margin-top: 1rem; text-decoration: none; background-color: #4a5568;">Ver mapa y distancias</a>
-      </div>
-
-    </div>
-  </main>
-</body>
-</html>
+```
