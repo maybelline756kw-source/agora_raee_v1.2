@@ -216,6 +216,31 @@ def init_db():
             )
         """)
 
+                # ----------------------------------
+        # TABLA: PICKUP_REQUESTS
+        # ----------------------------------
+
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS pickup_requests (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                raee_record_id INTEGER NOT NULL,
+                status TEXT NOT NULL DEFAULT 'Pendiente',
+                verification_status TEXT NOT NULL DEFAULT 'Pendiente',
+                matched_manager_id INTEGER,
+                route_id INTEGER,
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+                FOREIGN KEY (raee_record_id)
+                    REFERENCES raee_records(id),
+
+                FOREIGN KEY (matched_manager_id)
+                    REFERENCES managers(id),
+
+                FOREIGN KEY (route_id)
+                    REFERENCES routes(id)
+            )
+        """)
+
         conn.commit()
 
     print("Estructura de la base de datos verificada correctamente.")
