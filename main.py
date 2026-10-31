@@ -780,6 +780,117 @@ def ciudadania_registrar_submit(
         f"Nuevo registro RAEE #{record_id}: {equipment_type} ({quantity} unidad/es)"
     )
 
+    # ==========================================
+# CIUDADANIA - SOLICITUD DE RECOLECCION
+# ==========================================
+
+@app.get("/form/ciudadania/recoleccion", response_class=HTMLResponse)
+def ciudadania_recoleccion(request: Request, notice: str = ""):
+
+    with connect() as conn:
+        records = conn.execute("""
+            SELECT
+                id,
+                equipment_type,
+                quantity,
+                condition,
+                origin,
+                registration_date,
+                generator_name,
+                address,
+                status
+            FROM raee_records
+            ORDER BY id DESC
+        """).fetchall()
+
+        requests = conn.execute("""
+            SELECT
+                p.id,
+                p.raee_record_id,
+                p.status,
+                p.verification_status,
+                p.created_at,
+                r.equipment_type,
+                r.quantity
+            FROM pickup_requests p
+            INNER JOIN raee_records r
+                ON p.raee_record_id = r.id
+            ORDER BY p.id DESC
+        """).fetchall()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="ciudadania/recoleccion.html",
+        context={
+            "request": request,
+            "records": records,
+            "requests": requests,
+            "notice": notice
+        }
+    )
+
+
+@app.post("/form/ciudadania/recoleccion")
+def ciudadania_solicitar_recoleccion(
+    record_id: int = Form(...)
+):
+
+    with connect() as conn:
+
+        # 1. Verificar que el residuo exista.
+        record = conn.execute("""
+            SELECT id, equipment_type, quantity
+            FROM raee_records
+            WHERE id = ?
+        """, (record_id,)).fetchone()
+
+        if record is None:
+            raise HTTPException(
+                status_code=404,
+                detail="El registro RAEE seleccionado no existe."
+            )
+
+        # 2. Evitar solicitudes pendientes duplicadas.
+        existing_request = conn.execute("""
+            SELECT id
+            FROM pickup_requests
+            WHERE raee_record_id = ?
+            AND status IN ('Pendiente', 'En verificación', 'Asignada')
+        """, (record_id,)).fetchone()
+
+        if existing_request:
+            return RedirectResponse(
+                url="/form/ciudadania/recoleccion?notice=Este+residuo+ya+tiene+una+solicitud+activa",
+                status_code=303
+            )
+
+        # 3. Crear la solicitud.
+        cursor = conn.execute("""
+            INSERT INTO pickup_requests (
+                raee_record_id,
+                status,
+                verification_status
+            )
+            VALUES (?, ?, ?)
+        """, (
+            record_id,
+            "Pendiente",
+            "Pendiente"
+        ))
+
+        request_id = cursor.lastrowid
+
+    # 4. Registrar actividad.
+    log_event(
+        "info",
+        f"Solicitud de recolección #{request_id} creada para el registro RAEE #{record_id}"
+    )
+
+    return RedirectResponse(
+        url="/form/ciudadania/recoleccion?notice=Solicitud+de+recoleccion+registrada+correctamente",
+        status_code=303
+    )
+
     return RedirectResponse(
         url="/form/ciudadania/registrar?notice=RAEE+registrado+correctamente",
         status_code=303
