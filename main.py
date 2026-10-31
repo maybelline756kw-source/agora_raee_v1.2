@@ -614,3 +614,19 @@ def gestor_georreferenciacion(request: Request):
         }
     )
 
+
+# ==========================================
+# MODULO DE CIUDADANIA
+# ==========================================
+
+@app.get("/form/ciudadania", response_class=HTMLResponse)
+def ciudadania_menu(request: Request):
+
+    return templates.TemplateResponse(
+        request=request,
+        name="ciudadania/menu.html",
+        context={
+            "request": request
+        }
+    )
+
