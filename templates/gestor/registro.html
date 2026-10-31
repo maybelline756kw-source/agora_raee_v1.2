@@ -1,379 +1,557 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Registro de Empresa | Ágora RAEE</title>
+    <title>Registro de Gestores | Ágora RAEE</title>
 
     <link rel="stylesheet" href="/static/styles.css">
+
+    <style>
+        body {
+            background: #f1f5f2;
+            color: #26352d;
+        }
+
+        .topbar {
+            background: linear-gradient(135deg, #176b50, #36a477);
+            color: white;
+            padding: 25px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .topbar h1 {
+            margin: 5px 0;
+            font-size: 28px;
+        }
+
+        .topbar h1 span {
+            color: #d1fae5;
+        }
+
+        .topbar .subtitle {
+            color: #e0f5e9;
+            margin: 5px 0 0;
+        }
+
+        .eyebrow {
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            color: #16805c;
+        }
+
+        .topbar .eyebrow {
+            color: #d1fae5;
+        }
+
+        .api-link {
+            background: rgba(255,255,255,0.18);
+            color: white;
+            text-decoration: none;
+            padding: 11px 17px;
+            border-radius: 9px;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .api-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .section-heading {
+            margin-bottom: 25px;
+        }
+
+        .section-heading h2 {
+            font-size: 25px;
+            color: #176b50;
+            margin: 5px 0 10px;
+        }
+
+        .section-heading p {
+            color: #64756a;
+            line-height: 1.6;
+        }
+
+        .container-card {
+            background: white;
+            padding: 30px;
+            border-radius: 17px;
+            box-shadow: 0 5px 20px rgba(30, 70, 45, 0.07);
+        }
+
+        .form-section {
+            background: #ffffff;
+            border: 1px solid #e5eee8;
+            border-radius: 13px;
+            padding: 23px;
+            margin-bottom: 23px;
+        }
+
+        .form-section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .section-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: #e6f5ec;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .form-section h3 {
+            color: #176b50;
+            margin: 0 0 5px;
+            font-size: 18px;
+        }
+
+        .muted {
+            color: #819087;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #43564a;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 13px;
+            border: 1px solid #d9e4dc;
+            border-radius: 9px;
+            background: #fbfdfb;
+            color: #34483b;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #36a477;
+            box-shadow: 0 0 0 3px rgba(54,164,119,0.12);
+            background: white;
+        }
+
+        .form-group input::placeholder {
+            color: #a0ada4;
+        }
+
+        .form-help {
+            font-size: 11px;
+            color: #89978e;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 22px;
+            border-top: 1px solid #e8eee9;
+        }
+
+        .button {
+            padding: 12px 22px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+            transition: 0.2s;
+        }
+
+        .button.primary {
+            background: #197653;
+            color: white;
+        }
+
+        .button.primary:hover {
+            background: #125d40;
+            transform: translateY(-1px);
+        }
+
+        .button.secondary {
+            background: #edf2ee;
+            color: #4b5d51;
+        }
+
+        .button.secondary:hover {
+            background: #dfe9e1;
+        }
+
+        footer {
+            text-align: center;
+            color: #819087;
+            font-size: 12px;
+            padding: 25px 10px;
+            line-height: 1.6;
+        }
+
+        footer strong {
+            color: #176b50;
+        }
+
+        @media (max-width: 650px) {
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container-card {
+                padding: 15px;
+            }
+
+            .form-section {
+                padding: 17px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .button {
+                width: 100%;
+                text-align: center;
+                box-sizing: border-box;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <!-- ================================= -->
     <!-- ENCABEZADO -->
-    <!-- ================================= -->
 
-    <header class="topbar"
-        style="background: linear-gradient(135deg, #2f855a, #48bb78); color: white;">
-
+    <header class="topbar">
         <div>
-
-            <p class="eyebrow" style="color: #e2f8f0;">
-                MÓDULO DE GESTORES
-            </p>
-
+            <p class="eyebrow">MÓDULO DE GESTORES</p>
             <h1>Registro de <span>Empresa</span></h1>
-
-            <p class="subtitle" style="color: #e2f8f0;">
-                Información y caracterización de empresas gestoras RAEE
+            <p class="subtitle">
+                Caracterización de empresas gestoras RAEE
             </p>
-
         </div>
 
-        <a class="api-link"
-           href="/form/gestor"
-           style="background: rgba(255,255,255,0.2); color: white;">
-
+        <a class="api-link" href="/form/gestor">
             ← Volver al menú
-
         </a>
-
     </header>
 
 
     <main class="container">
 
-        <!-- ================================= -->
         <!-- PRESENTACIÓN -->
-        <!-- ================================= -->
 
         <section class="section-heading">
 
-            <div>
+            <p class="eyebrow">REGISTRO INSTITUCIONAL</p>
 
-                <p class="eyebrow">REGISTRO INSTITUCIONAL</p>
-
-                <h2>Datos de la empresa gestora</h2>
-
-            </div>
+            <h2>Datos de la empresa gestora</h2>
 
             <p>
-                Completa la información necesaria para caracterizar
-                la empresa y sus capacidades de gestión de residuos
-                de aparatos eléctricos y electrónicos.
+                Registra la información de identificación, autorizaciones,
+                capacidad operativa y cobertura geográfica de la empresa.
+                Estos datos permiten caracterizar sus capacidades de gestión RAEE.
             </p>
 
         </section>
 
 
-        <!-- ================================= -->
         <!-- FORMULARIO -->
-        <!-- ================================= -->
 
         <section class="container-card">
 
             <form method="post" action="/form/gestor/registro">
 
-                <!-- DATOS GENERALES -->
 
-                <h3>1. Información general</h3>
+                <!-- 1. INFORMACIÓN GENERAL -->
 
-                <p class="muted">
-                    Identificación y datos básicos de la empresa.
-                </p>
+                <section class="form-section">
 
-                <div class="form-grid">
+                    <div class="form-section-header">
 
-                    <div>
-                        <label for="empresa">Nombre de la empresa</label>
+                        <div class="section-icon">🏢</div>
 
-                        <input
-                            type="text"
-                            id="empresa"
-                            name="empresa"
-                            placeholder="Ej. EcoGestión Ambiental"
-                            required>
+                        <div>
+                            <h3>1. Información general</h3>
+                            <p class="muted">
+                                Identificación y datos básicos de la empresa.
+                            </p>
+                        </div>
+
                     </div>
 
+                    <div class="form-grid">
 
-                    <div>
-                        <label for="nit">NIT de la empresa</label>
+                        <div class="form-group">
+                            <label for="empresa">Nombre de la empresa *</label>
+                            <input type="text" id="empresa" name="empresa"
+                                placeholder="Ej. EcoGestión Ambiental" required>
+                        </div>
 
-                        <input
-                            type="text"
-                            id="nit"
-                            name="nit"
-                            placeholder="Número de identificación tributaria">
+                        <div class="form-group">
+                            <label for="nit">NIT de la empresa</label>
+                            <input type="text" id="nit" name="nit"
+                                placeholder="Número de identificación tributaria">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="representante">Representante legal</label>
+                            <input type="text" id="representante" name="representante"
+                                placeholder="Nombre del representante">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="correo">Correo electrónico</label>
+                            <input type="email" id="correo" name="correo"
+                                placeholder="empresa@correo.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telefono">Teléfono de contacto</label>
+                            <input type="tel" id="telefono" name="telefono"
+                                placeholder="Número de contacto">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ubicacion">Ubicación principal</label>
+                            <input type="text" id="ubicacion" name="ubicacion"
+                                placeholder="Municipio o departamento">
+                        </div>
+
                     </div>
 
+                </section>
 
-                    <div>
-                        <label for="representante">Representante legal</label>
 
-                        <input
-                            type="text"
-                            id="representante"
-                            name="representante"
-                            placeholder="Nombre del representante">
+                <!-- 2. AUTORIZACIONES -->
+
+                <section class="form-section">
+
+                    <div class="form-section-header">
+
+                        <div class="section-icon">📋</div>
+
+                        <div>
+                            <h3>2. Autorizaciones ambientales</h3>
+                            <p class="muted">
+                                Permisos y autorizaciones para la gestión de RAEE.
+                            </p>
+                        </div>
+
                     </div>
 
+                    <div class="form-grid">
 
-                    <div>
-                        <label for="correo">Correo electrónico</label>
+                        <div class="form-group">
+                            <label for="autorizaciones">
+                                Estado de las autorizaciones *
+                            </label>
 
-                        <input
-                            type="email"
-                            id="correo"
-                            name="correo"
-                            placeholder="empresa@correo.com">
+                            <select id="autorizaciones" name="autorizaciones" required>
+                                <option value="">Seleccionar estado</option>
+                                <option value="Vigentes">Vigentes</option>
+                                <option value="En trámite">En trámite</option>
+                                <option value="No cuenta">No cuenta</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="autoridad">
+                                Autoridad ambiental competente
+                            </label>
+
+                            <input type="text" id="autoridad" name="autoridad"
+                                placeholder="Ej. CAR">
+                        </div>
+
                     </div>
 
+                </section>
 
-                    <div>
-                        <label for="telefono">Teléfono de contacto</label>
 
-                        <input
-                            type="tel"
-                            id="telefono"
-                            name="telefono"
-                            placeholder="Número de contacto">
+                <!-- 3. CAPACIDAD OPERATIVA -->
+
+                <section class="form-section">
+
+                    <div class="form-section-header">
+
+                        <div class="section-icon">⚖️</div>
+
+                        <div>
+                            <h3>3. Capacidad operativa</h3>
+                            <p class="muted">
+                                Capacidad máxima de recepción y almacenamiento de residuos.
+                            </p>
+                        </div>
+
                     </div>
 
+                    <div class="form-grid">
 
-                    <div>
-                        <label for="ubicacion">Ubicación principal</label>
+                        <div class="form-group">
+                            <label for="capacidad">Capacidad máxima (kg) *</label>
 
-                        <input
-                            type="text"
-                            id="ubicacion"
-                            name="ubicacion"
-                            placeholder="Municipio o departamento">
+                            <input type="number" id="capacidad" name="capacidad"
+                                min="1" step="0.1" placeholder="Ej. 5000" required>
+
+                            <span class="form-help">
+                                Capacidad total que puede gestionar la empresa.
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="ocupado">
+                                Capacidad ocupada actualmente (kg)
+                            </label>
+
+                            <input type="number" id="ocupado" name="ocupado"
+                                min="0" step="0.1" value="0">
+                        </div>
+
                     </div>
 
-                </div>
+                </section>
 
 
-                <hr>
+                <!-- 4. COBERTURA GEOGRÁFICA -->
 
+                <section class="form-section">
 
-                <!-- AUTORIZACIONES -->
+                    <div class="form-section-header">
 
-                <h3>2. Autorizaciones ambientales</h3>
+                        <div class="section-icon">📍</div>
 
-                <p class="muted">
-                    Información relacionada con los permisos y
-                    autorizaciones requeridos para las actividades
-                    de gestión de RAEE.
-                </p>
+                        <div>
+                            <h3>4. Cobertura geográfica</h3>
+                            <p class="muted">
+                                Zonas y municipios donde presta sus servicios.
+                            </p>
+                        </div>
 
-                <div class="form-grid">
-
-                    <div>
-                        <label for="autorizaciones">
-                            Estado de las autorizaciones
-                        </label>
-
-                        <select
-                            id="autorizaciones"
-                            name="autorizaciones"
-                            required>
-
-                            <option value="">Seleccionar estado</option>
-
-                            <option value="Vigentes">Vigentes</option>
-
-                            <option value="En trámite">En trámite</option>
-
-                            <option value="No cuenta">No cuenta</option>
-
-                        </select>
                     </div>
 
+                    <div class="form-grid">
 
-                    <div>
-                        <label for="autoridad">
-                            Autoridad ambiental competente
-                        </label>
+                        <div class="form-group">
+                            <label for="cobertura">Zona de cobertura *</label>
 
-                        <input
-                            type="text"
-                            id="autoridad"
-                            name="autoridad"
-                            placeholder="Ej. CAR">
+                            <select id="cobertura" name="cobertura" required>
+                                <option value="">Seleccionar cobertura</option>
+                                <option value="Municipal">Municipal</option>
+                                <option value="Departamental">Departamental</option>
+                                <option value="Regional">Regional</option>
+                                <option value="Nacional">Nacional</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="municipios">Municipios atendidos</label>
+
+                            <input type="text" id="municipios" name="municipios"
+                                placeholder="Ej. Fusagasugá, Pandi, Arbeláez">
+                        </div>
+
                     </div>
 
-                </div>
+                </section>
 
 
-                <hr>
+                <!-- 5. SERVICIOS -->
 
+                <section class="form-section">
 
-                <!-- CAPACIDAD -->
+                    <div class="form-section-header">
 
-                <h3>3. Capacidad operativa</h3>
+                        <div class="section-icon">♻️</div>
 
-                <p class="muted">
-                    Define la capacidad máxima de recepción y
-                    almacenamiento de residuos.
-                </p>
+                        <div>
+                            <h3>5. Servicios ofrecidos</h3>
+                            <p class="muted">
+                                Actividades desarrolladas por la empresa gestora.
+                            </p>
+                        </div>
 
-                <div class="form-grid">
-
-                    <div>
-                        <label for="capacidad">
-                            Capacidad máxima (kg)
-                        </label>
-
-                        <input
-                            type="number"
-                            id="capacidad"
-                            name="capacidad"
-                            min="1"
-                            step="0.1"
-                            placeholder="Ej. 5000"
-                            required>
                     </div>
 
+                    <div class="form-grid">
 
-                    <div>
-                        <label for="ocupado">
-                            Capacidad ocupada actualmente (kg)
-                        </label>
+                        <div class="form-group">
+                            <label for="servicios">Servicio principal *</label>
 
-                        <input
-                            type="number"
-                            id="ocupado"
-                            name="ocupado"
-                            min="0"
-                            step="0.1"
-                            value="0">
+                            <select id="servicios" name="servicios" required>
+                                <option value="">Seleccionar servicio</option>
+                                <option value="Recolección">Recolección</option>
+                                <option value="Transporte">Transporte</option>
+                                <option value="Almacenamiento">Almacenamiento</option>
+                                <option value="Reparación">Reparación</option>
+                                <option value="Reutilización">Reutilización</option>
+                                <option value="Aprovechamiento">Aprovechamiento</option>
+                                <option value="Disposición final">Disposición final</option>
+                            </select>
+                        </div>
+
                     </div>
 
-                </div>
-
-
-                <hr>
-
-
-                <!-- COBERTURA -->
-
-                <h3>4. Cobertura geográfica</h3>
-
-                <p class="muted">
-                    Identifica las zonas donde la empresa presta
-                    sus servicios de gestión.
-                </p>
-
-                <div class="form-grid">
-
-                    <div>
-                        <label for="cobertura">
-                            Zona de cobertura
-                        </label>
-
-                        <select
-                            id="cobertura"
-                            name="cobertura"
-                            required>
-
-                            <option value="">Seleccionar cobertura</option>
-
-                            <option value="Municipal">Municipal</option>
-
-                            <option value="Departamental">Departamental</option>
-
-                            <option value="Regional">Regional</option>
-
-                            <option value="Nacional">Nacional</option>
-
-                        </select>
-                    </div>
-
-
-                    <div>
-                        <label for="municipios">
-                            Municipios atendidos
-                        </label>
-
-                        <input
-                            type="text"
-                            id="municipios"
-                            name="municipios"
-                            placeholder="Ej. Fusagasugá, Pandi, Arbeláez">
-                    </div>
-
-                </div>
-
-
-                <hr>
-
-
-                <!-- SERVICIOS -->
-
-                <h3>5. Servicios ofrecidos</h3>
-
-                <p class="muted">
-                    Selecciona las actividades que desarrolla la empresa.
-                </p>
-
-                <div class="form-grid">
-
-                    <div>
-                        <label for="servicios">
-                            Servicio principal
-                        </label>
-
-                        <select
-                            id="servicios"
-                            name="servicios"
-                            required>
-
-                            <option value="">Seleccionar servicio</option>
-
-                            <option value="Recolección">Recolección</option>
-
-                            <option value="Transporte">Transporte</option>
-
-                            <option value="Almacenamiento">Almacenamiento</option>
-
-                            <option value="Reparación">Reparación</option>
-
-                            <option value="Reutilización">Reutilización</option>
-
-                            <option value="Aprovechamiento">Aprovechamiento</option>
-
-                            <option value="Disposición final">Disposición final</option>
-
-                        </select>
-                    </div>
-
-                </div>
+                </section>
 
 
                 <!-- BOTONES -->
 
-                <div class="actions" style="margin-top: 2rem;">
+                <div class="form-actions">
 
-                    <button
-                        type="submit"
-                        class="button primary">
-
-                        Registrar empresa
-
-                    </button>
-
-                    <a
-                        href="/form/gestor"
-                        class="button secondary"
-                        style="text-decoration: none;">
-
+                    <a href="/form/gestor" class="button secondary">
                         Cancelar
-
                     </a>
+
+                    <button type="submit" class="button primary">
+                        ✓ Registrar empresa
+                    </button>
 
                 </div>
 
@@ -382,25 +560,20 @@
         </section>
 
 
-        <!-- ================================= -->
         <!-- PIE DE PÁGINA -->
-        <!-- ================================= -->
 
         <footer>
-
             <strong>Ágora RAEE · Registro de gestores</strong>
 
             <p>
-                Prototipo académico. La información registrada
-                se utiliza para demostrar el funcionamiento
-                del marketplace interinstitucional y comunitario.
+                Prototipo académico. La información registrada se utiliza
+                para demostrar el funcionamiento del marketplace
+                interinstitucional y comunitario.
             </p>
-
         </footer>
 
     </main>
 
 </body>
-
 </html>
-```
+
