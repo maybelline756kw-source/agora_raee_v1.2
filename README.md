@@ -131,14 +131,6 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
-7. Abrir el navegador en:
-
-[http://127.0.0.1:8000](http://127.0.0.1:8000)
-
-La documentación interactiva de la API se encuentra disponible en:
-
-[http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-
 ## 6. Rutas principales de la aplicación
 
 ### Interfaces web
