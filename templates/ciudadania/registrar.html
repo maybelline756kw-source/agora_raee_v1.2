@@ -1,0 +1,298 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar RAEE | Ágora RAEE</title>
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <style>
+        .form-container {
+            max-width: 950px;
+            margin: 35px auto;
+            padding: 30px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+        }
+
+        .form-header {
+            margin-bottom: 30px;
+        }
+
+        .form-header h1 {
+            color: #176B50;
+            margin-bottom: 8px;
+        }
+
+        .form-section {
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .form-section h2 {
+            font-size: 19px;
+            color: #176B50;
+            margin-bottom: 18px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 11px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .photo-box {
+            padding: 25px;
+            border: 2px dashed #9ca3af;
+            border-radius: 10px;
+            text-align: center;
+            background: #f9fafb;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn-submit {
+            background: #176B50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-cancel {
+            background: #e5e7eb;
+            color: #374151;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+
+        @media (max-width: 650px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-container {
+                margin: 15px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="header">
+    <h2>♻ Ágora RAEE</h2>
+    <a href="/form/ciudadania">Volver al menú</a>
+</header>
+
+<main class="form-container">
+
+    <div class="form-header">
+        <h1>Registrar residuos RAEE</h1>
+        <p>Completa la información de los equipos electrónicos que deseas entregar.</p>
+    </div>
+
+    <form id="raeeForm">
+
+        <!-- TIPO DE EQUIPO -->
+        <section class="form-section">
+            <h2>1. Tipo de equipo</h2>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="equipment_type">Tipo de equipo</label>
+                    <select id="equipment_type" required>
+                        <option value="">Seleccionar</option>
+                        <option>Computador</option>
+                        <option>Portátil</option>
+                        <option>Celular</option>
+                        <option>Tableta</option>
+                        <option>Televisor o monitor</option>
+                        <option>Electrodoméstico</option>
+                        <option>Periférico</option>
+                        <option>Baterías y pilas</option>
+                        <option>Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="quantity">Cantidad</label>
+                    <input type="number" id="quantity" min="1" required>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ESTADO -->
+        <section class="form-section">
+            <h2>2. Estado del equipo</h2>
+
+            <div class="form-group">
+                <label for="condition">Condición actual</label>
+                <select id="condition" required>
+                    <option value="">Seleccionar</option>
+                    <option>Funcional</option>
+                    <option>Parcialmente funcional</option>
+                    <option>Dañado</option>
+                    <option>Inservible</option>
+                </select>
+            </div>
+        </section>
+
+        <!-- CARACTERISTICAS Y ORIGEN -->
+        <section class="form-section">
+            <h2>3. Características y origen</h2>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="origin">Origen del residuo</label>
+                    <select id="origin" required>
+                        <option value="">Seleccionar</option>
+                        <option>Hogar</option>
+                        <option>Institución educativa</option>
+                        <option>Empresa</option>
+                        <option>Comercio</option>
+                        <option>Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="registration_date">Fecha de registro</label>
+                    <input type="date" id="registration_date" required>
+                </div>
+
+                <div class="form-group full">
+                    <label for="characteristics">Descripción y características</label>
+                    <textarea id="characteristics"
+                        placeholder="Marca, modelo, antigüedad, daños visibles o componentes faltantes..."></textarea>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- FOTOGRAFIAS -->
+        <section class="form-section">
+            <h2>4. Fotografías</h2>
+
+            <div class="photo-box">
+                <p>📷 Adjunta fotografías del residuo electrónico.</p>
+                <input type="file" id="photos" accept="image/*" multiple>
+                <small>Puedes seleccionar varias fotografías.</small>
+            </div>
+        </section>
+
+        <!-- DATOS DEL GENERADOR -->
+        <section class="form-section">
+            <h2>5. Datos del generador</h2>
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label for="generator_type">Tipo de generador</label>
+                    <select id="generator_type" required>
+                        <option value="">Seleccionar</option>
+                        <option>Persona natural</option>
+                        <option>Institución</option>
+                        <option>Empresa</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="generator_name">Nombre o razón social</label>
+                    <input type="text" id="generator_name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="document_number">Documento o NIT</label>
+                    <input type="text" id="document_number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Teléfono</label>
+                    <input type="tel" id="phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Correo electrónico</label>
+                    <input type="email" id="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Dirección o ubicación</label>
+                    <input type="text" id="address" required>
+                </div>
+
+            </div>
+        </section>
+
+        <div class="form-actions">
+            <a href="/form/ciudadania" class="btn-cancel">Cancelar</a>
+            <button type="submit" class="btn-submit">
+                Registrar residuo
+            </button>
+        </div>
+
+    </form>
+
+</main>
+
+<script>
+    // Asignar la fecha actual automáticamente
+    document.getElementById("registration_date").value =
+        new Date().toISOString().split("T")[0];
+
+    // Por ahora el formulario es una demostración visual
+    document.getElementById("raeeForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+
+        alert("Formulario de demostración. La conexión con la base de datos se implementará posteriormente.");
+    });
+</script>
+
+</body>
+</html>
