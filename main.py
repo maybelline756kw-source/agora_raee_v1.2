@@ -150,21 +150,20 @@ def gestor_registro_submit(
     servicios: str = Form(...)
 ):
     """Procesa el registro del gestor y lo guarda o simula."""
-    # Aquí puedes agregar lógica para guardar en base de datos si lo deseas
+    # Logica de Base de Datos
     return RedirectResponse(url="/form/gestor?notice=Registro+de+empresa+exitoso", status_code=303)
 
-@app.get("/form/gestor/lotes", response_class=HTMLResponse)
-def gestor_lotes(request: Request):
-    """Vista de lotes asignados, actor responsable, compatibilidad y capacidad."""
-    # Puedes pasar datos reales de tus contenedores/gestores aquí
-    return templates.TemplateResponse(request=request, name="gestor_lotes.html", context={"request": request, "managers": get_managers(), "containers": get_containers()})
-
-@app.get("/form/gestor/rutas", response_class=HTMLResponse)
-def gestor_rutas(request: Request):
-    """Determinación de rutas de gestión (reparar, reutilizar, aprovechar, disponer)."""
-    return templates.TemplateResponse(request=request, name="gestor_rutas.html", context={"request": request})
-
-@app.get("/form/gestor/georreferenciacion", response_class=HTMLResponse)
-def gestor_georreferenciacion(request: Request):
-    """Georreferenciación logística, distancia y clasificación rural/urbana."""
-    return templates.TemplateResponse(request=request, name="gestor_geo.html", context={"request": request, "containers": get_containers()})
+@app.get("/form/gestor", response_class=HTMLResponse)
+def gestor_view(request: Request, notice: str = ""):
+    """Muestra la vista o panel del gestor usando tu index o una sección."""
+    containers = get_containers()
+    total = len(containers)
+    critical = sum(1 for c in containers if c["status"] == "Crítico")
+    attention = sum(1 for c in containers if c["status"] == "Atención")
+    
+    # Si prefieres usar el mismo index pero enfocado en gestor, o puedes renderizar el index normal:
+    return templates.TemplateResponse(request=request, name="index.html", context={
+        "request": request, "containers": containers, "managers": get_managers(),
+        "events": get_events(8), "requests": get_requests(8),
+        "total": total, "critical": critical, "attention": attention, "notice": "Sección de Gestor seleccionada"
+    })
