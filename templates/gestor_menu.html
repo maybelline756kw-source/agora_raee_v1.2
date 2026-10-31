@@ -1,0 +1,258 @@
+```html
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Panel de Gestor | Ágora RAEE</title>
+
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+
+    <!-- ================================= -->
+    <!-- ENCABEZADO DEL MODULO -->
+    <!-- ================================= -->
+
+    <header class="topbar"
+        style="background: linear-gradient(135deg, #2f855a, #48bb78); color: white;">
+
+        <div>
+
+            <p class="eyebrow" style="color: #e2f8f0;">
+                MARKETPLACE INTERINSTITUCIONAL Y COMUNITARIO
+            </p>
+
+            <h1>Panel de <span>Gestión</span></h1>
+
+            <p class="subtitle" style="color: #e2f8f0;">
+                Administración y aprovechamiento responsable de residuos RAEE
+            </p>
+
+        </div>
+
+        <a class="api-link"
+           href="/"
+           style="background: rgba(255,255,255,0.2); color: white;">
+
+            ← Volver al inicio
+
+        </a>
+
+    </header>
+
+
+    <main class="container">
+
+        <!-- ================================= -->
+        <!-- PRESENTACION -->
+        <!-- ================================= -->
+
+        <section class="section-heading">
+
+            <div>
+
+                <p class="eyebrow">PERFIL DE GESTOR</p>
+
+                <h2>Bienvenido al módulo de gestión</h2>
+
+            </div>
+
+            <p>
+                Desde este espacio podrás administrar tu empresa,
+                consultar lotes disponibles, gestionar rutas de
+                aprovechamiento y visualizar ubicaciones.
+            </p>
+
+        </section>
+
+
+        <!-- ================================= -->
+        <!-- OPCIONES DEL GESTOR -->
+        <!-- ================================= -->
+
+        <section style="
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        ">
+
+
+            <!-- OPCION 1: REGISTRO -->
+
+            <article class="container-card"
+                style="border-top: 4px solid #2f855a;">
+
+                <div class="device-icon">🏢</div>
+
+                <h3>1. Registro de empresa</h3>
+
+                <p class="muted">
+                    Registra los datos de la empresa gestora,
+                    autorizaciones ambientales, capacidad operativa,
+                    cobertura geográfica y servicios ofrecidos.
+                </p>
+
+                <a href="/form/gestor/registro"
+                   class="button primary"
+                   style="
+                       display: block;
+                       text-align: center;
+                       margin-top: 1rem;
+                       text-decoration: none;
+                   ">
+
+                    Registrar empresa
+
+                </a>
+
+            </article>
+
+
+            <!-- OPCION 2: LOTES -->
+
+            <article class="container-card"
+                style="border-top: 4px solid #3182ce;">
+
+                <div class="device-icon">♻</div>
+
+                <h3>2. Postulación y lotes</h3>
+
+                <p class="muted">
+                    Consulta los lotes de residuos disponibles,
+                    identifica su clasificación RAEE y postúlate
+                    según tu capacidad y compatibilidad.
+                </p>
+
+                <a href="/form/gestor/lotes"
+                   class="button secondary"
+                   style="
+                       display: block;
+                       text-align: center;
+                       margin-top: 1rem;
+                       text-decoration: none;
+                   ">
+
+                    Consultar lotes
+
+                </a>
+
+            </article>
+
+
+            <!-- OPCION 3: RUTAS -->
+
+            <article class="container-card"
+                style="border-top: 4px solid #d69e2e;">
+
+                <div class="device-icon">⚙</div>
+
+                <h3>3. Rutas de gestión</h3>
+
+                <p class="muted">
+                    Define el tratamiento adecuado para los residuos:
+                    reparar, reutilizar, aprovechar o disponer
+                    de manera responsable.
+                </p>
+
+                <a href="/form/gestor/rutas"
+                   class="button primary"
+                   style="
+                       display: block;
+                       text-align: center;
+                       margin-top: 1rem;
+                       text-decoration: none;
+                       background-color: #d69e2e;
+                   ">
+
+                    Gestionar rutas
+
+                </a>
+
+            </article>
+
+
+            <!-- OPCION 4: GEOREFERENCIACION -->
+
+            <article class="container-card"
+                style="border-top: 4px solid #4a5568;">
+
+                <div class="device-icon">📍</div>
+
+                <h3>4. Georreferenciación</h3>
+
+                <p class="muted">
+                    Consulta ubicaciones de los actores,
+                    puntos de entrega, distancias y clasificación
+                    de zonas rurales y urbanas.
+                </p>
+
+                <a href="/form/gestor/georreferenciacion"
+                   class="button secondary"
+                   style="
+                       display: block;
+                       text-align: center;
+                       margin-top: 1rem;
+                       text-decoration: none;
+                       background-color: #4a5568;
+                   ">
+
+                    Consultar ubicación
+
+                </a>
+
+            </article>
+
+
+        </section>
+
+
+        <!-- ================================= -->
+        <!-- INFORMACION DEL MODULO -->
+        <!-- ================================= -->
+
+        <section class="section-heading" style="margin-top: 2rem;">
+
+            <div>
+
+                <p class="eyebrow">OBJETIVO DEL PERFIL</p>
+
+                <h2>Gestión responsable de RAEE</h2>
+
+            </div>
+
+            <p>
+                Facilitar la articulación entre empresas gestoras,
+                instituciones y ciudadanía mediante procesos de
+                clasificación, aprovechamiento y disposición final
+                de residuos de aparatos eléctricos y electrónicos.
+            </p>
+
+        </section>
+
+
+        <!-- ================================= -->
+        <!-- PIE DE PAGINA -->
+        <!-- ================================= -->
+
+        <footer>
+
+            <strong>Ágora RAEE · Prototipo académico · Versión 0.1</strong>
+
+            <p>
+                Las operaciones y los datos del sistema corresponden
+                a una simulación con fines educativos.
+            </p>
+
+        </footer>
+
+    </main>
+
+</body>
+
+</html>
+```
