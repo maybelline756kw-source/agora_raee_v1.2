@@ -528,3 +528,48 @@ def gestor_lotes(request: Request):
         }
     )
 
+# ==========================================
+# MODULO DE RUTAS Y GEOREFERENCIACION
+# ==========================================
+
+@app.get("/form/gestor/rutas", response_class=HTMLResponse)
+def gestor_rutas(request: Request):
+
+    with connect() as conn:
+
+        # Consultar contenedores con ubicación
+        containers = conn.execute("""
+            SELECT id, name, location, raee_type,
+                   latitude, longitude, zone_type,
+                   coordinate_source
+            FROM containers
+            ORDER BY id
+        """).fetchall()
+
+        # Consultar gestores con ubicación
+        managers = conn.execute("""
+            SELECT id, name, address, latitude,
+                   longitude, zone_type, coordinate_source
+            FROM managers
+            ORDER BY id
+        """).fetchall()
+
+        # Consultar puntos de entrega
+        delivery_points = conn.execute("""
+            SELECT *
+            FROM delivery_points
+            WHERE active = 1
+            ORDER BY id
+        """).fetchall()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="gestor/rutas.html",
+        context={
+            "request": request,
+            "containers": [dict(c) for c in containers],
+            "managers": [dict(m) for m in managers],
+            "delivery_points": [dict(p) for p in delivery_points]
+        }
+    )
+
