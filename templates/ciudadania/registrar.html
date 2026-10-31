@@ -135,7 +135,7 @@
         <p>Completa la información de los equipos electrónicos que deseas entregar.</p>
     </div>
 
-    <form id="raeeForm">
+    <form id="raeeForm" method="POST" action="/form/ciudadania/registrar">
 
         <!-- TIPO DE EQUIPO -->
         <section class="form-section">
@@ -145,7 +145,7 @@
 
                 <div class="form-group">
                     <label for="equipment_type">Tipo de equipo</label>
-                    <select id="equipment_type" required>
+                    <select name="equipment_type" required>
                         <option value="">Seleccionar</option>
                         <option>Computador</option>
                         <option>Portátil</option>
@@ -286,11 +286,6 @@
     document.getElementById("registration_date").value =
         new Date().toISOString().split("T")[0];
 
-    // Por ahora el formulario es una demostración visual
-    document.getElementById("raeeForm").addEventListener("submit", function(event) {
-        event.preventDefault();
-
-        alert("Formulario de demostración. La conexión con la base de datos se implementará posteriormente.");
     });
 </script>
 
