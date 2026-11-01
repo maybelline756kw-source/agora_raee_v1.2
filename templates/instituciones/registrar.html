@@ -1,122 +1,610 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Registrar RAEE | Ágora RAEE</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Registro RAEE | Ágora RAEE</title>
+
     <link rel="stylesheet" href="/static/styles.css">
+
+    <style>
+        body {
+            background: #f8f5ed;
+            color: #3d382b;
+        }
+
+        .topbar {
+            background: linear-gradient(135deg, #94651d, #d6a443);
+            color: white;
+            padding: 25px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .topbar h1 {
+            margin: 5px 0;
+            font-size: 28px;
+        }
+
+        .topbar h1 span {
+            color: #ffedc2;
+        }
+
+        .topbar .subtitle {
+            color: #fff3d8;
+            margin: 5px 0 0;
+        }
+
+        .eyebrow {
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            color: #a87926;
+        }
+
+        .topbar .eyebrow {
+            color: #ffedc2;
+        }
+
+        .api-link {
+            background: rgba(255,255,255,0.18);
+            color: white;
+            text-decoration: none;
+            padding: 11px 17px;
+            border-radius: 9px;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .api-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .section-heading {
+            margin-bottom: 25px;
+        }
+
+        .section-heading h2 {
+            font-size: 25px;
+            color: #94651d;
+            margin: 5px 0 10px;
+        }
+
+        .section-heading p {
+            color: #766d5c;
+            line-height: 1.6;
+        }
+
+        .container-card {
+            background: white;
+            padding: 30px;
+            border-radius: 17px;
+            box-shadow: 0 5px 20px rgba(100, 75, 25, 0.08);
+        }
+
+        .form-section {
+            background: #ffffff;
+            border: 1px solid #eee6d5;
+            border-radius: 13px;
+            padding: 23px;
+            margin-bottom: 23px;
+        }
+
+        .form-section-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .section-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            background: #fbf0d9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .form-section h3 {
+            color: #94651d;
+            margin: 0 0 5px;
+            font-size: 18px;
+        }
+
+        .muted {
+            color: #938875;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #5e513b;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px 13px;
+            border: 1px solid #e6dcc8;
+            border-radius: 9px;
+            background: #fdfcf9;
+            color: #4b4233;
+            font-size: 14px;
+            outline: none;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #d6a443;
+            box-shadow: 0 0 0 3px rgba(214,164,67,0.14);
+            background: white;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #b2a994;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-help {
+            font-size: 11px;
+            color: #998d77;
+        }
+
+        .notice {
+            background: #f1f8ed;
+            border: 1px solid #d6e8cb;
+            color: #456b37;
+            padding: 13px 16px;
+            border-radius: 9px;
+            margin-bottom: 22px;
+            font-size: 14px;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 22px;
+            border-top: 1px solid #eee8dc;
+        }
+
+        .button {
+            padding: 12px 22px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            border: none;
+            transition: 0.2s;
+        }
+
+        .button.primary {
+            background: #a87524;
+            color: white;
+        }
+
+        .button.primary:hover {
+            background: #845817;
+            transform: translateY(-1px);
+        }
+
+        .button.secondary {
+            background: #f1eee7;
+            color: #685d49;
+        }
+
+        .button.secondary:hover {
+            background: #e7e0d2;
+        }
+
+        footer {
+            text-align: center;
+            color: #938875;
+            font-size: 12px;
+            padding: 25px 10px;
+            line-height: 1.6;
+        }
+
+        footer strong {
+            color: #94651d;
+        }
+
+        @media (max-width: 650px) {
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .container-card {
+                padding: 15px;
+            }
+
+            .form-section {
+                padding: 17px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .button {
+                width: 100%;
+                text-align: center;
+                box-sizing: border-box;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<header class="topbar">
-    <div>
-        <p class="eyebrow">PORTAL INSTITUCIONAL</p>
-        <h1>Registro de <span>RAEE</span></h1>
-        <p class="subtitle">Registro de equipos para gestión ambiental</p>
-    </div>
-</header>
+    <!-- ENCABEZADO -->
 
-<main class="container">
-
-    <a href="/form/instituciones" class="back-link">
-        ← Volver al menú institucional
-    </a>
-
-    {% if notice %}
-    <div class="notice">{{ notice.replace('+', ' ') }}</div>
-    {% endif %}
-
-    <section class="section-heading">
+    <header class="topbar">
         <div>
-            <p class="eyebrow">NUEVO REGISTRO</p>
-            <h2>Información de los equipos</h2>
+            <p class="eyebrow">MÓDULO DE INSTITUCIONES</p>
+
+            <h1>Registro de <span>RAEE</span></h1>
+
+            <p class="subtitle">
+                Caracterización de residuos de aparatos eléctricos y electrónicos
+            </p>
         </div>
-    </section>
 
-    <section class="list-card">
+        <a class="api-link" href="/form/instituciones">
+            ← Volver al menú
+        </a>
+    </header>
 
-        <form method="post" action="/form/instituciones/registrar">
 
-            <h3>Datos de la institución</h3>
+    <main class="container">
 
-            <label>Nombre de la institución</label>
-            <input type="text" name="generator_name" required>
+        <!-- PRESENTACIÓN -->
 
-            <label>NIT de la institución</label>
-            <input type="text" name="document_number" required>
+        <section class="section-heading">
 
-            <label>Teléfono de contacto</label>
-            <input type="tel" name="phone" required>
+            <p class="eyebrow">REGISTRO INSTITUCIONAL</p>
 
-            <label>Correo electrónico</label>
-            <input type="email" name="email">
+            <h2>Información de los residuos electrónicos</h2>
 
-            <label>Dirección</label>
-            <input type="text" name="address" required>
+            <p>
+                Registra los datos de identificación de la institución
+                y caracteriza los equipos eléctricos y electrónicos
+                que requieren gestión. Esta información permite
+                mantener un seguimiento de los residuos generados.
+            </p>
 
-            <hr>
+        </section>
 
-            <h3>Información de los equipos</h3>
 
-            <label>Tipo de equipo</label>
-            <select name="equipment_type" required>
-                <option value="">Seleccionar</option>
-                <option value="Computadores">Computadores</option>
-                <option value="Portátiles">Portátiles</option>
-                <option value="Monitores">Monitores</option>
-                <option value="Impresoras">Impresoras</option>
-                <option value="Celulares">Celulares</option>
-                <option value="Periféricos">Periféricos</option>
-                <option value="Otros">Otros</option>
-            </select>
+        <!-- FORMULARIO -->
 
-            <label>Cantidad de equipos</label>
-            <input type="number" name="quantity" min="1" required>
+        <section class="container-card">
 
-            <label>Estado de los equipos</label>
-            <select name="condition" required>
-                <option value="">Seleccionar</option>
-                <option value="Funcional">Funcional</option>
-                <option value="Dañado">Dañado</option>
-                <option value="Obsoleto">Obsoleto</option>
-                <option value="Fuera de servicio">Fuera de servicio</option>
-            </select>
+            {% if notice %}
+                <div class="notice">
+                    {{ notice }}
+                </div>
+            {% endif %}
 
-            <label>Procedencia</label>
-            <select name="origin" required>
-                <option value="">Seleccionar</option>
-                <option value="Administrativa">Área administrativa</option>
-                <option value="Académica">Área académica</option>
-                <option value="Operativa">Área operativa</option>
-                <option value="Otra">Otra dependencia</option>
-            </select>
+            <form method="post" action="/form/instituciones/registrar">
 
-            <label>Fecha de registro</label>
-            <input type="date" name="registration_date" required>
+                <!-- 1. INFORMACIÓN DE LA INSTITUCIÓN -->
 
-            <label>Características adicionales</label>
-            <textarea name="characteristics"
-                rows="4"
-                placeholder="Marca, modelo, placa del activo o dependencia responsable..."></textarea>
+                <section class="form-section">
 
-            <div class="actions">
-                <button type="submit" class="button primary">
-                    Registrar equipos
-                </button>
+                    <div class="form-section-header">
 
-                <a href="/form/instituciones"
-                   class="button secondary">
-                    Cancelar
-                </a>
-            </div>
+                        <div class="section-icon">🏢</div>
 
-        </form>
+                        <div>
+                            <h3>1. Información de la institución</h3>
+                            <p class="muted">
+                                Identificación y datos de contacto del generador.
+                            </p>
+                        </div>
 
-    </section>
+                    </div>
 
-</main>
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label for="generator_name">
+                                Nombre de la institución *
+                            </label>
+
+                            <input
+                                type="text"
+                                id="generator_name"
+                                name="generator_name"
+                                placeholder="Ej. Institución Educativa Municipal"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="document_number">NIT *</label>
+
+                            <input
+                                type="text"
+                                id="document_number"
+                                name="document_number"
+                                placeholder="Número de identificación tributaria"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Teléfono de contacto *</label>
+
+                            <input
+                                type="tel"
+                                id="phone"
+                                name="phone"
+                                placeholder="Número de contacto"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Correo electrónico</label>
+
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                placeholder="institucion@correo.com"
+                            >
+                        </div>
+
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label for="address">Dirección *</label>
+
+                            <input
+                                type="text"
+                                id="address"
+                                name="address"
+                                placeholder="Dirección o ubicación de la institución"
+                                required
+                            >
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- 2. CARACTERIZACIÓN DE LOS RESIDUOS -->
+
+                <section class="form-section">
+
+                    <div class="form-section-header">
+
+                        <div class="section-icon">♻️</div>
+
+                        <div>
+                            <h3>2. Caracterización de los residuos</h3>
+                            <p class="muted">
+                                Identificación y cantidad de los equipos reportados.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label for="equipment_type">
+                                Tipo de equipo RAEE *
+                            </label>
+
+                            <select
+                                id="equipment_type"
+                                name="equipment_type"
+                                required
+                            >
+                                <option value="">Seleccionar equipo</option>
+                                <option value="Computadores">Computadores</option>
+                                <option value="Portátiles">Portátiles</option>
+                                <option value="Monitores">Monitores</option>
+                                <option value="Impresoras">Impresoras</option>
+                                <option value="Celulares">Celulares</option>
+                                <option value="Tabletas">Tabletas</option>
+                                <option value="Electrodomésticos">Electrodomésticos</option>
+                                <option value="Equipos de telecomunicaciones">
+                                    Equipos de telecomunicaciones
+                                </option>
+                                <option value="Otros">Otros</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="quantity">Cantidad de equipos *</label>
+
+                            <input
+                                type="number"
+                                id="quantity"
+                                name="quantity"
+                                min="1"
+                                step="1"
+                                placeholder="Ej. 15"
+                                required
+                            >
+
+                            <span class="form-help">
+                                Número de unidades reportadas.
+                            </span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="condition">Estado de los equipos *</label>
+
+                            <select
+                                id="condition"
+                                name="condition"
+                                required
+                            >
+                                <option value="">Seleccionar estado</option>
+                                <option value="Bueno">Bueno</option>
+                                <option value="Regular">Regular</option>
+                                <option value="Dañado">Dañado</option>
+                                <option value="Obsoleto">Obsoleto</option>
+                                <option value="No funcional">No funcional</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="origin">Procedencia *</label>
+
+                            <select
+                                id="origin"
+                                name="origin"
+                                required
+                            >
+                                <option value="">Seleccionar procedencia</option>
+                                <option value="Institucional">Institucional</option>
+                                <option value="Administrativa">Administrativa</option>
+                                <option value="Educativa">Educativa</option>
+                                <option value="Operativa">Operativa</option>
+                                <option value="Otra">Otra</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- 3. REGISTRO Y OBSERVACIONES -->
+
+                <section class="form-section">
+
+                    <div class="form-section-header">
+
+                        <div class="section-icon">📋</div>
+
+                        <div>
+                            <h3>3. Registro y observaciones</h3>
+                            <p class="muted">
+                                Fecha de registro y características adicionales
+                                de los residuos.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <div class="form-grid">
+
+                        <div class="form-group">
+                            <label for="registration_date">
+                                Fecha de registro *
+                            </label>
+
+                            <input
+                                type="date"
+                                id="registration_date"
+                                name="registration_date"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="characteristics">
+                                Características de los equipos
+                            </label>
+
+                            <textarea
+                                id="characteristics"
+                                name="characteristics"
+                                placeholder="Describe las características, observaciones o condiciones particulares de los equipos..."
+                            ></textarea>
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- BOTONES -->
+
+                <div class="form-actions">
+
+                    <a
+                        href="/form/instituciones"
+                        class="button secondary"
+                    >
+                        Cancelar
+                    </a>
+
+                    <button type="submit" class="button primary">
+                        ✓ Registrar residuos
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- PIE DE PÁGINA -->
+
+        <footer>
+            <strong>Ágora RAEE · Registro institucional</strong>
+
+            <p>
+                Prototipo académico. La información registrada permite
+                demostrar el funcionamiento del marketplace
+                interinstitucional y comunitario.
+            </p>
+        </footer>
+
+    </main>
 
 </body>
 </html>
