@@ -462,7 +462,42 @@ def tecnico_menu(request: Request, notice: str = ""):
             "notice": notice
         }
     )
+# ------------------------------------------
+# CONSULTA DE LOTES DISPONIBLES - TECNICO
+# ------------------------------------------
 
+@app.get("/form/tecnico/lotes", response_class=HTMLResponse)
+def tecnico_lotes(request: Request):
+
+    containers = get_containers()
+
+    lotes = []
+
+    for container in containers:
+        lotes.append({
+            "id": container["id"],
+            "nombre": container["name"],
+            "tipo": container["raee_type"],
+            "cantidad": container["occupied_kg"],
+            "capacidad": container["max_capacity_kg"],
+            "ubicacion": container["location"],
+            "estado": container["status"],
+            "ocupacion": container["occupancy_percent"]
+        })
+
+    total_lotes = len(lotes)
+    total_kg = sum(lote["cantidad"] for lote in lotes)
+
+    return templates.TemplateResponse(
+        request=request,
+        name="tecnico/lotes.html",
+        context={
+            "request": request,
+            "lotes": lotes,
+            "total_lotes": total_lotes,
+            "total_kg": round(total_kg, 1)
+        }
+    )
 
 # ------------------------------------------
 # REGISTRO DE RAEE INSTITUCIONAL
