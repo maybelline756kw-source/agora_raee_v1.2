@@ -448,6 +448,93 @@ def instituciones_menu(request: Request, notice: str = ""):
         }
     )
 
+
+# ------------------------------------------
+# REGISTRO DE RAEE INSTITUCIONAL
+# ------------------------------------------
+
+@app.get("/form/instituciones/registrar", response_class=HTMLResponse)
+def registrar_institucion(request: Request, notice: str = ""):
+
+    return templates.TemplateResponse(
+        request=request,
+        name="instituciones/registrar.html",
+        context={
+            "request": request,
+            "notice": notice
+        }
+    )
+
+
+@app.post("/form/instituciones/registrar")
+def guardar_raee_institucional(
+    equipment_type: str = Form(...),
+    quantity: int = Form(...),
+    condition: str = Form(...),
+    origin: str = Form(...),
+    registration_date: str = Form(...),
+    characteristics: str = Form(""),
+    generator_name: str = Form(...),
+    document_number: str = Form(...),
+    phone: str = Form(...),
+    email: str = Form(""),
+    address: str = Form(...)
+):
+
+    if quantity < 1:
+        return RedirectResponse(
+            url="/form/instituciones/registrar?notice=Cantidad+invalida",
+            status_code=303
+        )
+
+    with connect() as conn:
+
+        cursor = conn.execute("""
+            INSERT INTO raee_records (
+                equipment_type,
+                quantity,
+                condition,
+                origin,
+                registration_date,
+                characteristics,
+                generator_type,
+                generator_name,
+                document_number,
+                phone,
+                email,
+                address,
+                status
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            equipment_type,
+            quantity,
+            condition,
+            origin,
+            registration_date,
+            characteristics,
+            "Institución",
+            generator_name,
+            document_number,
+            phone,
+            email,
+            address,
+            "Registrado"
+        ))
+
+        record_id = cursor.lastrowid
+
+    log_event(
+        "info",
+        f"Nuevo registro institucional RAEE #{record_id}: {equipment_type}"
+    )
+
+    return RedirectResponse(
+        url="/form/instituciones/registrar?notice=RAEE+registrado+correctamente",
+        status_code=303
+    )
+
+
 # ------------------------------------------
 # FORMULARIO DE REGISTRO DE GESTOR
 # ------------------------------------------
