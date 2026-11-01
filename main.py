@@ -1,3 +1,4 @@
+from html import escape as html_escape
 from fastapi import FastAPI, Form, Request, HTTPException
 from contextlib import asynccontextmanager
 from pathlib import Path
@@ -935,8 +936,314 @@ def ciudadania_puntos(request: Request):
 # MODULO DE FORO COMUNITARIO
 # ==========================================
 
+
+# ==========================================
+# MODULO DE FORO COMUNITARIO
+# ==========================================
+
 @app.get("/foro", response_class=HTMLResponse)
 def foro_comunitario(request: Request):
+
+    with connect() as conn:
+        posts = conn.execute("""
+            SELECT
+                p.*,
+                (
+                    SELECT COUNT(*)
+                    FROM community_comments c
+                    WHERE c.post_id = p.id
+                ) AS comment_count
+            FROM community_posts p
+            ORDER BY p.created_at DESC
+        """).fetchall()
+
+    html = """
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Foro comunitario | Ágora RAEE</title>
+
+        <style>
+            body {
+                margin: 0;
+                padding: 30px 20px;
+                font-family: Arial, sans-serif;
+                background: #f8f7fc;
+                color: #35245c;
+            }
+
+            .forum-container {
+                max-width: 950px;
+                margin: 30px auto;
+            }
+
+            .forum-header, .forum-create, .forum-post {
+                background: white;
+                padding: 28px;
+                margin-bottom: 22px;
+                border-radius: 16px;
+                box-shadow: 0 5px 25px rgba(0,0,0,.05);
+            }
+
+            h1, h2 {
+                color: #6d28d9;
+            }
+
+            p {
+                line-height: 1.6;
+                color: #655b75;
+            }
+
+            label {
+                display: block;
+                margin: 14px 0 7px;
+                font-weight: bold;
+            }
+
+            input, select, textarea {
+                width: 100%;
+                box-sizing: border-box;
+                padding: 12px;
+                border: 1px solid #ded5ed;
+                border-radius: 8px;
+                font-size: 14px;
+            }
+
+            button, .forum-back {
+                display: inline-block;
+                margin-top: 18px;
+                padding: 12px 20px;
+                background: #6d28d9;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                text-decoration: none;
+                cursor: pointer;
+            }
+
+            button:hover, .forum-back:hover {
+                background: #5521a8;
+            }
+
+            .post-information {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 14px;
+                font-size: 12px;
+                color: #81758f;
+                margin-top: 18px;
+            }
+
+            .post-category {
+                color: #6d28d9;
+                font-weight: bold;
+                font-size: 13px;
+            }
+
+            .empty-message {
+                text-align: center;
+                padding: 30px;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <main class="forum-container">
+
+            <section class="forum-header">
+                <p>ÁGORA RAEE · PARTICIPACIÓN COMUNITARIA</p>
+                <h1>Foro comunitario</h1>
+
+                <p>
+                    Comparte experiencias, plantea inquietudes
+                    y construye soluciones para la gestión
+                    responsable de residuos electrónicos.
+                </p>
+
+                <a href="/" class="forum-back">
+                    ← Volver al inicio
+                </a>
+            </section>
+
+            <section class="forum-create">
+
+                <h2>Crear una publicación</h2>
+
+                <form action="/foro/publicar" method="POST">
+
+                    <label>Título</label>
+                    <input type="text" name="title"
+                        maxlength="150" required>
+
+                    <label>Categoría</label>
+                    <select name="category" required>
+                        <option value="">Seleccionar</option>
+                        <option>Recolección</option>
+                        <option>Educación ambiental</option>
+                        <option>Campañas</option>
+                        <option>Reutilización</option>
+                        <option>Diagnóstico técnico</option>
+                        <option>Dudas y sugerencias</option>
+                    </select>
+
+                    <label>Tipo de publicación</label>
+                    <select name="post_type" required>
+                        <option value="">Seleccionar</option>
+                        <option>Pregunta</option>
+                        <option>Debate</option>
+                        <option>Iniciativa</option>
+                        <option>Información</option>
+                    </select>
+
+                    <label>Nombre del participante</label>
+                    <input type="text" name="author_name"
+                        maxlength="100" required>
+
+                    <label>Perfil</label>
+                    <select name="author_role" required>
+                        <option value="">Seleccionar</option>
+                        <option>Ciudadanía</option>
+                        <option>Gestor</option>
+                        <option>Institución</option>
+                        <option>Técnico</option>
+                    </select>
+
+                    <label>Descripción</label>
+                    <textarea name="description"
+                        rows="5" maxlength="3000"
+                        required></textarea>
+
+                    <button type="submit">Publicar</button>
+
+                </form>
+            </section>
+
+            <section>
+                <h2>Publicaciones recientes</h2>
+
+                {posts_html}
+
+            </section>
+
+        </main>
+
+    </body>
+    </html>
+    """
+
+    posts_html = ""
+
+    for post in posts:
+        posts_html += f"""
+        <article class="forum-post">
+            <span class="post-category">
+                {html_escape(post["category"])}
+            </span>
+
+            <h2>{html_escape(post["title"])}</h2>
+
+            <p>{html_escape(post["description"])}</p>
+
+            <div class="post-information">
+                <span>Autor: {html_escape(post["author_name"])}</span>
+                <span>Perfil: {html_escape(post["author_role"])}</span>
+                <span>Fecha: {html_escape(post["created_at"])}</span>
+                <span>Comentarios: {post["comment_count"]}</span>
+            </div>
+        </article>
+        """
+
+    if not posts:
+        posts_html = """
+        <div class="forum-post empty-message">
+            <h3>¡El foro está esperando tu participación!</h3>
+            <p>Todavía no hay publicaciones registradas.</p>
+        </div>
+        """
+
+    return HTMLResponse(html.replace("{posts_html}", posts_html))
+
+
+@app.post("/foro/publicar")
+def foro_publicar(
+    title: str = Form(...),
+    category: str = Form(...),
+    post_type: str = Form(...),
+    description: str = Form(...),
+    author_name: str = Form(...),
+    author_role: str = Form(...)
+):
+
+    title = title.strip()
+    description = description.strip()
+    author_name = author_name.strip()
+
+    if not title or not description or not author_name:
+        raise HTTPException(
+            status_code=400,
+            detail="Todos los campos son obligatorios."
+        )
+
+    allowed_categories = [
+        "Recolección",
+        "Educación ambiental",
+        "Campañas",
+        "Reutilización",
+        "Diagnóstico técnico",
+        "Dudas y sugerencias"
+    ]
+
+    allowed_types = [
+        "Pregunta",
+        "Debate",
+        "Iniciativa",
+        "Información"
+    ]
+
+    allowed_roles = [
+        "Ciudadanía",
+        "Gestor",
+        "Institución",
+        "Técnico"
+    ]
+
+    if category not in allowed_categories:
+        raise HTTPException(status_code=400, detail="Categoría inválida.")
+
+    if post_type not in allowed_types:
+        raise HTTPException(status_code=400, detail="Tipo inválido.")
+
+    if author_role not in allowed_roles:
+        raise HTTPException(status_code=400, detail="Perfil inválido.")
+
+    with connect() as conn:
+        conn.execute("""
+            INSERT INTO community_posts (
+                title,
+                category,
+                post_type,
+                description,
+                author_name,
+                author_role
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (
+            title,
+            category,
+            post_type,
+            description,
+            author_name,
+            author_role
+        ))
+
+    return RedirectResponse(
+        url="/foro",
+        status_code=303
+    )
+
 
     return HTMLResponse("""
     <!DOCTYPE html>
