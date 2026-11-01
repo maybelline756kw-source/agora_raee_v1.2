@@ -936,11 +936,6 @@ def ciudadania_puntos(request: Request):
 # MODULO DE FORO COMUNITARIO
 # ==========================================
 
-
-# ==========================================
-# MODULO DE FORO COMUNITARIO
-# ==========================================
-
 @app.get("/foro", response_class=HTMLResponse)
 def foro_comunitario(request: Request):
 
@@ -1243,10 +1238,7 @@ def foro_publicar(
         url="/foro",
         status_code=303
     )
-
-
-    return HTMLResponse("""
-    <!DOCTYPE html>
+    
     <html lang="es">
     <head>
         <meta charset="UTF-8">
