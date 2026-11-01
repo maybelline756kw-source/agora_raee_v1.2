@@ -779,6 +779,12 @@ def ciudadania_registrar_submit(
         "info",
         f"Nuevo registro RAEE #{record_id}: {equipment_type} ({quantity} unidad/es)"
     )
+        return RedirectResponse(
+        url="/form/ciudadania/registrar?notice=RAEE+registrado+correctamente",
+        status_code=303
+    )
+
+
 
     # ==========================================
 # CIUDADANIA - SOLICITUD DE RECOLECCION
@@ -886,13 +892,8 @@ def ciudadania_solicitar_recoleccion(
         f"Solicitud de recolección #{request_id} creada para el registro RAEE #{record_id}"
     )
 
-    return RedirectResponse(
+       return RedirectResponse(
         url="/form/ciudadania/recoleccion?notice=Solicitud+de+recoleccion+registrada+correctamente",
-        status_code=303
-    )
-
-    return RedirectResponse(
-        url="/form/ciudadania/registrar?notice=RAEE+registrado+correctamente",
         status_code=303
     )
 
@@ -928,3 +929,90 @@ def ciudadania_puntos(request: Request):
             "points": points
         }
     )
+
+# ==========================================
+# MODULO DE FORO COMUNITARIO
+# ==========================================
+
+@app.get("/foro", response_class=HTMLResponse)
+def foro_comunitario(request: Request):
+
+    return HTMLResponse("""
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Foro comunitario | Ágora RAEE</title>
+
+        <style>
+            body {
+                margin: 0;
+                padding: 40px 20px;
+                font-family: Arial, sans-serif;
+                background: #f8f7fc;
+                color: #35245c;
+            }
+
+            .forum-container {
+                max-width: 850px;
+                margin: 50px auto;
+                padding: 35px;
+                background: white;
+                border-radius: 16px;
+                box-shadow: 0 5px 25px rgba(0,0,0,.06);
+            }
+
+            .forum-container h1 {
+                color: #6d28d9;
+            }
+
+            .forum-container p {
+                color: #655b75;
+                line-height: 1.7;
+            }
+
+            .forum-back {
+                display: inline-block;
+                margin-top: 20px;
+                padding: 12px 18px;
+                background: #6d28d9;
+                color: white;
+                text-decoration: none;
+                border-radius: 8px;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <main class="forum-container">
+
+            <p>ÁGORA RAEE · PARTICIPACIÓN COMUNITARIA</p>
+
+            <h1>Foro comunitario</h1>
+
+            <p>
+                Este espacio permitirá a la ciudadanía, gestores,
+                instituciones y técnicos compartir experiencias,
+                plantear inquietudes y proponer soluciones relacionadas
+                con la gestión de residuos de aparatos eléctricos
+                y electrónicos.
+            </p>
+
+            <h2>Construyamos soluciones en comunidad</h2>
+
+            <p>
+                El módulo de publicaciones y comentarios se encuentra
+                pendiente de implementación.
+            </p>
+
+            <a href="/" class="forum-back">
+                ← Volver al inicio
+            </a>
+
+        </main>
+
+    </body>
+    </html>
+    """)
