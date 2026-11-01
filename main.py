@@ -448,6 +448,21 @@ def instituciones_menu(request: Request, notice: str = ""):
         }
     )
 
+# =========================================
+# MENÚ PRINCIPAL DEL TÉCNICO
+# =========================================
+
+@app.get("/form/tecnico", response_class=HTMLResponse)
+def tecnico_menu(request: Request, notice: str = ""):
+    return templates.TemplateResponse(
+        request=request,
+        name="tecnico/menu.html",
+        context={
+            "request": request,
+            "notice": notice
+        }
+    )
+
 
 # ------------------------------------------
 # REGISTRO DE RAEE INSTITUCIONAL
