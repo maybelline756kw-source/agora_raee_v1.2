@@ -1276,6 +1276,81 @@ def foro_comunitario(request: Request):
     return HTMLResponse(html.replace("{posts_html}", posts_html))
 
     
+@app.post("/foro/publicar")
+def foro_publicar(
+    title: str = Form(...),
+    category: str = Form(...),
+    post_type: str = Form(...),
+    description: str = Form(...),
+    author_name: str = Form(...),
+    author_role: str = Form(...)
+):
+    title = title.strip()
+    description = description.strip()
+    author_name = author_name.strip()
+
+    if not title or not description or not author_name:
+        raise HTTPException(
+            status_code=400,
+            detail="Todos los campos son obligatorios."
+        )
+
+    allowed_categories = [
+        "Recolección",
+        "Educación ambiental",
+        "Campañas",
+        "Reutilización",
+        "Diagnóstico técnico",
+        "Dudas y sugerencias"
+    ]
+
+    allowed_types = [
+        "Pregunta",
+        "Debate",
+        "Iniciativa",
+        "Información"
+    ]
+
+    allowed_roles = [
+        "Ciudadanía",
+        "Gestor",
+        "Institución",
+        "Técnico"
+    ]
+
+    if category not in allowed_categories:
+        raise HTTPException(status_code=400, detail="Categoría inválida.")
+
+    if post_type not in allowed_types:
+        raise HTTPException(status_code=400, detail="Tipo inválido.")
+
+    if author_role not in allowed_roles:
+        raise HTTPException(status_code=400, detail="Perfil inválido.")
+
+    with connect() as conn:
+        conn.execute("""
+            INSERT INTO community_posts (
+                title,
+                category,
+                post_type,
+                description,
+                author_name,
+                author_role
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (
+            title,
+            category,
+            post_type,
+            description,
+            author_name,
+            author_role
+        ))
+
+    return RedirectResponse(url="/foro", status_code=303)
+
+
+    
 @app.post("/foro/comentar")
 def foro_comentar(
     post_id: int = Form(...),
