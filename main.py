@@ -931,9 +931,11 @@ def ciudadania_puntos(request: Request):
 # MODULO DE FORO COMUNITARIO
 # ==========================================
 
+
 @app.get("/foro", response_class=HTMLResponse)
 def foro_comunitario(request: Request):
 
+    # Retrieve publications and their comment counts
     with connect() as conn:
         posts = conn.execute("""
             SELECT
@@ -946,13 +948,15 @@ def foro_comunitario(request: Request):
             FROM community_posts p
             ORDER BY p.created_at DESC
         """).fetchall()
-        
+
+        # Retrieve all comments
         comments = conn.execute("""
             SELECT *
             FROM community_comments
             ORDER BY created_at ASC
         """).fetchall()
 
+    # HTML template
     html = """
     <!DOCTYPE html>
     <html lang="es">
@@ -1044,37 +1048,36 @@ def foro_comunitario(request: Request):
             }
 
             .forum-comments {
-    margin-top: 25px;
-    padding-top: 20px;
-    border-top: 1px solid #e8e0f2;
-}
+                margin-top: 25px;
+                padding-top: 20px;
+                border-top: 1px solid #e8e0f2;
+            }
 
-.forum-comments h3 {
-    color: #6d28d9;
-    font-size: 17px;
-}
+            .forum-comments h3 {
+                color: #6d28d9;
+                font-size: 17px;
+            }
 
-.forum-comment {
-    background: #f8f5fd;
-    border-left: 4px solid #9b72dc;
-    padding: 14px;
-    margin: 12px 0;
-    border-radius: 8px;
-}
+            .forum-comment {
+                background: #f8f5fd;
+                border-left: 4px solid #9b72dc;
+                padding: 14px;
+                margin: 12px 0;
+                border-radius: 8px;
+            }
 
-.forum-comment p {
-    margin-bottom: 0;
-}
+            .forum-comment p {
+                margin-bottom: 0;
+            }
 
-.comment-meta {
-    font-size: 12px;
-    color: #81758f;
-}
+            .comment-meta {
+                font-size: 12px;
+                color: #81758f;
+            }
         </style>
     </head>
 
     <body>
-
         <main class="forum-container">
 
             <section class="forum-header">
@@ -1082,25 +1085,20 @@ def foro_comunitario(request: Request):
                 <h1>Foro comunitario</h1>
 
                 <p>
-                    Comparte experiencias, plantea inquietudes
-                    y construye soluciones para la gestión
-                    responsable de residuos electrónicos.
+                    Comparte experiencias, plantea inquietudes y construye
+                    soluciones para la gestión responsable de residuos electrónicos.
                 </p>
 
-                <a href="/" class="forum-back">
-                    ← Volver al inicio
-                </a>
+                <a href="/" class="forum-back">← Volver al inicio</a>
             </section>
 
             <section class="forum-create">
-
                 <h2>Crear una publicación</h2>
 
                 <form action="/foro/publicar" method="POST">
 
                     <label>Título</label>
-                    <input type="text" name="title"
-                        maxlength="150" required>
+                    <input type="text" name="title" maxlength="150" required>
 
                     <label>Categoría</label>
                     <select name="category" required>
@@ -1123,8 +1121,7 @@ def foro_comunitario(request: Request):
                     </select>
 
                     <label>Nombre del participante</label>
-                    <input type="text" name="author_name"
-                        maxlength="100" required>
+                    <input type="text" name="author_name" maxlength="100" required>
 
                     <label>Perfil</label>
                     <select name="author_role" required>
@@ -1136,173 +1133,121 @@ def foro_comunitario(request: Request):
                     </select>
 
                     <label>Descripción</label>
-                    <textarea name="description"
-                        rows="5" maxlength="3000"
-                        required></textarea>
+                    <textarea name="description" rows="5" maxlength="3000" required></textarea>
 
                     <button type="submit">Publicar</button>
-
                 </form>
             </section>
 
             <section>
                 <h2>Publicaciones recientes</h2>
-
                 {posts_html}
-
             </section>
 
         </main>
-
     </body>
     </html>
     """
 
-
+    # Generate the HTML for publications
     posts_html = ""
 
-for post in posts:
-
-    # Build the comments section for the current post
-    comments_html = ""
-
-    for comment in comments:
-        if comment["post_id"] == post["id"]:
-            comments_html += f"""
-            <div class="forum-comment">
-                <strong>{html_escape(comment["author_name"])}</strong>
-
-                <div class="comment-meta">
-                    {html_escape(comment["author_role"])}
-                    · {html_escape(comment["created_at"])}
-                </div>
-
-                <p>{html_escape(comment["content"])}</p>
-            </div>
-            """
-
-    if not comments_html:
-        comments_html = """
-        <p>Todavía no hay comentarios. ¡Sé el primero en participar!</p>
+    # Check whether there are publications
+    if not posts:
+        posts_html = """
+        <div class="forum-post empty-message">
+            <h3>Aún no hay publicaciones</h3>
+            <p>¡Sé la primera persona en compartir una idea con la comunidad!</p>
+        </div>
         """
 
-    posts_html += f"""
-    <article class="forum-post">
-
-        <span class="post-category">
-            {html_escape(post["category"])}
-        </span>
-
-        <h2>{html_escape(post["title"])}</h2>
-
-        <p>{html_escape(post["description"])}</p>
-
-        <div class="post-information">
-            <span>Autor: {html_escape(post["author_name"])}</span>
-            <span>Perfil: {html_escape(post["author_role"])}</span>
-            <span>Fecha: {html_escape(post["created_at"])}</span>
-        </div>
-
-        <section class="forum-comments">
-
-            <h3>Comentarios ({post["comment_count"]})</h3>
-
-            {comments_html}
-
-            <form action="/foro/comentar" method="POST">
-
-                <input type="hidden" name="post_id"
-                    value="{post["id"]}">
-
-                <label>Tu nombre</label>
-                <input type="text" name="author_name"
-                    maxlength="100" required>
-
-                <label>Tu perfil</label>
-                <select name="author_role" required>
-                    <option value="">Seleccionar</option>
-                    <option>Ciudadanía</option>
-                    <option>Gestor</option>
-                    <option>Institución</option>
-                    <option>Técnico</option>
-                </select>
-
-                <label>Escribe un comentario</label>
-                <textarea name="content" rows="3"
-                    maxlength="2000" required></textarea>
-
-                <button type="submit">Comentar</button>
-
-            </form>
-
-        </section>
-
-    </article>
-    """
-
-
-if not posts:
-    
-    posts_html = ""
-
+    # Generate each publication
     for post in posts:
 
-        # Build the comments section for the current post
-        comments_html = ""
-
-        for comment in comments:
-            if comment["post_id"] == post["id"]:
-                comments_html += f"""
-                <div class="forum-comment">
-                    <strong>{html_escape(comment["author_name"])}</strong>
-
-                    <div class="comment-meta">
-                        {html_escape(comment["author_role"])}
-                        · {html_escape(comment["created_at"])}
-                    </div>
-
-                    <p>{html_escape(comment["content"])}</p>
-                </div>
-                """
-
-        if not comments_html:
-            comments_html = """
-            <p>Todavía no hay comentarios. ¡Sé el primero en participar!</p>
-            """
+        safe_title = html_escape(post["title"])
+        safe_category = html_escape(post["category"])
+        safe_type = html_escape(post["post_type"])
+        safe_description = html_escape(post["description"])
+        safe_author = html_escape(post["author_name"])
+        safe_role = html_escape(post["author_role"])
+        safe_date = html_escape(post["created_at"])
 
         posts_html += f"""
         <article class="forum-post">
 
-            <span class="post-category">
-                {html_escape(post["category"])}
-            </span>
+            <span class="post-category">{safe_category}</span>
 
-            <h2>{html_escape(post["title"])}</h2>
+            <h3>{safe_title}</h3>
 
-            <p>{html_escape(post["description"])}</p>
+            <p>{safe_description}</p>
 
             <div class="post-information">
-                <span>Autor: {html_escape(post["author_name"])}</span>
-                <span>Perfil: {html_escape(post["author_role"])}</span>
-                <span>Fecha: {html_escape(post["created_at"])}</span>
+                <span>Tipo: {safe_type}</span>
+                <span>Publicado por: {safe_author}</span>
+                <span>Perfil: {safe_role}</span>
+                <span>Fecha: {safe_date}</span>
+                <span>Comentarios: {post["comment_count"]}</span>
             </div>
 
             <section class="forum-comments">
+                <h3>Comentarios</h3>
+        """
 
-                <h3>Comentarios ({post["comment_count"]})</h3>
+        # Display comments belonging to this publication
+        post_comments = [
+            comment for comment in comments
+            if comment["post_id"] == post["id"]
+        ]
 
-                {comments_html}
+        if post_comments:
 
+            for comment in post_comments:
+
+                safe_comment_author = html_escape(comment["author_name"])
+                safe_comment_role = html_escape(comment["author_role"])
+                safe_comment_content = html_escape(comment["content"])
+                safe_comment_date = html_escape(comment["created_at"])
+
+                posts_html += f"""
+                <div class="forum-comment">
+
+                    <strong>{safe_comment_author}</strong>
+
+                    <span class="comment-meta">
+                        · {safe_comment_role} · {safe_comment_date}
+                    </span>
+
+                    <p>{safe_comment_content}</p>
+
+                </div>
+                """
+
+        else:
+            posts_html += """
+            <p class="comment-meta">
+                Todavía no hay comentarios. ¡Participa en la conversación!
+            </p>
+            """
+
+        # Comment form
+        posts_html += f"""
                 <form action="/foro/comentar" method="POST">
 
-                    <input type="hidden" name="post_id"
-                        value="{post["id"]}">
+                    <input
+                        type="hidden"
+                        name="post_id"
+                        value="{post["id"]}"
+                    >
 
-                    <label>Tu nombre</label>
-                    <input type="text" name="author_name"
-                        maxlength="100" required>
+                    <label>Nombre del participante</label>
+                    <input
+                        type="text"
+                        name="author_name"
+                        maxlength="100"
+                        required
+                    >
 
-                    <label>Tu perfil</label>
+                    <label>Perfil</label>
                     <select name="author_role" required>
                         <option value="">Seleccionar</option>
                         <option>Ciudadanía</option>
@@ -1312,101 +1257,20 @@ if not posts:
                     </select>
 
                     <label>Escribe un comentario</label>
-                    <textarea name="content" rows="3"
-                        maxlength="2000" required></textarea>
+                    <textarea
+                        name="content"
+                        rows="3"
+                        maxlength="2000"
+                        required
+                    ></textarea>
 
                     <button type="submit">Comentar</button>
 
                 </form>
 
             </section>
-
         </article>
         """
 
-    if not posts:
-        posts_html = """
-        <div class="forum-post empty-message">
-            <h3>¡El foro está esperando tu participación!</h3>
-            <p>Todavía no hay publicaciones registradas.</p>
-        </div>
-        """
-
+    # Return the completed HTML page
     return HTMLResponse(html.replace("{posts_html}", posts_html))
-
-@app.post("/foro/publicar")
-def foro_publicar(
-    title: str = Form(...),
-    category: str = Form(...),
-    post_type: str = Form(...),
-    description: str = Form(...),
-    author_name: str = Form(...),
-    author_role: str = Form(...)
-):
-
-    title = title.strip()
-    description = description.strip()
-    author_name = author_name.strip()
-
-    if not title or not description or not author_name:
-        raise HTTPException(
-            status_code=400,
-            detail="Todos los campos son obligatorios."
-        )
-
-    allowed_categories = [
-        "Recolección",
-        "Educación ambiental",
-        "Campañas",
-        "Reutilización",
-        "Diagnóstico técnico",
-        "Dudas y sugerencias"
-    ]
-
-    allowed_types = [
-        "Pregunta",
-        "Debate",
-        "Iniciativa",
-        "Información"
-    ]
-
-    allowed_roles = [
-        "Ciudadanía",
-        "Gestor",
-        "Institución",
-        "Técnico"
-    ]
-
-    if category not in allowed_categories:
-        raise HTTPException(status_code=400, detail="Categoría inválida.")
-
-    if post_type not in allowed_types:
-        raise HTTPException(status_code=400, detail="Tipo inválido.")
-
-    if author_role not in allowed_roles:
-        raise HTTPException(status_code=400, detail="Perfil inválido.")
-
-    with connect() as conn:
-        conn.execute("""
-            INSERT INTO community_posts (
-                title,
-                category,
-                post_type,
-                description,
-                author_name,
-                author_role
-            )
-            VALUES (?, ?, ?, ?, ?, ?)
-        """, (
-            title,
-            category,
-            post_type,
-            description,
-            author_name,
-            author_role
-        ))
-        return RedirectResponse(
-            url="/foro",
-            status_code=303
-        )
-        
