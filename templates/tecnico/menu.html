@@ -1,0 +1,223 @@
+
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Portal Técnico | Ágora RAEE</title>
+
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <style>
+        .technician-header {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            padding: 28px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        .technician-header h1 {
+            margin: 8px 0;
+        }
+
+        .technician-header p {
+            color: #dbeafe;
+            margin-bottom: 0;
+        }
+
+        .technician-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .technician-card {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 24px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+            text-decoration: none;
+            color: #334155;
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .technician-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, .08);
+        }
+
+        .technician-icon {
+            display: grid;
+            place-items: center;
+            width: 52px;
+            height: 52px;
+            border-radius: 13px;
+            background: #dbeafe;
+            font-size: 25px;
+        }
+
+        .technician-card h3 {
+            margin: 4px 0;
+            color: #1e40af;
+        }
+
+        .technician-card p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .technician-action {
+            margin-top: auto;
+            padding-top: 12px;
+            color: #2563eb;
+            font-weight: 650;
+            font-size: 14px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #1e40af;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media (max-width: 800px) {
+            .technician-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div>
+            <p class="eyebrow">MARKETPLACE INTERINSTITUCIONAL</p>
+            <h1>Ágora <span>RAEE</span></h1>
+            <p class="subtitle">Portal de aprovechamiento técnico</p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="technician-header">
+            <p class="eyebrow">PORTAL TÉCNICO</p>
+
+            <h1>Recuperación y aprovechamiento tecnológico</h1>
+
+            <p>
+                Consulta recursos disponibles, solicita equipos
+                y componentes y realiza seguimiento a los procesos
+                de aprovechamiento y recuperación tecnológica.
+            </p>
+        </section>
+
+        {% if notice %}
+        <div class="notice">
+            ✓ {{ notice.replace('+', ' ') }}
+        </div>
+        {% endif %}
+
+        <section class="section-heading">
+            <div>
+                <p class="eyebrow">MÓDULO TÉCNICO</p>
+                <h2>Selecciona una funcionalidad</h2>
+            </div>
+
+            <p>
+                Accede a las herramientas para gestionar recursos
+                tecnológicos destinados a reparación, reutilización
+                y aprovechamiento.
+            </p>
+        </section>
+
+        <section class="technician-grid">
+
+            <!-- OPCIÓN 1: LOTES DISPONIBLES -->
+
+            <a href="/form/tecnico/lotes"
+               class="technician-card">
+
+                <span class="technician-icon">📦</span>
+
+                <h3>Consultar lotes disponibles</h3>
+
+                <p>
+                    Explora los equipos y componentes disponibles
+                    para su aprovechamiento, reparación o reutilización.
+                </p>
+
+                <span class="technician-action">
+                    Consultar recursos →
+                </span>
+            </a>
+
+            <!-- OPCIÓN 2: SOLICITUDES -->
+
+            <a href="/form/tecnico/solicitar"
+               class="technician-card">
+
+                <span class="technician-icon">🛠️</span>
+
+                <h3>Solicitar equipos o componentes</h3>
+
+                <p>
+                    Registra solicitudes de recursos tecnológicos
+                    según tus necesidades y capacidades técnicas.
+                </p>
+
+                <span class="technician-action">
+                    Registrar solicitud →
+                </span>
+            </a>
+
+            <!-- OPCIÓN 3: SEGUIMIENTO -->
+
+            <a href="/form/tecnico/seguimiento"
+               class="technician-card">
+
+                <span class="technician-icon">🚚</span>
+
+                <h3>Seguimiento de solicitudes</h3>
+
+                <p>
+                    Consulta el estado de tus solicitudes,
+                    las asignaciones y los procesos de recolección
+                    y entrega.
+                </p>
+
+                <span class="technician-action">
+                    Consultar seguimiento →
+                </span>
+            </a>
+
+        </section>
+
+        <a href="/" class="back-link">
+            ← Volver al inicio
+        </a>
+
+        <footer>
+            <strong>Ágora RAEE · Prototipo académico</strong>
+
+            <p>
+                Articulación tecnológica para la recuperación
+                y el aprovechamiento responsable de residuos RAEE.
+            </p>
+        </footer>
+
+    </main>
+
+</body>
+</html>
