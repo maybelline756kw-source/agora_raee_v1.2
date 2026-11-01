@@ -1158,8 +1158,8 @@ def foro_comunitario(request: Request):
     </html>
     """
 
-    
-posts_html = ""
+
+    posts_html = ""
 
 for post in posts:
 
@@ -1242,15 +1242,97 @@ for post in posts:
 
 
 if not posts:
-    posts_html = """
-    <div class="forum-post empty-message">
-        <h3>¡El foro está esperando tu participación!</h3>
-        <p>Todavía no hay publicaciones registradas.</p>
-    </div>
-    """
+    
+    posts_html = ""
 
-return HTMLResponse(html.replace("{posts_html}", posts_html))
+    for post in posts:
 
+        # Build the comments section for the current post
+        comments_html = ""
+
+        for comment in comments:
+            if comment["post_id"] == post["id"]:
+                comments_html += f"""
+                <div class="forum-comment">
+                    <strong>{html_escape(comment["author_name"])}</strong>
+
+                    <div class="comment-meta">
+                        {html_escape(comment["author_role"])}
+                        · {html_escape(comment["created_at"])}
+                    </div>
+
+                    <p>{html_escape(comment["content"])}</p>
+                </div>
+                """
+
+        if not comments_html:
+            comments_html = """
+            <p>Todavía no hay comentarios. ¡Sé el primero en participar!</p>
+            """
+
+        posts_html += f"""
+        <article class="forum-post">
+
+            <span class="post-category">
+                {html_escape(post["category"])}
+            </span>
+
+            <h2>{html_escape(post["title"])}</h2>
+
+            <p>{html_escape(post["description"])}</p>
+
+            <div class="post-information">
+                <span>Autor: {html_escape(post["author_name"])}</span>
+                <span>Perfil: {html_escape(post["author_role"])}</span>
+                <span>Fecha: {html_escape(post["created_at"])}</span>
+            </div>
+
+            <section class="forum-comments">
+
+                <h3>Comentarios ({post["comment_count"]})</h3>
+
+                {comments_html}
+
+                <form action="/foro/comentar" method="POST">
+
+                    <input type="hidden" name="post_id"
+                        value="{post["id"]}">
+
+                    <label>Tu nombre</label>
+                    <input type="text" name="author_name"
+                        maxlength="100" required>
+
+                    <label>Tu perfil</label>
+                    <select name="author_role" required>
+                        <option value="">Seleccionar</option>
+                        <option>Ciudadanía</option>
+                        <option>Gestor</option>
+                        <option>Institución</option>
+                        <option>Técnico</option>
+                    </select>
+
+                    <label>Escribe un comentario</label>
+                    <textarea name="content" rows="3"
+                        maxlength="2000" required></textarea>
+
+                    <button type="submit">Comentar</button>
+
+                </form>
+
+            </section>
+
+        </article>
+        """
+
+    if not posts:
+        posts_html = """
+        <div class="forum-post empty-message">
+            <h3>¡El foro está esperando tu participación!</h3>
+            <p>Todavía no hay publicaciones registradas.</p>
+        </div>
+        """
+
+    return HTMLResponse(html.replace("{posts_html}", posts_html))
 
 @app.post("/foro/publicar")
 def foro_publicar(
