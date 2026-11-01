@@ -604,6 +604,59 @@ def tecnico_guardar_solicitud(
     )
 
 # ------------------------------------------
+# SEGUIMIENTO DE SOLICITUDES - TECNICO
+# ------------------------------------------
+
+@app.get("/form/tecnico/seguimiento", response_class=HTMLResponse)
+def tecnico_seguimiento(request: Request):
+
+    # Consultar todas las solicitudes técnicas registradas
+    with connect() as conn:
+        solicitudes = conn.execute("""
+            SELECT
+                id,
+                applicant_name,
+                resource_type,
+                resource_name,
+                quantity,
+                justification,
+                status,
+                created_at
+            FROM technical_requests
+            ORDER BY id DESC
+        """).fetchall()
+
+    # Convertir los resultados en una lista de diccionarios
+    solicitudes = [dict(row) for row in solicitudes]
+
+    # Calcular el total de solicitudes
+    total_solicitudes = len(solicitudes)
+
+    # Contar solicitudes pendientes
+    pendientes = sum(
+        1 for solicitud in solicitudes
+        if solicitud["status"] == "Pendiente"
+    )
+
+    # Contar solicitudes aprobadas
+    aprobadas = sum(
+        1 for solicitud in solicitudes
+        if solicitud["status"] == "Aprobada"
+    )
+
+    return templates.TemplateResponse(
+        request=request,
+        name="tecnico/seguimiento.html",
+        context={
+            "request": request,
+            "solicitudes": solicitudes,
+            "total_solicitudes": total_solicitudes,
+            "pendientes": pendientes,
+            "aprobadas": aprobadas
+        }
+    )
+
+# ------------------------------------------
 # REGISTRO DE RAEE INSTITUCIONAL
 # ------------------------------------------
 
