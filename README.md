@@ -253,44 +253,6 @@ AGORA_RAEE/
 
 Las dependencias del proyecto se encuentran definidas en `requirements.txt`.
 
----
-
-# 5. Instalación y ejecución en Windows
-
-1. Descargar o descomprimir el proyecto.
-2. Abrir una terminal dentro de la carpeta raíz `AGORA_RAEE`.
-
-Crear un entorno virtual:
-
-```bash
-py -m venv .venv
-```
-
-Activar el entorno virtual:
-
-```bash
-.venv\Scripts\activate
-```
-
-Instalar las dependencias:
-
-```bash
-pip install -r requirements.txt
-```
-
-Iniciar el servidor de desarrollo:
-
-```bash
-uvicorn main:app --reload
-```
-
-Abrir el navegador en:
-
-```text
-http://127.0.0.1:8000
-```
-
----
 
 # 6. Rutas principales de la aplicación
 
