@@ -1,0 +1,122 @@
+
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Registrar RAEE | Ágora RAEE</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+
+<header class="topbar">
+    <div>
+        <p class="eyebrow">PORTAL INSTITUCIONAL</p>
+        <h1>Registro de <span>RAEE</span></h1>
+        <p class="subtitle">Registro de equipos para gestión ambiental</p>
+    </div>
+</header>
+
+<main class="container">
+
+    <a href="/form/instituciones" class="back-link">
+        ← Volver al menú institucional
+    </a>
+
+    {% if notice %}
+    <div class="notice">{{ notice.replace('+', ' ') }}</div>
+    {% endif %}
+
+    <section class="section-heading">
+        <div>
+            <p class="eyebrow">NUEVO REGISTRO</p>
+            <h2>Información de los equipos</h2>
+        </div>
+    </section>
+
+    <section class="list-card">
+
+        <form method="post" action="/form/instituciones/registrar">
+
+            <h3>Datos de la institución</h3>
+
+            <label>Nombre de la institución</label>
+            <input type="text" name="generator_name" required>
+
+            <label>NIT de la institución</label>
+            <input type="text" name="document_number" required>
+
+            <label>Teléfono de contacto</label>
+            <input type="tel" name="phone" required>
+
+            <label>Correo electrónico</label>
+            <input type="email" name="email">
+
+            <label>Dirección</label>
+            <input type="text" name="address" required>
+
+            <hr>
+
+            <h3>Información de los equipos</h3>
+
+            <label>Tipo de equipo</label>
+            <select name="equipment_type" required>
+                <option value="">Seleccionar</option>
+                <option value="Computadores">Computadores</option>
+                <option value="Portátiles">Portátiles</option>
+                <option value="Monitores">Monitores</option>
+                <option value="Impresoras">Impresoras</option>
+                <option value="Celulares">Celulares</option>
+                <option value="Periféricos">Periféricos</option>
+                <option value="Otros">Otros</option>
+            </select>
+
+            <label>Cantidad de equipos</label>
+            <input type="number" name="quantity" min="1" required>
+
+            <label>Estado de los equipos</label>
+            <select name="condition" required>
+                <option value="">Seleccionar</option>
+                <option value="Funcional">Funcional</option>
+                <option value="Dañado">Dañado</option>
+                <option value="Obsoleto">Obsoleto</option>
+                <option value="Fuera de servicio">Fuera de servicio</option>
+            </select>
+
+            <label>Procedencia</label>
+            <select name="origin" required>
+                <option value="">Seleccionar</option>
+                <option value="Administrativa">Área administrativa</option>
+                <option value="Académica">Área académica</option>
+                <option value="Operativa">Área operativa</option>
+                <option value="Otra">Otra dependencia</option>
+            </select>
+
+            <label>Fecha de registro</label>
+            <input type="date" name="registration_date" required>
+
+            <label>Características adicionales</label>
+            <textarea name="characteristics"
+                rows="4"
+                placeholder="Marca, modelo, placa del activo o dependencia responsable..."></textarea>
+
+            <div class="actions">
+                <button type="submit" class="button primary">
+                    Registrar equipos
+                </button>
+
+                <a href="/form/instituciones"
+                   class="button secondary">
+                    Cancelar
+                </a>
+            </div>
+
+        </form>
+
+    </section>
+
+</main>
+
+</body>
+</html>
