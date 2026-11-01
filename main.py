@@ -614,6 +614,42 @@ def actualizar_baja(
     )
 
 
+# ------------------------------------------
+# INVENTARIO INSTITUCIONAL
+# ------------------------------------------
+
+@app.get("/form/instituciones/inventario", response_class=HTMLResponse)
+def inventario_institucional(request: Request):
+
+    with connect() as conn:
+
+        records = conn.execute("""
+            SELECT *
+            FROM raee_records
+            WHERE generator_type = 'Institución'
+            ORDER BY created_at DESC
+        """).fetchall()
+
+        summary = conn.execute("""
+            SELECT
+                COUNT(*) AS total_registros,
+                COALESCE(SUM(quantity), 0) AS total_equipos,
+                COUNT(DISTINCT document_number) AS total_instituciones
+            FROM raee_records
+            WHERE generator_type = 'Institución'
+        """).fetchone()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="instituciones/inventario.html",
+        context={
+            "request": request,
+            "records": records,
+            "summary": summary
+        }
+    )
+
+
 
 # ------------------------------------------
 # FORMULARIO DE REGISTRO DE GESTOR
