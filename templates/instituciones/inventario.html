@@ -1,0 +1,523 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Inventario institucional | Ágora RAEE</title>
+
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <style>
+        body {
+            background: #f8f5ed;
+            color: #3d382b;
+        }
+
+        .topbar {
+            background: linear-gradient(135deg, #94651d, #d6a443);
+            color: white;
+            padding: 25px 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .topbar h1 {
+            margin: 5px 0;
+            font-size: 28px;
+        }
+
+        .topbar h1 span {
+            color: #ffedc2;
+        }
+
+        .topbar .subtitle {
+            color: #fff3d8;
+            margin: 5px 0 0;
+        }
+
+        .eyebrow {
+            font-size: 11px;
+            font-weight: bold;
+            letter-spacing: 1.5px;
+            color: #a87926;
+        }
+
+        .topbar .eyebrow {
+            color: #ffedc2;
+        }
+
+        .api-link {
+            background: rgba(255,255,255,0.18);
+            color: white;
+            text-decoration: none;
+            padding: 11px 17px;
+            border-radius: 9px;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .api-link:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .section-heading {
+            margin-bottom: 25px;
+        }
+
+        .section-heading h2 {
+            font-size: 25px;
+            color: #94651d;
+            margin: 5px 0 10px;
+        }
+
+        .section-heading p {
+            color: #766d5c;
+            line-height: 1.6;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 23px;
+            border-radius: 15px;
+            box-shadow: 0 5px 18px rgba(100, 75, 25, 0.06);
+            border: 1px solid #f0e8d8;
+        }
+
+        .stat-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .stat-icon {
+            width: 43px;
+            height: 43px;
+            border-radius: 12px;
+            background: #fbf0d9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 21px;
+        }
+
+        .stat-label {
+            color: #938875;
+            font-size: 12px;
+            font-weight: 600;
+            margin: 17px 0 6px;
+        }
+
+        .stat-value {
+            color: #94651d;
+            font-size: 29px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .stat-description {
+            color: #a49a86;
+            font-size: 11px;
+            margin-top: 7px;
+        }
+
+        .table-card {
+            background: white;
+            padding: 25px;
+            border-radius: 17px;
+            box-shadow: 0 5px 20px rgba(100, 75, 25, 0.08);
+            overflow-x: auto;
+        }
+
+        .table-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 22px;
+        }
+
+        .table-heading h3 {
+            color: #94651d;
+            margin: 0 0 5px;
+            font-size: 19px;
+        }
+
+        .muted {
+            color: #938875;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .record-count {
+            background: #fbf0d9;
+            color: #94651d;
+            padding: 8px 13px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 950px;
+        }
+
+        th {
+            background: #faf5e9;
+            color: #79613a;
+            font-size: 12px;
+            text-align: left;
+            padding: 14px 12px;
+            border-bottom: 1px solid #eee5d3;
+        }
+
+        td {
+            padding: 14px 12px;
+            border-bottom: 1px solid #f0ece3;
+            font-size: 13px;
+            color: #554d3f;
+            vertical-align: middle;
+        }
+
+        tr:hover td {
+            background: #fdfbf6;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 20px;
+            background: #fbf0d9;
+            color: #94651d;
+            font-size: 11px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 55px 20px;
+            color: #938875;
+        }
+
+        .empty-state .icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            color: #94651d;
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .footer-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 22px;
+        }
+
+        .button {
+            padding: 11px 19px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .button.secondary {
+            background: #f1eee7;
+            color: #685d49;
+        }
+
+        .button.secondary:hover {
+            background: #e7e0d2;
+        }
+
+        footer {
+            text-align: center;
+            color: #938875;
+            font-size: 12px;
+            padding: 25px 10px;
+            line-height: 1.6;
+        }
+
+        footer strong {
+            color: #94651d;
+        }
+
+        @media (max-width: 750px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .table-card {
+                padding: 15px;
+            }
+
+            .table-heading {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ENCABEZADO -->
+
+    <header class="topbar">
+        <div>
+            <p class="eyebrow">MÓDULO DE INSTITUCIONES</p>
+
+            <h1>Inventario <span>RAEE</span></h1>
+
+            <p class="subtitle">
+                Consulta y seguimiento de residuos institucionales
+            </p>
+        </div>
+
+        <a class="api-link" href="/form/instituciones">
+            ← Volver al menú
+        </a>
+    </header>
+
+
+    <main class="container">
+
+        <!-- PRESENTACIÓN -->
+
+        <section class="section-heading">
+
+            <p class="eyebrow">INFORMACIÓN GENERAL</p>
+
+            <h2>Inventario de residuos registrados</h2>
+
+            <p>
+                Consulta los equipos eléctricos y electrónicos
+                reportados por las instituciones vinculadas al sistema.
+                Los indicadores permiten conocer el volumen de registros
+                y la cantidad de equipos caracterizados.
+            </p>
+
+        </section>
+
+
+        <!-- INDICADORES -->
+
+        <section class="stats-grid">
+
+            <article class="stat-card">
+
+                <div class="stat-top">
+                    <div class="stat-icon">📋</div>
+                </div>
+
+                <p class="stat-label">REGISTROS REALIZADOS</p>
+
+                <p class="stat-value">
+                    {{ summary["total_registros"] }}
+                </p>
+
+                <p class="stat-description">
+                    Reportes institucionales almacenados.
+                </p>
+
+            </article>
+
+
+            <article class="stat-card">
+
+                <div class="stat-top">
+                    <div class="stat-icon">♻️</div>
+                </div>
+
+                <p class="stat-label">TOTAL DE EQUIPOS</p>
+
+                <p class="stat-value">
+                    {{ summary["total_equipos"] }}
+                </p>
+
+                <p class="stat-description">
+                    Unidades reportadas en el inventario.
+                </p>
+
+            </article>
+
+
+            <article class="stat-card">
+
+                <div class="stat-top">
+                    <div class="stat-icon">🏢</div>
+                </div>
+
+                <p class="stat-label">INSTITUCIONES REGISTRADAS</p>
+
+                <p class="stat-value">
+                    {{ summary["total_instituciones"] }}
+                </p>
+
+                <p class="stat-description">
+                    Identificaciones institucionales diferentes.
+                </p>
+
+            </article>
+
+        </section>
+
+
+        <!-- TABLA DE INVENTARIO -->
+
+        <section class="table-card">
+
+            <div class="table-heading">
+
+                <div>
+                    <h3>Detalle del inventario</h3>
+
+                    <p class="muted">
+                        Listado de residuos reportados por las instituciones.
+                    </p>
+                </div>
+
+                <span class="record-count">
+                    {{ records|length }} registros
+                </span>
+
+            </div>
+
+
+            {% if records %}
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Institución</th>
+                            <th>NIT</th>
+                            <th>Tipo de equipo</th>
+                            <th>Cantidad</th>
+                            <th>Condición</th>
+                            <th>Procedencia</th>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for record in records %}
+
+                            <tr>
+
+                                <td>#{{ record["id"] }}</td>
+
+                                <td>
+                                    <strong>
+                                        {{ record["generator_name"] }}
+                                    </strong>
+                                </td>
+
+                                <td>{{ record["document_number"] }}</td>
+
+                                <td>{{ record["equipment_type"] }}</td>
+
+                                <td>{{ record["quantity"] }}</td>
+
+                                <td>{{ record["condition"] }}</td>
+
+                                <td>{{ record["origin"] }}</td>
+
+                                <td>{{ record["registration_date"] }}</td>
+
+                                <td>
+                                    <span class="status">
+                                        {{ record["status"] }}
+                                    </span>
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            {% else %}
+
+                <div class="empty-state">
+
+                    <div class="icon">📦</div>
+
+                    <h3>Inventario vacío</h3>
+
+                    <p>
+                        Todavía no existen residuos institucionales registrados.
+                        Cuando agregues equipos desde el formulario de registro,
+                        aparecerán en este inventario.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <div class="footer-actions">
+
+            <a href="/form/instituciones" class="button secondary">
+                Volver al menú institucional
+            </a>
+
+        </div>
+
+
+        <!-- PIE DE PÁGINA -->
+
+        <footer>
+            <strong>Ágora RAEE · Inventario institucional</strong>
+
+            <p>
+                Prototipo académico. Los indicadores se calculan
+                a partir de los registros almacenados en el sistema.
+            </p>
+        </footer>
+
+    </main>
+
+</body>
+</html>
