@@ -1,0 +1,303 @@
+
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Lotes disponibles | Ágora RAEE</title>
+
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <style>
+        .technician-header {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            padding: 28px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        .technician-header h1 {
+            margin: 8px 0;
+        }
+
+        .technician-header p {
+            color: #dbeafe;
+            margin-bottom: 0;
+        }
+
+        .technician-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 18px;
+            margin: 25px 0;
+        }
+
+        .technician-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .technician-card {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 24px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+            border-top: 4px solid #3b82f6;
+        }
+
+        .technician-card h3 {
+            margin: 4px 0;
+            color: #1e40af;
+        }
+
+        .technician-icon {
+            display: grid;
+            place-items: center;
+            width: 52px;
+            height: 52px;
+            border-radius: 13px;
+            background: #dbeafe;
+            font-size: 25px;
+        }
+
+        .technician-card p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .status {
+            display: inline-block;
+            width: fit-content;
+            padding: 5px 11px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .status-normal {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .status-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status-critical {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .occupancy-bar {
+            width: 100%;
+            height: 9px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .occupancy-fill {
+            height: 100%;
+            background: #3b82f6;
+            border-radius: 10px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #1e40af;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media (max-width: 650px) {
+            .technician-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar"
+        style="background: linear-gradient(135deg, #1e3a8a, #3b82f6); color: white;">
+
+        <div>
+            <p class="eyebrow" style="color: #dbeafe;">
+                MARKETPLACE INTERINSTITUCIONAL
+            </p>
+
+            <h1>Consulta de <span>lotes RAEE</span></h1>
+
+            <p class="subtitle" style="color: #dbeafe;">
+                Recursos registrados para aprovechamiento tecnológico.
+            </p>
+        </div>
+
+        <a class="api-link"
+           href="/form/tecnico"
+           style="background: rgba(255,255,255,0.2); color: white;">
+            ← Volver al menú
+        </a>
+
+    </header>
+
+    <main class="container">
+
+        <section class="section-heading">
+            <div>
+                <p class="eyebrow">PORTAL TÉCNICO</p>
+                <h2>Lotes registrados</h2>
+            </div>
+
+            <p>
+                Consulta las características, cantidades y ubicaciones
+                de los contenedores registrados en el sistema.
+            </p>
+        </section>
+
+        <!-- RESUMEN -->
+
+        <section class="technician-summary">
+
+            <article class="container-card">
+                <p class="muted">Total de lotes registrados</p>
+                <h2>{{ total_lotes }}</h2>
+            </article>
+
+            <article class="container-card">
+                <p class="muted">Residuos registrados</p>
+                <h2>{{ total_kg }} kg</h2>
+            </article>
+
+        </section>
+
+        <!-- LISTADO DE LOTES -->
+
+        <section>
+
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">INVENTARIO DE CONTENEDORES</p>
+                    <h2>Listado de lotes</h2>
+                </div>
+            </div>
+
+            {% if lotes %}
+
+            <div class="technician-grid">
+
+                {% for lote in lotes %}
+
+                <article class="technician-card">
+
+                    <div class="technician-icon">♻️</div>
+
+                    <h3>{{ lote.nombre }}</h3>
+
+                    <p>
+                        <strong>Código:</strong>
+                        #{{ lote.id }}
+                    </p>
+
+                    <p>
+                        <strong>Tipo de residuo:</strong>
+                        {{ lote.tipo }}
+                    </p>
+
+                    <p>
+                        <strong>Cantidad registrada:</strong>
+                        {{ lote.cantidad }} kg
+                    </p>
+
+                    <p>
+                        <strong>Capacidad máxima:</strong>
+                        {{ lote.capacidad }} kg
+                    </p>
+
+                    <p>
+                        <strong>Ubicación:</strong>
+                        {{ lote.ubicacion }}
+                    </p>
+
+                    <p>
+                        <strong>Nivel de ocupación:</strong>
+                        {{ lote.ocupacion }}%
+                    </p>
+
+                    <div class="occupancy-bar">
+                        <div class="occupancy-fill"
+                             style="width: {{ lote.ocupacion }}%;">
+                        </div>
+                    </div>
+
+                    {% if lote.estado == "Normal" %}
+
+                    <span class="status status-normal">
+                        {{ lote.estado }}
+                    </span>
+
+                    {% elif lote.estado == "Atención" %}
+
+                    <span class="status status-warning">
+                        {{ lote.estado }}
+                    </span>
+
+                    {% else %}
+
+                    <span class="status status-critical">
+                        {{ lote.estado }}
+                    </span>
+
+                    {% endif %}
+
+                </article>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <article class="container-card">
+                <h3>No hay lotes registrados</h3>
+
+                <p class="muted">
+                    Actualmente no existen contenedores disponibles
+                    para consulta.
+                </p>
+            </article>
+
+            {% endif %}
+
+        </section>
+
+        <a href="/form/tecnico" class="back-link">
+            ← Volver al menú técnico
+        </a>
+
+        <footer>
+            <strong>Ágora RAEE · Prototipo académico</strong>
+
+            <p>
+                Información destinada a la consulta y aprovechamiento
+                responsable de residuos electrónicos.
+            </p>
+        </footer>
+
+    </main>
+
+</body>
+</html>
