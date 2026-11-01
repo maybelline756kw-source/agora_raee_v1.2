@@ -951,6 +951,12 @@ def foro_comunitario(request: Request):
             FROM community_posts p
             ORDER BY p.created_at DESC
         """).fetchall()
+        
+        comments = conn.execute("""
+            SELECT *
+            FROM community_comments
+            ORDER BY created_at ASC
+        """).fetchall()
 
     html = """
     <!DOCTYPE html>
