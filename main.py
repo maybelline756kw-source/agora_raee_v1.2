@@ -536,6 +536,86 @@ def guardar_raee_institucional(
 
 
 # ------------------------------------------
+# GESTION DE BAJAS INSTITUCIONALES
+# ------------------------------------------
+
+@app.get("/form/instituciones/bajas", response_class=HTMLResponse)
+def gestionar_bajas(request: Request, notice: str = ""):
+
+    with connect() as conn:
+        records = conn.execute("""
+            SELECT *
+            FROM raee_records
+            WHERE generator_type = 'Institución'
+            ORDER BY created_at DESC
+        """).fetchall()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="instituciones/bajas.html",
+        context={
+            "request": request,
+            "records": records,
+            "notice": notice
+        }
+    )
+
+
+@app.post("/form/instituciones/bajas")
+def actualizar_baja(
+    record_id: int = Form(...),
+    new_status: str = Form(...)
+):
+
+    allowed_statuses = [
+        "Registrado",
+        "Baja solicitada",
+        "Baja aprobada",
+        "En gestión",
+        "Gestionado"
+    ]
+
+    if new_status not in allowed_statuses:
+        raise HTTPException(
+            status_code=400,
+            detail="Estado de baja no válido"
+        )
+
+    with connect() as conn:
+
+        record = conn.execute("""
+            SELECT id
+            FROM raee_records
+            WHERE id = ?
+            AND generator_type = 'Institución'
+        """, (record_id,)).fetchone()
+
+        if record is None:
+            raise HTTPException(
+                status_code=404,
+                detail="Registro institucional no encontrado"
+            )
+
+        conn.execute("""
+            UPDATE raee_records
+            SET status = ?
+            WHERE id = ?
+            AND generator_type = 'Institución'
+        """, (new_status, record_id))
+
+    log_event(
+        "info",
+        f"Actualización del estado del registro institucional RAEE #{record_id}: {new_status}"
+    )
+
+    return RedirectResponse(
+        url="/form/instituciones/bajas?notice=Estado+actualizado",
+        status_code=303
+    )
+
+
+
+# ------------------------------------------
 # FORMULARIO DE REGISTRO DE GESTOR
 # ------------------------------------------
 
