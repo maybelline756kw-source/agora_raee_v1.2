@@ -9,6 +9,162 @@
     <title>Ágora RAEE | Gestión comunitaria</title>
 
     <link rel="stylesheet" href="/static/styles.css">
+
+    <style>
+        /* =====================================
+           ACCESO A PERFILES
+        ===================================== */
+
+        .role-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .role-button {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            padding: 18px;
+            border: 1px solid #e5e1ef;
+            border-radius: 14px;
+            background: white;
+            color: #35245c;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .role-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(91, 33, 182, .10);
+        }
+
+        .role-icon {
+            display: grid;
+            place-items: center;
+            width: 42px;
+            height: 42px;
+            flex-shrink: 0;
+            border-radius: 11px;
+            font-size: 20px;
+        }
+
+        .role-gestor .role-icon {
+            background: #dcfce7;
+        }
+
+        .role-ciudadania .role-icon {
+            background: #dbeafe;
+        }
+
+        .role-instituciones .role-icon {
+            background: #fef3c7;
+        }
+
+        .role-tecnico .role-icon {
+            background: #e2e8f0;
+        }
+
+
+        /* =====================================
+           FORO COMUNITARIO
+        ===================================== */
+
+        .community-forum-card {
+            display: flex;
+            align-items: center;
+            gap: 22px;
+            padding: 26px 30px;
+            margin-bottom: 38px;
+            border: 1px solid #e9d5ff;
+            border-radius: 16px;
+            background: linear-gradient(110deg, #faf5ff, #f3e8ff);
+            box-shadow: 0 4px 14px rgba(91, 33, 182, .05);
+        }
+
+        .forum-icon {
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: #7c3aed;
+            color: white;
+            font-size: 25px;
+        }
+
+        .forum-content {
+            flex: 1;
+        }
+
+        .forum-content .eyebrow {
+            color: #7c3aed;
+            margin-bottom: 6px;
+        }
+
+        .forum-content h2 {
+            color: #4c1d95;
+            font-size: 20px;
+            margin: 0 0 8px;
+        }
+
+        .forum-content p:last-child {
+            color: #655b75;
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .forum-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 18px;
+            border-radius: 9px;
+            background: #6d28d9;
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 650;
+            white-space: nowrap;
+            transition: background .2s;
+        }
+
+        .forum-button:hover {
+            background: #5b21b6;
+        }
+
+
+        /* =====================================
+           RESPONSIVE
+        ===================================== */
+
+        @media (max-width: 800px) {
+            .role-buttons-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .community-forum-card {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .role-buttons-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .community-forum-card {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 22px;
+            }
+        }
+    </style>
+
 </head>
 
 <body>
@@ -65,81 +221,48 @@
         </section>
 
 
-        <div class="role-buttons-grid"
-             style="display: grid;
-                    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                    gap: 1rem;
-                    margin-bottom: 2rem;">
-
-            <!-- PERFIL GESTOR -->
+        <div class="role-buttons-grid">
 
             <a href="/form/gestor"
-               class="button"
-               style="text-align: center;
-                      text-decoration: none;
-                      padding: 1rem;
-                      background-color: #2f855a;
-                      color: white;
-                      border-radius: 6px;
-                      font-weight: 600;">
+               class="role-button role-gestor">
 
-                Gestor
+                <span class="role-icon">♻️</span>
+                <span>Gestor</span>
 
             </a>
 
-
-            <!-- PERFIL CIUDADANÍA -->
 
             <a href="/form/ciudadania"
-               class="button"
-               style="text-align: center;
-                      text-decoration: none;
-                      padding: 1rem;
-                      background-color: #3182ce;
-                      color: white;
-                      border-radius: 6px;
-                      font-weight: 600;">
+               class="role-button role-ciudadania">
 
-                Ciudadanía
+                <span class="role-icon">🌱</span>
+                <span>Ciudadanía</span>
 
             </a>
 
-
-            <!-- PERFIL INSTITUCIONES -->
 
             <a href="/form/instituciones"
-               class="button"
-               style="text-align: center;
-                      text-decoration: none;
-                      padding: 1rem;
-                      background-color: #d69e2e;
-                      color: white;
-                      border-radius: 6px;
-                      font-weight: 600;">
+               class="role-button role-instituciones">
 
-                Instituciones
+                <span class="role-icon">🏢</span>
+                <span>Instituciones</span>
 
             </a>
 
-
-            <!-- PERFIL TÉCNICO -->
 
             <a href="/form/tecnico"
-               class="button"
-               style="text-align: center;
-                      text-decoration: none;
-                      padding: 1rem;
-                      background-color: #4a5568;
-                      color: white;
-                      border-radius: 6px;
-                      font-weight: 600;">
+               class="role-button role-tecnico">
 
-                Técnico
+                <span class="role-icon">🔧</span>
+                <span>Técnico</span>
 
             </a>
 
+        </div>
+
+
         <!-- ================================== -->
-        <!-- ACCESO AL FORO COMUNITARIO -->
+        <!-- FORO COMUNITARIO -->
         <!-- ================================== -->
 
         <section class="community-forum-card">
@@ -147,20 +270,23 @@
             <div class="forum-icon">💬</div>
 
             <div class="forum-content">
-                <p class="eyebrow">PARTICIPACIÓN Y COLABORACIÓN</p>
 
-                <h2>Foro comunitario Ágora RAEE</h2>
+                <p class="eyebrow">
+                    ESPACIO COLABORATIVO
+                </p>
+
+                <h2>Conversemos sobre la gestión RAEE</h2>
 
                 <p>
-                    Un espacio de intercambio entre ciudadanía,
-                    gestores, instituciones y técnicos para compartir
-                    experiencias, debatir propuestas y aportar
-                    soluciones a la gestión de residuos electrónicos.
+                    Comparte ideas, plantea inquietudes y conecta con
+                    otros actores para construir soluciones
+                    ambientales en comunidad.
                 </p>
+
             </div>
 
             <a href="/foro" class="forum-button">
-                Ingresar al foro →
+                Explorar foro →
             </a>
 
         </section>
@@ -171,9 +297,11 @@
         <!-- ================================== -->
 
         {% if notice %}
+
         <div class="notice">
             ✓ {{ notice.replace('+', ' ') }}
         </div>
+
         {% endif %}
 
 
@@ -184,12 +312,18 @@
         <section class="metrics">
 
             <article class="metric">
+
                 <span>Puntos de recolección</span>
+
                 <strong>{{ total }}</strong>
+
                 <small>Registrados en la demo</small>
+
             </article>
 
+
             <article class="metric">
+
                 <span>Alertas críticas</span>
 
                 <strong class="{% if critical %}red-text{% endif %}">
@@ -197,9 +331,12 @@
                 </strong>
 
                 <small>Ocupación ≥ 85%</small>
+
             </article>
 
+
             <article class="metric">
+
                 <span>Requieren atención</span>
 
                 <strong class="{% if attention %}amber-text{% endif %}">
@@ -207,6 +344,7 @@
                 </strong>
 
                 <small>Ocupación ≥ 60%</small>
+
             </article>
 
         </section>
@@ -223,7 +361,9 @@
                 <h2>Contenedores inteligentes</h2>
             </div>
 
-            <p>Simulación del sensor de distancia tipo HC-SR04</p>
+            <p>
+                Simulación del sensor de distancia tipo HC-SR04
+            </p>
 
         </div>
 
@@ -244,6 +384,7 @@
 
                 </div>
 
+
                 <h3>{{ c.name }}</h3>
 
                 <p class="muted">
@@ -251,10 +392,15 @@
                     {{ c.raee_type.replace('_', ' ') }}
                 </p>
 
+
                 <div class="fill-row">
+
                     <span>Nivel de ocupación</span>
+
                     <strong>{{ c.occupancy_percent }}%</strong>
+
                 </div>
+
 
                 <div class="progress">
 
@@ -268,6 +414,7 @@
 
                 </div>
 
+
                 <div class="data-pair">
 
                     <span>
@@ -280,10 +427,14 @@
 
                 </div>
 
+
                 <div class="sensor-note">
+
                     Distancia simulada:
                     <b>{{ c.distance_cm }} cm</b>
+
                 </div>
+
 
                 <div class="actions">
 
@@ -295,6 +446,7 @@
                         </button>
 
                     </form>
+
 
                     <form method="post"
                           action="/requests/{{ c.id }}">
@@ -348,13 +500,16 @@
 
                 </thead>
 
+
                 <tbody>
 
                     {% for m in managers %}
 
                     <tr>
 
-                        <td><strong>{{ m.name }}</strong></td>
+                        <td>
+                            <strong>{{ m.name }}</strong>
+                        </td>
 
                         <td>
                             {{ m.raee_types|join(', ')|replace('_', ' ') }}
@@ -399,6 +554,7 @@
 
         <div class="two-col">
 
+
             <!-- SOLICITUDES -->
 
             <section>
@@ -411,6 +567,7 @@
                     </div>
 
                 </div>
+
 
                 <div class="list-card">
 
@@ -465,6 +622,7 @@
 
                 </div>
 
+
                 <div class="list-card">
 
                     {% for e in events %}
@@ -517,5 +675,6 @@
     </main>
 
 </body>
+
 </html>
-```
+
