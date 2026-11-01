@@ -241,6 +241,43 @@ def init_db():
             )
         """)
 
+                # ----------------------------------
+        # TABLA: COMMUNITY_POSTS
+        # ----------------------------------
+
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS community_posts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                category TEXT NOT NULL,
+                post_type TEXT NOT NULL,
+                description TEXT NOT NULL,
+                author_name TEXT NOT NULL,
+                author_role TEXT NOT NULL,
+                status TEXT NOT NULL DEFAULT 'Recibida',
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
+        # ----------------------------------
+        # TABLA: COMMUNITY_COMMENTS
+        # ----------------------------------
+
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS community_comments (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                post_id INTEGER NOT NULL,
+                author_name TEXT NOT NULL,
+                author_role TEXT NOT NULL,
+                content TEXT NOT NULL,
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+                FOREIGN KEY (post_id)
+                    REFERENCES community_posts(id)
+                    ON DELETE CASCADE
+            )
+        """)
+
         conn.commit()
 
     print("Estructura de la base de datos verificada correctamente.")
