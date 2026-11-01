@@ -417,11 +417,6 @@ def reset_demo():
         "message": "Datos de demostración reiniciados."
     }
 
-
-# ==========================================
-# MODULO DE GESTORES
-# ==========================================
-
 # ------------------------------------------
 # MENU PRINCIPAL DEL GESTOR
 # ------------------------------------------
@@ -1239,11 +1234,10 @@ def foro_publicar(
             author_name,
             author_role
         ))
-
-    return RedirectResponse(
-        url="/foro",
-        status_code=303
-    )
+return RedirectResponse(
+    url="/foro",
+    status_code=303
+)
     
     <html lang="es">
     <head>
