@@ -1,0 +1,210 @@
+
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Ágora RAEE | Instituciones</title>
+
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <style>
+        .institution-header {
+            background: linear-gradient(135deg, #92400e, #d97706);
+            color: white;
+            padding: 28px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        .institution-header h1 {
+            margin: 8px 0;
+        }
+
+        .institution-header p {
+            color: #fef3c7;
+            margin-bottom: 0;
+        }
+
+        .institution-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .institution-card {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            padding: 24px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+            text-decoration: none;
+            color: #334155;
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .institution-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 22px rgba(0, 0, 0, .08);
+        }
+
+        .institution-icon {
+            display: grid;
+            place-items: center;
+            width: 52px;
+            height: 52px;
+            border-radius: 13px;
+            background: #fef3c7;
+            font-size: 25px;
+        }
+
+        .institution-card h3 {
+            margin: 4px 0;
+            color: #92400e;
+        }
+
+        .institution-card p {
+            margin: 0;
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .institution-action {
+            margin-top: auto;
+            padding-top: 12px;
+            color: #b45309;
+            font-weight: 650;
+            font-size: 14px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #92400e;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media (max-width: 800px) {
+            .institution-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div>
+            <p class="eyebrow">MARKETPLACE INTERINSTITUCIONAL</p>
+            <h1>Ágora <span>RAEE</span></h1>
+            <p class="subtitle">Portal de gestión institucional</p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="institution-header">
+            <p class="eyebrow">PORTAL INSTITUCIONAL</p>
+            <h1>Gestión de residuos electrónicos</h1>
+            <p>
+                Administra los equipos eléctricos y electrónicos
+                de tu institución y promueve su disposición responsable.
+            </p>
+        </section>
+
+        {% if notice %}
+        <div class="notice">
+            ✓ {{ notice.replace('+', ' ') }}
+        </div>
+        {% endif %}
+
+        <section class="section-heading">
+            <div>
+                <p class="eyebrow">MÓDULO INSTITUCIONAL</p>
+                <h2>Selecciona una funcionalidad</h2>
+            </div>
+            <p>
+                Accede a las herramientas para gestionar los activos
+                tecnológicos y sus residuos.
+            </p>
+        </section>
+
+        <section class="institution-grid">
+
+            <a href="/form/instituciones/registrar"
+               class="institution-card">
+
+                <span class="institution-icon">♻️</span>
+
+                <h3>Registrar RAEE</h3>
+
+                <p>
+                    Registra los equipos eléctricos y electrónicos
+                    que requieren gestión ambiental.
+                </p>
+
+                <span class="institution-action">
+                    Acceder →
+                </span>
+            </a>
+
+            <a href="/form/instituciones/bajas"
+               class="institution-card">
+
+                <span class="institution-icon">📋</span>
+
+                <h3>Gestionar bajas</h3>
+
+                <p>
+                    Administra el proceso de baja de activos
+                    tecnológicos de la institución.
+                </p>
+
+                <span class="institution-action">
+                    Acceder →
+                </span>
+            </a>
+
+            <a href="/form/instituciones/inventario"
+               class="institution-card">
+
+                <span class="institution-icon">📦</span>
+
+                <h3>Consultar inventario</h3>
+
+                <p>
+                    Consulta los registros de equipos, cantidades
+                    y estados de gestión.
+                </p>
+
+                <span class="institution-action">
+                    Acceder →
+                </span>
+            </a>
+
+        </section>
+
+        <a href="/" class="back-link">
+            ← Volver al inicio
+        </a>
+
+        <footer>
+            <strong>Ágora RAEE · Prototipo académico</strong>
+            <p>
+                Gestión responsable de residuos de aparatos
+                eléctricos y electrónicos.
+            </p>
+        </footer>
+
+    </main>
+
+</body>
+</html>
