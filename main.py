@@ -500,6 +500,110 @@ def tecnico_lotes(request: Request):
     )
 
 # ------------------------------------------
+# SOLICITUD DE EQUIPOS Y COMPONENTES - TECNICO
+# ------------------------------------------
+
+@app.get("/form/tecnico/solicitar", response_class=HTMLResponse)
+def tecnico_solicitar(request: Request, notice: str = ""):
+
+    return templates.TemplateResponse(
+        request=request,
+        name="tecnico/solicitar.html",
+        context={
+            "request": request,
+            "notice": notice
+        }
+    )
+
+
+@app.post("/form/tecnico/solicitar")
+def tecnico_guardar_solicitud(
+    applicant_name: str = Form(...),
+    resource_type: str = Form(...),
+    resource_name: str = Form(...),
+    quantity: int = Form(...),
+    justification: str = Form(...)
+):
+
+    # Limpiar los datos recibidos
+    applicant_name = applicant_name.strip()
+    resource_name = resource_name.strip()
+    justification = justification.strip()
+
+    # Validar campos obligatorios
+    if not applicant_name or not resource_name or not justification:
+        raise HTTPException(
+            status_code=400,
+            detail="Todos los campos son obligatorios."
+        )
+
+    # Validar el tipo de recurso
+    allowed_types = [
+        "Equipo completo",
+        "Componente"
+    ]
+
+    if resource_type not in allowed_types:
+        raise HTTPException(
+            status_code=400,
+            detail="Tipo de recurso no válido."
+        )
+
+    # Validar cantidad
+    if quantity < 1 or quantity > 1000:
+        raise HTTPException(
+            status_code=400,
+            detail="La cantidad debe estar entre 1 y 1000."
+        )
+
+    # Validar longitud de los campos
+    if (
+        len(applicant_name) > 120
+        or len(resource_name) > 120
+        or len(justification) > 1000
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail="Uno de los campos supera la longitud permitida."
+        )
+
+    # Guardar la solicitud en la base de datos
+    with connect() as conn:
+
+        cursor = conn.execute("""
+            INSERT INTO technical_requests (
+                applicant_name,
+                resource_type,
+                resource_name,
+                quantity,
+                justification,
+                status
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
+        """, (
+            applicant_name,
+            resource_type,
+            resource_name,
+            quantity,
+            justification,
+            "Pendiente"
+        ))
+
+        request_id = cursor.lastrowid
+
+    # Registrar actividad en el sistema
+    log_event(
+        "info",
+        f"Nueva solicitud técnica #{request_id}: {resource_name}"
+    )
+
+    # Redireccionar al menú técnico
+    return RedirectResponse(
+        url="/form/tecnico?notice=Solicitud+registrada+correctamente",
+        status_code=303
+    )
+
+# ------------------------------------------
 # REGISTRO DE RAEE INSTITUCIONAL
 # ------------------------------------------
 
