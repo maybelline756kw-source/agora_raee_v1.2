@@ -1241,15 +1241,15 @@ for post in posts:
     """
 
 
-    if not posts:
-        posts_html = """
-        <div class="forum-post empty-message">
-            <h3>¡El foro está esperando tu participación!</h3>
-            <p>Todavía no hay publicaciones registradas.</p>
-        </div>
-        """
+if not posts:
+    posts_html = """
+    <div class="forum-post empty-message">
+        <h3>¡El foro está esperando tu participación!</h3>
+        <p>Todavía no hay publicaciones registradas.</p>
+    </div>
+    """
 
-    return HTMLResponse(html.replace("{posts_html}", posts_html))
+return HTMLResponse(html.replace("{posts_html}", posts_html))
 
 
 @app.post("/foro/publicar")
