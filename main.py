@@ -546,8 +546,7 @@ def gestor_registro_submit(
         "info",
         f"Nueva empresa gestora registrada: {empresa}"
     )
-
-    return RedirectResponse(
+     return RedirectResponse(
         url="/form/gestor?notice=Empresa+registrada+correctamente",
         status_code=303
     )
