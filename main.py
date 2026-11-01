@@ -432,7 +432,21 @@ def gestor_menu(request: Request, notice: str = ""):
             "notice": notice
         }
     )
+# ------------------------------------------
+# MENU PRINCIPAL DE INSTITUCIONES
+# ------------------------------------------
 
+@app.get("/form/instituciones", response_class=HTMLResponse)
+def instituciones_menu(request: Request, notice: str = ""):
+
+    return templates.TemplateResponse(
+        request=request,
+        name="instituciones/menu.html",
+        context={
+            "request": request,
+            "notice": notice
+        }
+    )
 
 # ------------------------------------------
 # FORMULARIO DE REGISTRO DE GESTOR
