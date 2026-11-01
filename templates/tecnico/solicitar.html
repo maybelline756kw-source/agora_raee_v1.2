@@ -1,0 +1,333 @@
+
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Solicitar recursos | Ágora RAEE</title>
+
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <style>
+        .technician-header {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            color: white;
+            padding: 28px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+        }
+
+        .technician-header h1 {
+            margin: 8px 0;
+        }
+
+        .technician-header p {
+            color: #dbeafe;
+            margin-bottom: 0;
+        }
+
+        .request-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 28px;
+            margin-top: 22px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, .04);
+        }
+
+        .request-card h2 {
+            color: #1e40af;
+            margin-top: 0;
+        }
+
+        .request-description {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+
+        .request-form {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #334155;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: 14px;
+            color: #334155;
+            background: #fff;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, .12);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-help {
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .form-actions {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .btn-submit {
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 13px 24px;
+            border-radius: 9px;
+            font-weight: 650;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn-submit:hover {
+            background: #1e40af;
+        }
+
+        .btn-cancel {
+            padding: 13px 20px;
+            border-radius: 9px;
+            border: 1px solid #cbd5e1;
+            color: #475569;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 25px;
+            color: #1e40af;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media (max-width: 700px) {
+            .request-form {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full,
+            .form-actions {
+                grid-column: 1;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div>
+            <p class="eyebrow">MARKETPLACE INTERINSTITUCIONAL</p>
+            <h1>Ágora <span>RAEE</span></h1>
+            <p class="subtitle">Portal de aprovechamiento técnico</p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="technician-header">
+            <p class="eyebrow">PORTAL TÉCNICO</p>
+
+            <h1>Solicitud de equipos y componentes</h1>
+
+            <p>
+                Registra los recursos tecnológicos que necesitas
+                para desarrollar actividades de reparación,
+                mantenimiento y reutilización.
+            </p>
+        </section>
+
+        <section class="section-heading">
+            <div>
+                <p class="eyebrow">GESTIÓN DE RECURSOS</p>
+                <h2>Nueva solicitud</h2>
+            </div>
+
+            <p>
+                Completa la información del recurso requerido
+                para registrar tu solicitud en la plataforma.
+            </p>
+        </section>
+
+        {% if notice %}
+        <div class="notice">
+            ✓ {{ notice.replace('+', ' ') }}
+        </div>
+        {% endif %}
+
+        <section class="request-card">
+
+            <h2>Información de la solicitud</h2>
+
+            <p class="request-description">
+                Los campos marcados son obligatorios.
+            </p>
+
+            <form class="request-form"
+                  action="/form/tecnico/solicitar"
+                  method="POST">
+
+                <div class="form-group full">
+                    <label for="applicant_name">
+                        Nombre del solicitante *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="applicant_name"
+                        name="applicant_name"
+                        placeholder="Ingresa tu nombre completo"
+                        maxlength="120"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="resource_type">
+                        Tipo de recurso *
+                    </label>
+
+                    <select
+                        id="resource_type"
+                        name="resource_type"
+                        required
+                    >
+                        <option value="">Selecciona una opción</option>
+                        <option value="Equipo completo">
+                            Equipo completo
+                        </option>
+                        <option value="Componente">
+                            Componente
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="resource_name">
+                        Nombre del recurso *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="resource_name"
+                        name="resource_name"
+                        placeholder="Ej. Computador, memoria RAM..."
+                        maxlength="120"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="quantity">
+                        Cantidad requerida *
+                    </label>
+
+                    <input
+                        type="number"
+                        id="quantity"
+                        name="quantity"
+                        min="1"
+                        max="1000"
+                        placeholder="Ej. 2"
+                        required
+                    >
+                    <span class="form-help">
+                        Indica el número de unidades que necesitas.
+                    </span>
+                </div>
+
+                <div class="form-group full">
+                    <label for="justification">
+                        Justificación de la solicitud *
+                    </label>
+
+                    <textarea
+                        id="justification"
+                        name="justification"
+                        placeholder="Describe para qué necesitas el equipo o componente y qué actividad realizarás con él..."
+                        maxlength="1000"
+                        required
+                    ></textarea>
+                </div>
+
+                <div class="form-actions">
+
+                    <a href="/form/tecnico"
+                       class="btn-cancel">
+                        Cancelar
+                    </a>
+
+                    <button type="submit" class="btn-submit">
+                        Registrar solicitud →
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+        <a href="/form/tecnico" class="back-link">
+            ← Volver al portal técnico
+        </a>
+
+        <footer>
+            <strong>Ágora RAEE · Prototipo académico</strong>
+
+            <p>
+                Articulación tecnológica para la recuperación
+                y el aprovechamiento responsable de residuos RAEE.
+            </p>
+        </footer>
+
+    </main>
+
+</body>
+</html>
