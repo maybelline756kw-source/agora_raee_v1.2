@@ -1274,3 +1274,84 @@ def foro_comunitario(request: Request):
 
     # Return the completed HTML page
     return HTMLResponse(html.replace("{posts_html}", posts_html))
+
+    
+@app.post("/foro/comentar")
+def foro_comentar(
+    post_id: int = Form(...),
+    author_name: str = Form(...),
+    author_role: str = Form(...),
+    content: str = Form(...)
+):
+    # Clean input values
+    author_name = author_name.strip()
+    content = content.strip()
+
+    # Allowed participant profiles
+    allowed_roles = [
+        "Ciudadanía",
+        "Gestor",
+        "Institución",
+        "Técnico"
+    ]
+
+    # Validate required fields
+    if not author_name or not content:
+        raise HTTPException(
+            status_code=400,
+            detail="Nombre y comentario son obligatorios."
+        )
+
+    if post_id <= 0:
+        raise HTTPException(
+            status_code=400,
+            detail="Publicación inválida."
+        )
+
+    if author_role not in allowed_roles:
+        raise HTTPException(
+            status_code=400,
+            detail="Perfil inválido."
+        )
+
+    if len(author_name) > 100 or len(content) > 2000:
+        raise HTTPException(
+            status_code=400,
+            detail="El comentario supera la longitud permitida."
+        )
+
+    # Save comment in the database
+    with connect() as conn:
+
+        post = conn.execute(
+            "SELECT id FROM community_posts WHERE id = ?",
+            (post_id,)
+        ).fetchone()
+
+        if post is None:
+            raise HTTPException(
+                status_code=404,
+                detail="Publicación no encontrada."
+            )
+
+        conn.execute("""
+            INSERT INTO community_comments (
+                post_id,
+                author_name,
+                author_role,
+                content
+            )
+            VALUES (?, ?, ?, ?)
+        """, (
+            post_id,
+            author_name,
+            author_role,
+            content
+        ))
+
+    # Return to the community forum
+    return RedirectResponse(
+        url="/foro",
+        status_code=303
+    )
+
