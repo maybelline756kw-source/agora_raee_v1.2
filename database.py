@@ -242,7 +242,29 @@ def init_db():
             )
         """)
 
-                # ----------------------------------
+        
+        # ----------------------------------
+        # TABLA: TECHNICAL_REQUESTS
+        # ----------------------------------
+
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS technical_requests (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+                applicant_name TEXT NOT NULL,
+                resource_type TEXT NOT NULL,
+                resource_name TEXT NOT NULL,
+                quantity INTEGER NOT NULL,
+                justification TEXT NOT NULL,
+
+                status TEXT NOT NULL DEFAULT 'Pendiente',
+
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
+
+        # ----------------------------------
         # TABLA: COMMUNITY_POSTS
         # ----------------------------------
 
