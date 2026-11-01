@@ -546,7 +546,8 @@ def gestor_registro_submit(
         "info",
         f"Nueva empresa gestora registrada: {empresa}"
     )
-     return RedirectResponse(
+    
+    return RedirectResponse(
         url="/form/gestor?notice=Empresa+registrada+correctamente",
         status_code=303
     )
@@ -778,7 +779,8 @@ def ciudadania_registrar_submit(
         "info",
         f"Nuevo registro RAEE #{record_id}: {equipment_type} ({quantity} unidad/es)"
     )
-        return RedirectResponse(
+    
+    return RedirectResponse(
         url="/form/ciudadania/registrar?notice=RAEE+registrado+correctamente",
         status_code=303
     )
@@ -891,7 +893,7 @@ def ciudadania_solicitar_recoleccion(
         f"Solicitud de recolección #{request_id} creada para el registro RAEE #{record_id}"
     )
 
-       return RedirectResponse(
+    return RedirectResponse(
         url="/form/ciudadania/recoleccion?notice=Solicitud+de+recoleccion+registrada+correctamente",
         status_code=303
     )
