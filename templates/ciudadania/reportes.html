@@ -1,0 +1,160 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes ciudadanos | Ágora RAEE</title>
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <style>
+        body {
+            margin: 0;
+            background: #f3f7f3;
+            font-family: Arial, sans-serif;
+            color: #334155;
+        }
+
+        header {
+            background: #245c43;
+            color: white;
+            padding: 22px 7%;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+
+        main {
+            max-width: 950px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .report {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            margin-bottom: 18px;
+            border: 1px solid #e0e9e1;
+            box-shadow: 0 3px 10px rgba(0,0,0,.04);
+        }
+
+        h1, h3 {
+            color: #245c43;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            background: #e0eee3;
+            color: #245c43;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .meta {
+            color: #718077;
+            font-size: 13px;
+        }
+
+        .notice {
+            padding: 12px;
+            background: #e0eee3;
+            color: #245c43;
+            border-radius: 8px;
+        }
+
+        .button {
+            display: inline-block;
+            margin: 15px 0 25px;
+            padding: 12px 18px;
+            background: #2d7952;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+        }
+
+        .empty {
+            padding: 30px;
+            background: white;
+            border-radius: 12px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>♻ Ágora RAEE</h2>
+    <a href="/form/ciudadania">← Volver al menú ciudadano</a>
+</header>
+
+<main>
+
+    <h1>Reportes ciudadanos</h1>
+
+    <p>
+        Consulta los reportes registrados en el sistema
+        y su estado actual.
+    </p>
+
+    {% if notice %}
+        <p class="notice">{{ notice }}</p>
+    {% endif %}
+
+    <a href="/form/ciudadania/reportar" class="button">
+        + Registrar nuevo reporte
+    </a>
+
+    {% if reportes %}
+
+        {% for reporte in reportes %}
+
+            <article class="report">
+
+                <h3>Reporte #{{ reporte.id }}</h3>
+
+                <p>
+                    <strong>Categoría:</strong>
+                    {{ reporte.category }}
+                </p>
+
+                <p>
+                    <strong>Descripción:</strong>
+                    {{ reporte.description }}
+                </p>
+
+                <p>
+                    <strong>Ubicación:</strong>
+                    {{ reporte.location }}
+                </p>
+
+                <p class="meta">
+                    Registrado: {{ reporte.created_at }}
+                </p>
+
+                <span class="status">
+                    {{ reporte.status }}
+                </span>
+
+            </article>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+            <h3>Aún no hay reportes registrados</h3>
+            <p>Los nuevos reportes aparecerán en este espacio.</p>
+        </div>
+
+    {% endif %}
+
+</main>
+
+</body>
+</html>
