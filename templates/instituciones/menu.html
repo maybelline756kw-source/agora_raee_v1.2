@@ -9,94 +9,6 @@
     <title>Ágora RAEE | Instituciones</title>
 
     <link rel="stylesheet" href="/static/styles.css">
-
-    <style>
-        .institution-header {
-            background: linear-gradient(135deg, #92400e, #d97706);
-            color: white;
-            padding: 28px;
-            border-radius: 16px;
-            margin-bottom: 30px;
-        }
-
-        .institution-header h1 {
-            margin: 8px 0;
-        }
-
-        .institution-header p {
-            color: #fef3c7;
-            margin-bottom: 0;
-        }
-
-        .institution-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 20px;
-            margin-top: 25px;
-        }
-
-        .institution-card {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            padding: 24px;
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 15px;
-            text-decoration: none;
-            color: #334155;
-            transition: transform .2s, box-shadow .2s;
-        }
-
-        .institution-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 22px rgba(0, 0, 0, .08);
-        }
-
-        .institution-icon {
-            display: grid;
-            place-items: center;
-            width: 52px;
-            height: 52px;
-            border-radius: 13px;
-            background: #fef3c7;
-            font-size: 25px;
-        }
-
-        .institution-card h3 {
-            margin: 4px 0;
-            color: #92400e;
-        }
-
-        .institution-card p {
-            margin: 0;
-            color: #64748b;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .institution-action {
-            margin-top: auto;
-            padding-top: 12px;
-            color: #b45309;
-            font-weight: 650;
-            font-size: 14px;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 25px;
-            color: #92400e;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        @media (max-width: 800px) {
-            .institution-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
 </head>
 
 <body>
@@ -109,15 +21,27 @@
         </div>
     </header>
 
-    <main class="container">
+    <main class="container institution-page">
+
+        <!-- ENCABEZADO INSTITUCIONAL -->
 
         <section class="institution-header">
-            <p class="eyebrow">PORTAL INSTITUCIONAL</p>
-            <h1>Gestión de residuos electrónicos</h1>
-            <p>
-                Administra los equipos eléctricos y electrónicos
-                de tu institución y promueve su disposición responsable.
-            </p>
+
+            <div class="institution-header-content">
+                <p class="eyebrow">PORTAL INSTITUCIONAL</p>
+
+                <h1>Gestión de residuos electrónicos</h1>
+
+                <p>
+                    Administra los equipos eléctricos y electrónicos
+                    de tu institución y promueve su disposición responsable.
+                </p>
+            </div>
+
+            <div class="institution-header-symbol">
+                🏛️
+            </div>
+
         </section>
 
         {% if notice %}
@@ -126,218 +50,256 @@
         </div>
         {% endif %}
 
-        <section class="section-heading">
-            <div>
-                <p class="eyebrow">MÓDULO INSTITUCIONAL</p>
-                <h2>Selecciona una funcionalidad</h2>
+
+        <!-- FUNCIONALIDADES -->
+
+        <section class="institution-section">
+
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">MÓDULO INSTITUCIONAL</p>
+                    <h2>Herramientas de gestión</h2>
+                </div>
+
+                <p>
+                    Accede a las herramientas para gestionar los activos
+                    tecnológicos y sus residuos.
+                </p>
             </div>
-            <p>
-                Accede a las herramientas para gestionar los activos
-                tecnológicos y sus residuos.
-            </p>
+
+
+            <div class="institution-grid">
+
+                <a href="/form/instituciones/registrar"
+                   class="institution-card">
+
+                    <div class="institution-icon">
+                        ♻️
+                    </div>
+
+                    <h3>Registrar RAEE</h3>
+
+                    <p>
+                        Registra los equipos eléctricos y electrónicos
+                        que requieren gestión ambiental.
+                    </p>
+
+                    <span class="institution-action">
+                        Acceder al módulo <span>→</span>
+                    </span>
+
+                </a>
+
+
+                <a href="/form/instituciones/bajas"
+                   class="institution-card">
+
+                    <div class="institution-icon">
+                        📋
+                    </div>
+
+                    <h3>Gestionar bajas</h3>
+
+                    <p>
+                        Administra el proceso de baja de activos
+                        tecnológicos de la institución.
+                    </p>
+
+                    <span class="institution-action">
+                        Acceder al módulo <span>→</span>
+                    </span>
+
+                </a>
+
+
+                <a href="/form/instituciones/inventario"
+                   class="institution-card">
+
+                    <div class="institution-icon">
+                        📦
+                    </div>
+
+                    <h3>Consultar inventario</h3>
+
+                    <p>
+                        Consulta los registros de equipos, cantidades
+                        y estados de gestión.
+                    </p>
+
+                    <span class="institution-action">
+                        Acceder al módulo <span>→</span>
+                    </span>
+
+                </a>
+
+            </div>
+
         </section>
 
-        <section class="institution-grid">
 
-            <a href="/form/instituciones/registrar"
-               class="institution-card">
+        <!-- MARCO NORMATIVO -->
 
-                <span class="institution-icon">♻️</span>
+        <section class="institution-legal">
 
-                <h3>Registrar RAEE</h3>
+            <div class="institution-legal-icon">
+                ⚖️
+            </div>
 
-                <p>
-                    Registra los equipos eléctricos y electrónicos
-                    que requieren gestión ambiental.
-                </p>
-
-                <span class="institution-action">
-                    Acceder →
-                </span>
-            </a>
-
-            <a href="/form/instituciones/bajas"
-               class="institution-card">
-
-                <span class="institution-icon">📋</span>
-
-                <h3>Gestionar bajas</h3>
+            <div class="institution-legal-text">
+                <h3>Marco normativo ambiental</h3>
 
                 <p>
-                    Administra el proceso de baja de activos
-                    tecnológicos de la institución.
+                    Consulta las disposiciones y lineamientos relacionados
+                    con la gestión integral de los residuos RAEE.
                 </p>
+            </div>
 
-                <span class="institution-action">
-                    Acceder →
-                </span>
-            </a>
-
-            <a href="/form/instituciones/inventario"
-               class="institution-card">
-
-                <span class="institution-icon">📦</span>
-
-                <h3>Consultar inventario</h3>
-
-                <p>
-                    Consulta los registros de equipos, cantidades
-                    y estados de gestión.
-                </p>
-
-                <span class="institution-action">
-                    Acceder →
-                </span>
+            <a href="/form/marco-normativo"
+               class="institution-legal-button">
+                Consultar normativa →
             </a>
 
         </section>
 
 
-        <div style="text-align: center; margin: 30px 0;">
-    <a href="/form/marco-normativo"
-       style="display: inline-block;
-              padding: 13px 25px;
-              background: #1e3a5f;
-              color: white;
-              text-decoration: none;
-              border-radius: 9px;
-              font-weight: 600;">
-        ⚖️ Consultar marco normativo
-    </a>
-</div>
+        <!-- RESULTADOS COMUNES -->
 
-        
-<!-- ==========================================
-     SALIDAS COMUNES DE AGORA RAEE
-========================================== -->
+        <section class="common-outcomes institution-outcomes">
 
-<section class="common-outcomes">
+            <div class="common-outcomes-heading">
 
-    <div class="common-outcomes-heading">
+                <p class="eyebrow">RESULTADOS DEL SISTEMA</p>
 
-        <p class="eyebrow">RESULTADOS DEL SISTEMA</p>
+                <h2>Resultados y seguimiento de la gestión</h2>
 
-        <h2>Resultados y seguimiento de la gestión</h2>
+                <p>
+                    Ágora RAEE articula las actividades de ciudadanía,
+                    instituciones, gestores y técnicos mediante tres
+                    resultados comunes orientados a la gestión responsable
+                    de los residuos de aparatos eléctricos y electrónicos.
+                </p>
 
-        <p>
-            Ágora RAEE articula las actividades de ciudadanía,
-            instituciones, gestores y técnicos mediante tres
-            resultados comunes orientados a la gestión responsable
-            de los residuos de aparatos eléctricos y electrónicos.
-        </p>
-
-    </div>
-
-    <div class="outcomes-grid">
-
-        <!-- SALIDA 1 -->
-
-        <article class="outcome-card">
-
-            <div class="outcome-icon">♻️</div>
-
-            <h3>1. Gestión integral y aprovechamiento de los RAEE</h3>
-
-            <p>
-                Promover la gestión adecuada de los residuos
-                mediante procesos de recuperación y aprovechamiento.
-            </p>
-
-            <ul>
-                <li>RAEE registrados y clasificados.</li>
-                <li>RAEE reparados.</li>
-                <li>RAEE reutilizados.</li>
-                <li>RAEE aprovechados.</li>
-                <li>RAEE entregados a gestores.</li>
-                <li>RAEE dispuestos adecuadamente.</li>
-            </ul>
-
-            <span class="outcome-status">
-                Resultado esperado
-            </span>
-
-        </article>
+            </div>
 
 
-        <!-- SALIDA 2 -->
+            <div class="outcomes-grid">
 
-        <article class="outcome-card">
+                <article class="outcome-card">
 
-            <div class="outcome-icon">🚚</div>
+                    <div class="outcome-icon">♻️</div>
 
-            <h3>2. Trazabilidad y coordinación logística</h3>
+                    <h3>1. Gestión integral y aprovechamiento de los RAEE</h3>
 
-            <p>
-                Facilitar el seguimiento de los residuos y la
-                articulación entre los actores involucrados
-                durante las etapas de gestión.
-            </p>
+                    <p>
+                        Promover la gestión adecuada de los residuos
+                        mediante procesos de recuperación y aprovechamiento.
+                    </p>
 
-            <ul>
-                <li>Actor responsable.</li>
-                <li>Gestión asignada y coordinada.</li>
-                <li>Destino de los residuos.</li>
-                <li>Punto de entrega.</li>
-                <li>Ruta logística.</li>
-                <li>Estado de gestión.</li>
-            </ul>
+                    <ul>
+                        <li>RAEE registrados y clasificados.</li>
+                        <li>RAEE reparados.</li>
+                        <li>RAEE reutilizados.</li>
+                        <li>RAEE aprovechados.</li>
+                        <li>RAEE entregados a gestores.</li>
+                        <li>RAEE dispuestos adecuadamente.</li>
+                    </ul>
 
-            <span class="outcome-status">
-                Resultado esperado
-            </span>
+                    <span class="outcome-status">
+                        Resultado esperado
+                    </span>
 
-        </article>
-
-
-        <!-- SALIDA 3 -->
-
-        <article class="outcome-card">
-
-            <div class="outcome-icon">📊</div>
-
-            <h3>3. Indicadores de gestión e impacto ambiental y social</h3>
-
-            <p>
-                Consolidar información que permita evaluar
-                el desarrollo de las actividades y la participación
-                de los actores del sistema.
-            </p>
-
-            <ul>
-                <li>RAEE registrados.</li>
-                <li>Gestores participantes.</li>
-                <li>RAEE reutilizados.</li>
-                <li>RAEE aprovechados.</li>
-                <li>Participación institucional.</li>
-                <li>Participación de comunidades rurales.</li>
-                <li>Impacto ambiental y social estimado.</li>
-            </ul>
-
-            <span class="outcome-status">
-                Indicadores por consolidar
-            </span>
-
-        </article>
-
-    </div>
-
-    <div class="outcome-note">
-        <strong>Nota:</strong>
-        Los resultados e indicadores representan los objetivos
-        del modelo de gestión. Su medición depende del registro,
-        seguimiento y consolidación de la información generada
-        durante los procesos del sistema.
-    </div>
-
-</section>
+                </article>
 
 
-        <a href="/" class="back-link">
+                <article class="outcome-card">
+
+                    <div class="outcome-icon">🚚</div>
+
+                    <h3>2. Trazabilidad y coordinación logística</h3>
+
+                    <p>
+                        Facilitar el seguimiento de los residuos y la
+                        articulación entre los actores involucrados
+                        durante las etapas de gestión.
+                    </p>
+
+                    <ul>
+                        <li>Actor responsable.</li>
+                        <li>Gestión asignada y coordinada.</li>
+                        <li>Destino de los residuos.</li>
+                        <li>Punto de entrega.</li>
+                        <li>Ruta logística.</li>
+                        <li>Estado de gestión.</li>
+                    </ul>
+
+                    <span class="outcome-status">
+                        Resultado esperado
+                    </span>
+
+                </article>
+
+
+                <article class="outcome-card">
+
+                    <div class="outcome-icon">📊</div>
+
+                    <h3>3. Indicadores de gestión e impacto ambiental y social</h3>
+
+                    <p>
+                        Consolidar información que permita evaluar
+                        el desarrollo de las actividades y la participación
+                        de los actores del sistema.
+                    </p>
+
+                    <ul>
+                        <li>RAEE registrados.</li>
+                        <li>Gestores participantes.</li>
+                        <li>RAEE reutilizados.</li>
+                        <li>RAEE aprovechados.</li>
+                        <li>Participación institucional.</li>
+                        <li>Participación de comunidades rurales.</li>
+                        <li>Impacto ambiental y social estimado.</li>
+                    </ul>
+
+                    <span class="outcome-status">
+                        Indicadores por consolidar
+                    </span>
+
+                </article>
+
+            </div>
+
+
+            <div class="outcome-note">
+                <strong>Nota:</strong>
+                Los resultados e indicadores representan los objetivos
+                del modelo de gestión. Su medición depende del registro,
+                seguimiento y consolidación de la información generada
+                durante los procesos del sistema.
+            </div>
+
+        </section>
+
+
+        <!-- NAVEGACIÓN -->
+
+        <a href="/" class="institution-back-link">
             ← Volver al inicio
         </a>
 
+
         <footer>
-            <strong>Ágora RAEE · Prototipo académico - Contacta a soporte al: maybelline756kw@gmail.com</strong>
+            <strong>
+                Ágora RAEE · Prototipo académico
+            </strong>
+
+            <p>
+                Contacta a soporte:
+                <a href="mailto:maybelline756kw@gmail.com">
+                    maybelline756kw@gmail.com
+                </a>
+            </p>
+
             <p>
                 Gestión responsable de residuos de aparatos
                 eléctricos y electrónicos.
@@ -348,3 +310,4 @@
 
 </body>
 </html>
+
