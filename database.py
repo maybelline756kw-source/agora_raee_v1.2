@@ -301,7 +301,7 @@ def init_db():
             )
         """)
 
-                # ----------------------------------
+        # ----------------------------------
         # TABLA: CITIZEN_REPORTS
         # ----------------------------------
 
@@ -316,6 +316,22 @@ def init_db():
             )
         """)
 
+        # ----------------------------------
+        # TABLA: SYSTEM_UPDATES
+        # ----------------------------------
+
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS system_updates (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                category TEXT NOT NULL,
+                content TEXT NOT NULL,
+                author_name TEXT NOT NULL,
+                author_role TEXT NOT NULL,
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+        
         conn.commit()
 
     print("Estructura de la base de datos verificada correctamente.")
