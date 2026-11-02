@@ -1,64 +1,49 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Panel de Gestor | Ágora RAEE</title>
+    <title>Panel de Gestión | Ágora RAEE</title>
 
     <link rel="stylesheet" href="/static/styles.css">
 </head>
 
-<body>
+<body class="manager-page">
 
-    <!-- ================================= -->
-    <!-- ENCABEZADO DEL MODULO -->
-    <!-- ================================= -->
-
-    <header class="topbar"
-        style="background: linear-gradient(135deg, #2f855a, #48bb78); color: white;">
+    <!-- ENCABEZADO -->
+    <header class="topbar">
 
         <div>
-
-            <p class="eyebrow" style="color: #e2f8f0;">
+            <p class="eyebrow">
                 MARKETPLACE INTERINSTITUCIONAL Y COMUNITARIO
             </p>
 
             <h1>Panel de <span>Gestión</span></h1>
 
-            <p class="subtitle" style="color: #e2f8f0;">
+            <p class="subtitle">
                 Administración y aprovechamiento responsable de residuos RAEE
             </p>
-
         </div>
 
-        <a class="api-link"
-           href="/"
-           style="background: rgba(255,255,255,0.2); color: white;">
-
+        <a class="api-link" href="/">
             ← Volver al inicio
-
         </a>
 
     </header>
 
 
-    <main class="container">
+    <main class="container manager-container">
 
-        <!-- ================================= -->
-        <!-- PRESENTACION -->
-        <!-- ================================= -->
-
+        <!-- PRESENTACIÓN -->
         <section class="section-heading">
 
             <div>
-
                 <p class="eyebrow">PERFIL DE GESTOR</p>
 
                 <h2>Bienvenido al módulo de gestión</h2>
-
             </div>
 
             <p>
@@ -70,26 +55,15 @@
         </section>
 
 
-        <!-- ================================= -->
         <!-- OPCIONES DEL GESTOR -->
-        <!-- ================================= -->
+        <section class="manager-grid">
 
-        <section style="
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        ">
-
-
-            <!-- OPCION 1: REGISTRO -->
-
-            <article class="container-card"
-                style="border-top: 4px solid #2f855a;">
+            <!-- REGISTRO DE EMPRESA -->
+            <article class="container-card manager-card manager-register">
 
                 <div class="device-icon">🏢</div>
 
-                <h3>1. Registro de empresa</h3>
+                <h3>Registro de empresa</h3>
 
                 <p class="muted">
                     Registra los datos de la empresa gestora,
@@ -97,30 +71,19 @@
                     cobertura geográfica y servicios ofrecidos.
                 </p>
 
-                <a href="/form/gestor/registro"
-                   class="button primary"
-                   style="
-                       display: block;
-                       text-align: center;
-                       margin-top: 1rem;
-                       text-decoration: none;
-                   ">
-
+                <a href="/form/gestor/registro" class="button primary">
                     Registrar empresa
-
                 </a>
 
             </article>
 
 
-            <!-- OPCION 2: LOTES -->
+            <!-- POSTULACIÓN Y LOTES -->
+            <article class="container-card manager-card manager-lots">
 
-            <article class="container-card"
-                style="border-top: 4px solid #3182ce;">
+                <div class="device-icon">♻️</div>
 
-                <div class="device-icon">♻</div>
-
-                <h3>2. Postulación y lotes</h3>
+                <h3>Postulación y lotes</h3>
 
                 <p class="muted">
                     Consulta los lotes de residuos disponibles,
@@ -128,30 +91,19 @@
                     según tu capacidad y compatibilidad.
                 </p>
 
-                <a href="/form/gestor/lotes"
-                   class="button secondary"
-                   style="
-                       display: block;
-                       text-align: center;
-                       margin-top: 1rem;
-                       text-decoration: none;
-                   ">
-
+                <a href="/form/gestor/lotes" class="button secondary">
                     Consultar lotes
-
                 </a>
 
             </article>
 
 
-            <!-- OPCION 3: RUTAS -->
+            <!-- RUTAS DE GESTIÓN -->
+            <article class="container-card manager-card manager-routes">
 
-            <article class="container-card"
-                style="border-top: 4px solid #d69e2e;">
+                <div class="device-icon">⚙️</div>
 
-                <div class="device-icon">⚙</div>
-
-                <h3>3. Rutas de gestión</h3>
+                <h3>Rutas de gestión</h3>
 
                 <p class="muted">
                     Define el tratamiento adecuado para los residuos:
@@ -159,31 +111,19 @@
                     de manera responsable.
                 </p>
 
-                <a href="/form/gestor/rutas"
-                   class="button primary"
-                   style="
-                       display: block;
-                       text-align: center;
-                       margin-top: 1rem;
-                       text-decoration: none;
-                       background-color: #d69e2e;
-                   ">
-
+                <a href="/form/gestor/rutas" class="button primary">
                     Gestionar rutas
-
                 </a>
 
             </article>
 
 
-            <!-- OPCION 4: GEOREFERENCIACION -->
-
-            <article class="container-card"
-                style="border-top: 4px solid #4a5568;">
+            <!-- GEOREFERENCIACIÓN -->
+            <article class="container-card manager-card manager-location">
 
                 <div class="device-icon">📍</div>
 
-                <h3>4. Georreferenciación</h3>
+                <h3>Georreferenciación</h3>
 
                 <p class="muted">
                     Consulta ubicaciones de los actores,
@@ -191,66 +131,51 @@
                     de zonas rurales y urbanas.
                 </p>
 
-                <a href="/form/gestor/georreferenciacion"
-                   class="button secondary"
-                   style="
-                       display: block;
-                       text-align: center;
-                       margin-top: 1rem;
-                       text-decoration: none;
-                       background-color: #4a5568;
-                   ">
-
+                <a href="/form/gestor/georreferenciacion" class="button secondary">
                     Consultar ubicación
-
                 </a>
 
             </article>
 
-            <article class="citizen-card">
-    <div class="symbol">📢</div>
 
-    <h3>Novedades y actualizaciones</h3>
+            <!-- NOVEDADES Y ACTUALIZACIONES -->
+            <article class="container-card manager-card manager-update-card">
 
-    <p>
-        Consulta jornadas de recolección, campañas ambientales
-        y novedades de Ágora RAEE.
-    </p>
+                <div class="device-icon">📢</div>
 
-    <a href="/actualizaciones" class="citizen-button">
-        Consultar novedades
-    </a>
-</article>
+                <h3>Novedades y actualizaciones</h3>
 
+                <p class="muted">
+                    Consulta jornadas de recolección, campañas ambientales
+                    y novedades de Ágora RAEE.
+                </p>
+
+                <a href="/actualizaciones" class="button primary">
+                    Consultar novedades
+                </a>
+
+            </article>
 
         </section>
 
-        <div style="text-align: center; margin: 30px 0;">
-    <a href="/form/marco-normativo"
-       style="display: inline-block;
-              padding: 13px 25px;
-              background: #1e3a5f;
-              color: white;
-              text-decoration: none;
-              border-radius: 9px;
-              font-weight: 600;">
-        ⚖️ Consultar marco normativo
-    </a>
-</div>
+
+        <!-- MARCO NORMATIVO -->
+        <div class="normative-container">
+
+            <a href="/form/marco-normativo" class="normative-link">
+                ⚖️ Consultar marco normativo
+            </a>
+
+        </div>
 
 
-        <!-- ================================= -->
-        <!-- INFORMACION DEL MODULO -->
-        <!-- ================================= -->
-
-        <section class="section-heading" style="margin-top: 2rem;">
+        <!-- OBJETIVO DEL PERFIL -->
+        <section class="section-heading manager-objective">
 
             <div>
-
                 <p class="eyebrow">OBJETIVO DEL PERFIL</p>
 
                 <h2>Gestión responsable de RAEE</h2>
-
             </div>
 
             <p>
@@ -262,140 +187,145 @@
 
         </section>
 
-        
-<!-- ==========================================
-     SALIDAS COMUNES DE AGORA RAEE
-========================================== -->
 
-<section class="common-outcomes">
+        <!-- RESULTADOS COMUNES DEL SISTEMA -->
+        <section class="common-outcomes">
 
-    <div class="common-outcomes-heading">
+            <div class="common-outcomes-heading">
 
-        <p class="eyebrow">RESULTADOS DEL SISTEMA</p>
+                <p class="eyebrow">RESULTADOS DEL SISTEMA</p>
 
-        <h2>Resultados y seguimiento de la gestión</h2>
+                <h2>Resultados y seguimiento de la gestión</h2>
 
-        <p>
-            Ágora RAEE articula las actividades de ciudadanía,
-            instituciones, gestores y técnicos mediante tres
-            resultados comunes orientados a la gestión responsable
-            de los residuos de aparatos eléctricos y electrónicos.
-        </p>
+                <p>
+                    Ágora RAEE articula las actividades de ciudadanía,
+                    instituciones, gestores y técnicos mediante tres
+                    resultados comunes orientados a la gestión responsable
+                    de los residuos de aparatos eléctricos y electrónicos.
+                </p>
 
-    </div>
-
-    <div class="outcomes-grid">
-
-        <!-- SALIDA 1 -->
-
-        <article class="outcome-card">
-
-            <div class="outcome-icon">♻️</div>
-
-            <h3>1. Gestión integral y aprovechamiento de los RAEE</h3>
-
-            <p>
-                Promover la gestión adecuada de los residuos
-                mediante procesos de recuperación y aprovechamiento.
-            </p>
-
-            <ul>
-                <li>RAEE registrados y clasificados.</li>
-                <li>RAEE reparados.</li>
-                <li>RAEE reutilizados.</li>
-                <li>RAEE aprovechados.</li>
-                <li>RAEE entregados a gestores.</li>
-                <li>RAEE dispuestos adecuadamente.</li>
-            </ul>
-
-            <span class="outcome-status">
-                Resultado esperado
-            </span>
-
-        </article>
+            </div>
 
 
-        <!-- SALIDA 2 -->
+            <div class="outcomes-grid">
 
-        <article class="outcome-card">
+                <!-- RESULTADO 1 -->
+                <article class="outcome-card">
 
-            <div class="outcome-icon">🚚</div>
+                    <div class="outcome-icon">♻️</div>
 
-            <h3>2. Trazabilidad y coordinación logística</h3>
+                    <h3>Gestión integral y aprovechamiento de los RAEE</h3>
 
-            <p>
-                Facilitar el seguimiento de los residuos y la
-                articulación entre los actores involucrados
-                durante las etapas de gestión.
-            </p>
+                    <p>
+                        Promover la gestión adecuada de los residuos
+                        mediante procesos de recuperación y aprovechamiento.
+                    </p>
 
-            <ul>
-                <li>Actor responsable.</li>
-                <li>Gestión asignada y coordinada.</li>
-                <li>Destino de los residuos.</li>
-                <li>Punto de entrega.</li>
-                <li>Ruta logística.</li>
-                <li>Estado de gestión.</li>
-            </ul>
+                    <ul>
+                        <li>RAEE registrados y clasificados.</li>
+                        <li>RAEE reparados.</li>
+                        <li>RAEE reutilizados.</li>
+                        <li>RAEE aprovechados.</li>
+                        <li>RAEE entregados a gestores.</li>
+                        <li>RAEE dispuestos adecuadamente.</li>
+                    </ul>
 
-            <span class="outcome-status">
-                Resultado esperado
-            </span>
+                    <span class="outcome-status">
+                        Resultado esperado
+                    </span>
 
-        </article>
-
-
-        <!-- SALIDA 3 -->
-
-        <article class="outcome-card">
-
-            <div class="outcome-icon">📊</div>
-
-            <h3>3. Indicadores de gestión e impacto ambiental y social</h3>
-
-            <p>
-                Consolidar información que permita evaluar
-                el desarrollo de las actividades y la participación
-                de los actores del sistema.
-            </p>
-
-            <ul>
-                <li>RAEE registrados.</li>
-                <li>Gestores participantes.</li>
-                <li>RAEE reutilizados.</li>
-                <li>RAEE aprovechados.</li>
-                <li>Participación institucional.</li>
-                <li>Participación de comunidades rurales.</li>
-                <li>Impacto ambiental y social estimado.</li>
-            </ul>
-
-            <span class="outcome-status">
-                Indicadores por consolidar
-            </span>
-
-        </article>
-
-    </div>
-
-    <div class="outcome-note">
-        <strong>Nota:</strong>
-        Los resultados e indicadores representan los objetivos
-        del modelo de gestión. Su medición depende del registro,
-        seguimiento y consolidación de la información generada
-        durante los procesos del sistema.
-    </div>
-
-</section>
+                </article>
 
 
+                <!-- RESULTADO 2 -->
+                <article class="outcome-card">
 
-        <!-- ================================= -->
-        <!-- PIE DE PAGINA -->
-        <!-- ================================= -->
+                    <div class="outcome-icon">🚚</div>
 
+                    <h3>Trazabilidad y coordinación logística</h3>
+
+                    <p>
+                        Facilitar el seguimiento de los residuos y la
+                        articulación entre los actores involucrados
+                        durante las etapas de gestión.
+                    </p>
+
+                    <ul>
+                        <li>Actor responsable.</li>
+                        <li>Gestión asignada y coordinada.</li>
+                        <li>Destino de los residuos.</li>
+                        <li>Punto de entrega.</li>
+                        <li>Ruta logística.</li>
+                        <li>Estado de gestión.</li>
+                    </ul>
+
+                    <span class="outcome-status">
+                        Resultado esperado
+                    </span>
+
+                </article>
+
+
+                <!-- RESULTADO 3 -->
+                <article class="outcome-card">
+
+                    <div class="outcome-icon">📊</div>
+
+                    <h3>Indicadores de gestión e impacto ambiental y social</h3>
+
+                    <p>
+                        Consolidar información que permita evaluar
+                        el desarrollo de las actividades y la participación
+                        de los actores del sistema.
+                    </p>
+
+                    <ul>
+                        <li>RAEE registrados.</li>
+                        <li>Gestores participantes.</li>
+                        <li>RAEE reutilizados.</li>
+                        <li>RAEE aprovechados.</li>
+                        <li>Participación institucional.</li>
+                        <li>Participación de comunidades rurales.</li>
+                        <li>Impacto ambiental y social estimado.</li>
+                    </ul>
+
+                    <span class="outcome-status">
+                        Indicadores por consolidar
+                    </span>
+
+                </article>
+
+            </div>
+
+
+            <!-- NOTA INFORMATIVA -->
+            <div class="outcome-note">
+
+                <strong>Nota:</strong>
+
+                Los resultados e indicadores representan los objetivos
+                del modelo de gestión. Su medición depende del registro,
+                seguimiento y consolidación de la información generada
+                durante los procesos del sistema.
+
+            </div>
+
+        </section>
+
+
+        <!-- PIE DE PÁGINA -->
         <footer>
 
-            <strong>Ágora RAEE · Prototipo académico - Contacta a soporte al: maybelline756kw@gmail.com</strong>
+            <strong>
+                Ágora RAEE · Prototipo académico
+            </strong>
+
+            <p>
+                Contacto de soporte:
+                <a href="mailto:maybelline756kw@gmail.com">
+                    maybelline756kw@gmail.com
+                </a>
+            </p>
 
             <p>
                 Las operaciones y los datos del sistema corresponden
@@ -407,6 +337,5 @@
     </main>
 
 </body>
-
 </html>
-```
+
