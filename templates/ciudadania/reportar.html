@@ -1,0 +1,183 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar reporte | Ágora RAEE</title>
+    <link rel="stylesheet" href="/static/styles.css">
+
+    <style>
+        body {
+            margin: 0;
+            background: #f3f7f3;
+            font-family: Arial, sans-serif;
+            color: #334155;
+        }
+
+        header {
+            background: #245c43;
+            color: white;
+            padding: 22px 7%;
+        }
+
+        header a {
+            color: white;
+            text-decoration: none;
+        }
+
+        main {
+            max-width: 750px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .report-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 3px 12px rgba(0,0,0,.06);
+        }
+
+        h1, h2 {
+            color: #245c43;
+        }
+
+        label {
+            display: block;
+            margin: 18px 0 7px;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #cbd5d0;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 22px;
+            padding: 13px 22px;
+            background: #2d7952;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #205b3d;
+        }
+
+        .notice {
+            padding: 12px;
+            background: #e0eee3;
+            color: #245c43;
+            border-radius: 8px;
+        }
+
+        .back {
+            display: inline-block;
+            margin-top: 20px;
+            color: #245c43;
+            text-decoration: none;
+        }
+
+        .disclaimer {
+            margin-top: 20px;
+            padding: 13px;
+            background: #fffbeb;
+            border-left: 4px solid #d69e2e;
+            border-radius: 6px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>♻ Ágora RAEE</h2>
+    <a href="/form/ciudadania">← Volver al menú ciudadano</a>
+</header>
+
+<main>
+    <section class="report-card">
+
+        <h1>🚨 Registrar reporte ciudadano</h1>
+
+        <p>
+            Comparte información sobre situaciones que puedan
+            afectar la adecuada gestión de los residuos electrónicos
+            en tu comunidad.
+        </p>
+
+        {% if notice %}
+            <p class="notice">{{ notice }}</p>
+        {% endif %}
+
+        <form action="/form/ciudadania/reportar" method="POST">
+
+            <label for="category">Tipo de reporte</label>
+
+            <select id="category" name="category" required>
+                <option value="">Seleccionar categoría</option>
+                <option>Disposición inadecuada</option>
+                <option>Acumulación de RAEE</option>
+                <option>Punto de entrega</option>
+                <option>Recolección</option>
+                <option>Otro</option>
+            </select>
+
+            <label for="description">Descripción de la situación</label>
+
+            <textarea
+                id="description"
+                name="description"
+                rows="5"
+                maxlength="2000"
+                placeholder="Describe lo ocurrido..."
+                required></textarea>
+
+            <label for="location">Ubicación del reporte</label>
+
+            <input
+                type="text"
+                id="location"
+                name="location"
+                maxlength="250"
+                placeholder="Barrio, vereda, dirección o sector"
+                required>
+
+            <button type="submit">
+                Enviar reporte
+            </button>
+
+        </form>
+
+        <div class="disclaimer">
+            <strong>Importante:</strong>
+            este módulo pertenece a un prototipo académico.
+            El registro no constituye una denuncia oficial ante
+            una autoridad ambiental ni reemplaza sus canales
+            institucionales.
+        </div>
+
+        <a class="back" href="/form/ciudadania/reportes">
+            Consultar reportes registrados
+        </a>
+
+    </section>
+</main>
+
+</body>
+</html>
