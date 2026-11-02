@@ -44,6 +44,9 @@
 
         </section>
 
+
+        <!-- MENSAJES DEL SISTEMA -->
+
         {% if notice %}
         <div class="notice">
             ✓ {{ notice.replace('+', ' ') }}
@@ -62,13 +65,15 @@
                 </div>
 
                 <p>
-                    Accede a las herramientas para gestionar los activos
-                    tecnológicos y sus residuos.
+                    Accede a las herramientas para administrar los activos
+                    tecnológicos y coordinar su gestión ambiental.
                 </p>
             </div>
 
 
             <div class="institution-grid">
+
+                <!-- REGISTRAR RAEE -->
 
                 <a href="/form/instituciones/registrar"
                    class="institution-card">
@@ -91,6 +96,8 @@
                 </a>
 
 
+                <!-- GESTIONAR BAJAS -->
+
                 <a href="/form/instituciones/bajas"
                    class="institution-card">
 
@@ -112,6 +119,8 @@
                 </a>
 
 
+                <!-- CONSULTAR INVENTARIO -->
+
                 <a href="/form/instituciones/inventario"
                    class="institution-card">
 
@@ -132,30 +141,31 @@
 
                 </a>
 
+
+                <!-- NOVEDADES -->
+
+                <a href="/actualizaciones"
+                   class="institution-card">
+
+                    <div class="institution-icon">
+                        📢
+                    </div>
+
+                    <h3>Novedades y actualizaciones</h3>
+
+                    <p>
+                        Consulta campañas ambientales, jornadas de
+                        recolección, noticias y novedades relacionadas
+                        con las actividades de Ágora RAEE.
+                    </p>
+
+                    <span class="institution-action">
+                        Consultar novedades <span>→</span>
+                    </span>
+
+                </a>
+
             </div>
-
-            
-<a href="/actualizaciones"
-   class="institution-card">
-
-    <div class="institution-icon">
-        📢
-    </div>
-
-    <h3>Novedades y actualizaciones</h3>
-
-    <p>
-        Consulta campañas ambientales, jornadas de recolección,
-        noticias y novedades relacionadas con las actividades
-        de Ágora RAEE.
-    </p>
-
-    <span class="institution-action">
-        Consultar novedades <span>→</span>
-    </span>
-
-</a>
-
 
         </section>
 
@@ -207,6 +217,8 @@
 
             <div class="outcomes-grid">
 
+                <!-- RESULTADO 1 -->
+
                 <article class="outcome-card">
 
                     <div class="outcome-icon">♻️</div>
@@ -233,6 +245,8 @@
 
                 </article>
 
+
+                <!-- RESULTADO 2 -->
 
                 <article class="outcome-card">
 
@@ -261,6 +275,8 @@
 
                 </article>
 
+
+                <!-- RESULTADO 3 -->
 
                 <article class="outcome-card">
 
@@ -310,6 +326,8 @@
             ← Volver al inicio
         </a>
 
+
+        <!-- PIE DE PÁGINA -->
 
         <footer>
             <strong>
