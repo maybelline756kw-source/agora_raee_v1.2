@@ -301,6 +301,21 @@ def init_db():
             )
         """)
 
+                # ----------------------------------
+        # TABLA: CITIZEN_REPORTS
+        # ----------------------------------
+
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS citizen_reports (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                category TEXT NOT NULL,
+                description TEXT NOT NULL,
+                location TEXT NOT NULL,
+                status TEXT NOT NULL DEFAULT 'Recibido',
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+            )
+        """)
+
         conn.commit()
 
     print("Estructura de la base de datos verificada correctamente.")
