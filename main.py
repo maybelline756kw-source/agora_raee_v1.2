@@ -1869,3 +1869,118 @@ def marco_normativo(request: Request):
         }
     )
 
+# ==========================================
+# CIUDADANIA - DENUNCIAS Y REPORTES
+# ==========================================
+
+@app.get(
+    "/form/ciudadania/reportar",
+    response_class=HTMLResponse
+)
+def ciudadania_reportar(request: Request, notice: str = ""):
+
+    return templates.TemplateResponse(
+        request=request,
+        name="ciudadania/reportar.html",
+        context={
+            "request": request,
+            "notice": notice
+        }
+    )
+
+
+@app.post("/form/ciudadania/reportar")
+def ciudadania_guardar_reporte(
+    category: str = Form(...),
+    description: str = Form(...),
+    location: str = Form(...)
+):
+
+    category = category.strip()
+    description = description.strip()
+    location = location.strip()
+
+    allowed_categories = [
+        "Disposición inadecuada",
+        "Acumulación de RAEE",
+        "Punto de entrega",
+        "Recolección",
+        "Otro"
+    ]
+
+    if category not in allowed_categories:
+        raise HTTPException(
+            status_code=400,
+            detail="Categoría de reporte no válida."
+        )
+
+    if not description or not location:
+        raise HTTPException(
+            status_code=400,
+            detail="Todos los campos son obligatorios."
+        )
+
+    if len(description) > 2000 or len(location) > 250:
+        raise HTTPException(
+            status_code=400,
+            detail="La información supera la longitud permitida."
+        )
+
+    with connect() as conn:
+        cursor = conn.execute("""
+            INSERT INTO citizen_reports (
+                category,
+                description,
+                location
+            )
+            VALUES (?, ?, ?)
+        """, (
+            category,
+            description,
+            location
+        ))
+
+        report_id = cursor.lastrowid
+
+    log_event(
+        "info",
+        f"Nuevo reporte ciudadano registrado: #{report_id}"
+    )
+
+    return RedirectResponse(
+        url="/form/ciudadania/reportes?notice=Reporte+registrado+correctamente",
+        status_code=303
+    )
+
+
+@app.get(
+    "/form/ciudadania/reportes",
+    response_class=HTMLResponse
+)
+def ciudadania_consultar_reportes(
+    request: Request,
+    notice: str = ""
+):
+
+    with connect() as conn:
+        reportes = conn.execute("""
+            SELECT
+                id,
+                category,
+                description,
+                location,
+                status,
+                created_at
+            FROM citizen_reports
+            ORDER BY id DESC
+        """).fetchall()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="ciudadania/reportes.html",
+        context={
+            "request": request,
+            "reportes": [dict(row) for row in reportes],
+            "notice": notice
+        }
+    )
