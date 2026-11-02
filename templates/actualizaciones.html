@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Actualizaciones | Ágora RAEE</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 30px 20px;
+            font-family: Arial, sans-serif;
+            background: #f7f5fc;
+            color: #35245c;
+        }
+
+        .updates-container {
+            max-width: 1000px;
+            margin: 25px auto;
+        }
+
+        .updates-header,
+        .updates-form,
+        .update-card {
+            background: white;
+            padding: 28px;
+            margin-bottom: 22px;
+            border-radius: 16px;
+            box-shadow: 0 5px 25px rgba(0,0,0,.05);
+        }
+
+        h1, h2 {
+            color: #6d28d9;
+        }
+
+        p {
+            line-height: 1.6;
+            color: #655b75;
+        }
+
+        label {
+            display: block;
+            margin: 14px 0 7px;
+            font-weight: bold;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ded5ed;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button, .back-link {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 12px 20px;
+            background: #6d28d9;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button:hover, .back-link:hover {
+            background: #5521a8;
+        }
+
+        .notice {
+            background: #e9f8ee;
+            color: #246b3b;
+            padding: 13px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .update-category {
+            color: #6d28d9;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        .update-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 18px;
+            font-size: 12px;
+            color: #81758f;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+        }
+    </style>
+</head>
+
+<body>
+
+<main class="updates-container">
+
+    <section class="updates-header">
+
+        <p>ÁGORA RAEE · INFORMACIÓN Y NOVEDADES</p>
+
+        <h1>Actualizaciones del sistema</h1>
+
+        <p>
+            Consulta las novedades, jornadas de recolección,
+            campañas ambientales y avisos relacionados con
+            la gestión responsable de residuos electrónicos.
+        </p>
+
+        <a href="/" class="back-link">
+            ← Volver al inicio
+        </a>
+
+    </section>
+
+    {% if notice %}
+        <div class="notice">
+            {{ notice }}
+        </div>
+    {% endif %}
+
+    <section class="updates-form">
+
+        <h2>Publicar una actualización</h2>
+
+        <form action="/actualizaciones/publicar" method="POST">
+
+            <label>Título</label>
+            <input
+                type="text"
+                name="title"
+                maxlength="150"
+                required
+            >
+
+            <label>Categoría</label>
+
+            <select name="category" required>
+                <option value="">Seleccionar categoría</option>
+                <option>Jornada de recolección</option>
+                <option>Campaña ambiental</option>
+                <option>Novedad del sistema</option>
+                <option>Aviso comunitario</option>
+            </select>
+
+            <label>Descripción de la actualización</label>
+
+            <textarea
+                name="content"
+                rows="5"
+                maxlength="3000"
+                required
+            ></textarea>
+
+            <label>Nombre del responsable</label>
+
+            <input
+                type="text"
+                name="author_name"
+                maxlength="100"
+                required
+            >
+
+            <label>Perfil</label>
+
+            <select name="author_role" required>
+                <option value="">Seleccionar perfil</option>
+                <option>Ciudadanía</option>
+                <option>Gestor</option>
+                <option>Institución</option>
+                <option>Técnico</option>
+            </select>
+
+            <button type="submit">
+                Publicar actualización
+            </button>
+
+        </form>
+
+    </section>
+
+    <section>
+
+        <h2>Publicaciones recientes</h2>
+
+        {% for update in updates %}
+
+            <article class="update-card">
+
+                <span class="update-category">
+                    {{ update.category }}
+                </span>
+
+                <h2>{{ update.title }}</h2>
+
+                <p>{{ update.content }}</p>
+
+                <div class="update-meta">
+
+                    <span>
+                        Responsable: {{ update.author_name }}
+                    </span>
+
+                    <span>
+                        Perfil: {{ update.author_role }}
+                    </span>
+
+                    <span>
+                        Fecha: {{ update.created_at }}
+                    </span>
+
+                </div>
+
+            </article>
+
+        {% else %}
+
+            <div class="update-card empty-message">
+
+                <h3>¡Mantente al tanto!</h3>
+
+                <p>
+                    Todavía no hay actualizaciones publicadas.
+                    Aquí aparecerán las próximas novedades de Ágora RAEE.
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    </section>
+
+</main>
+
+</body>
+</html>
