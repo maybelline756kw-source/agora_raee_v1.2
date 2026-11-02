@@ -1984,3 +1984,124 @@ def ciudadania_consultar_reportes(
             "notice": notice
         }
     )
+
+
+    # ==========================================
+# MODULO DE ACTUALIZACIONES
+# ==========================================
+
+@app.get("/actualizaciones", response_class=HTMLResponse)
+def consultar_actualizaciones(
+    request: Request,
+    notice: str = ""
+):
+
+    with connect() as conn:
+        updates = conn.execute("""
+            SELECT
+                id,
+                title,
+                category,
+                content,
+                author_name,
+                author_role,
+                created_at
+            FROM system_updates
+            ORDER BY id DESC
+        """).fetchall()
+
+    return templates.TemplateResponse(
+        request=request,
+        name="actualizaciones.html",
+        context={
+            "request": request,
+            "updates": [dict(row) for row in updates],
+            "notice": notice
+        }
+    )
+
+
+@app.post("/actualizaciones/publicar")
+def publicar_actualizacion(
+    title: str = Form(...),
+    category: str = Form(...),
+    content: str = Form(...),
+    author_name: str = Form(...),
+    author_role: str = Form(...)
+):
+
+    title = title.strip()
+    content = content.strip()
+    author_name = author_name.strip()
+
+    allowed_categories = [
+        "Jornada de recolección",
+        "Campaña ambiental",
+        "Novedad del sistema",
+        "Aviso comunitario"
+    ]
+
+    allowed_roles = [
+        "Ciudadanía",
+        "Gestor",
+        "Institución",
+        "Técnico"
+    ]
+
+    if not title or not content or not author_name:
+        raise HTTPException(
+            status_code=400,
+            detail="Todos los campos son obligatorios."
+        )
+
+    if category not in allowed_categories:
+        raise HTTPException(
+            status_code=400,
+            detail="Categoría no válida."
+        )
+
+    if author_role not in allowed_roles:
+        raise HTTPException(
+            status_code=400,
+            detail="Perfil no válido."
+        )
+
+    if (
+        len(title) > 150
+        or len(content) > 3000
+        or len(author_name) > 100
+    ):
+        raise HTTPException(
+            status_code=400,
+            detail="Se superó la longitud permitida."
+        )
+
+    with connect() as conn:
+        cursor = conn.execute("""
+            INSERT INTO system_updates (
+                title,
+                category,
+                content,
+                author_name,
+                author_role
+            )
+            VALUES (?, ?, ?, ?, ?)
+        """, (
+            title,
+            category,
+            content,
+            author_name,
+            author_role
+        ))
+
+        update_id = cursor.lastrowid
+
+    log_event(
+        "info",
+        f"Nueva actualización #{update_id}: {title}"
+    )
+
+    return RedirectResponse(
+        url="/actualizaciones?notice=Actualizacion+publicada+correctamente",
+        status_code=303
+    )
