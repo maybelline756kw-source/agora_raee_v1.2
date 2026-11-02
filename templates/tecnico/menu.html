@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="es">
 
@@ -11,89 +10,243 @@
     <link rel="stylesheet" href="/static/styles.css">
 
     <style>
+        /* ==========================================
+           IDENTIDAD VISUAL - PORTAL TÉCNICO
+        ========================================== */
+
         .technician-header {
-            background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #153b46, #176b72, #229b98);
             color: white;
-            padding: 28px;
-            border-radius: 16px;
-            margin-bottom: 30px;
+            padding: 38px;
+            border-radius: 18px;
+            margin-bottom: 32px;
+            box-shadow: 0 8px 24px rgba(21, 59, 70, .16);
+        }
+
+        .technician-header::after {
+            content: "⚙";
+            position: absolute;
+            right: 35px;
+            bottom: -38px;
+            font-size: 170px;
+            opacity: .09;
+            transform: rotate(-15deg);
+            pointer-events: none;
+        }
+
+        .technician-header .eyebrow {
+            color: #a5f3e8;
+            font-weight: 700;
+            letter-spacing: 1.5px;
         }
 
         .technician-header h1 {
-            margin: 8px 0;
+            margin: 12px 0;
+            color: white;
+            font-size: clamp(25px, 4vw, 34px);
+            max-width: 700px;
         }
 
         .technician-header p {
-            color: #dbeafe;
+            color: #d7f3ef;
+            line-height: 1.7;
+            max-width: 750px;
             margin-bottom: 0;
         }
+
+        /* ==========================================
+           ENCABEZADO DE MÓDULOS
+        ========================================== */
+
+        .technician-section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 24px;
+            margin: 35px 0 20px;
+        }
+
+        .technician-section-heading h2 {
+            color: #153b46;
+            margin: 5px 0;
+        }
+
+        .technician-section-heading > p {
+            color: #64748b;
+            max-width: 440px;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .technician-section-heading .eyebrow {
+            color: #16847f;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        /* ==========================================
+           TARJETAS DE FUNCIONALIDADES
+        ========================================== */
 
         .technician-grid {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 20px;
-            margin-top: 25px;
+            gap: 22px;
+            margin: 25px 0 30px;
+            align-items: stretch;
         }
 
         .technician-card {
+            position: relative;
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            padding: 24px;
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 15px;
+            gap: 13px;
+            padding: 27px;
+            min-height: 270px;
+            box-sizing: border-box;
+
+            background: #ffffff;
+            border: 1px solid #dce9e8;
+            border-radius: 17px;
+
             text-decoration: none;
             color: #334155;
-            transition: transform .2s, box-shadow .2s;
+
+            box-shadow: 0 4px 14px rgba(15, 60, 65, .045);
+            transition: transform .22s ease,
+                        box-shadow .22s ease,
+                        border-color .22s ease;
         }
 
         .technician-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 22px rgba(0, 0, 0, .08);
+            transform: translateY(-5px);
+            border-color: #55bdb3;
+            box-shadow: 0 12px 26px rgba(21, 107, 114, .12);
         }
 
         .technician-icon {
             display: grid;
             place-items: center;
-            width: 52px;
-            height: 52px;
-            border-radius: 13px;
-            background: #dbeafe;
-            font-size: 25px;
+            width: 58px;
+            height: 58px;
+            border-radius: 15px;
+            background: #e0f5f1;
+            color: #176b72;
+            font-size: 27px;
         }
 
         .technician-card h3 {
-            margin: 4px 0;
-            color: #1e40af;
+            margin: 5px 0;
+            color: #164e58;
+            font-size: 18px;
+            line-height: 1.4;
         }
 
         .technician-card p {
             margin: 0;
             color: #64748b;
             font-size: 14px;
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
         .technician-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
             margin-top: auto;
-            padding-top: 12px;
-            color: #2563eb;
-            font-weight: 650;
+            padding-top: 15px;
+            color: #16847f;
+            font-weight: 700;
             font-size: 14px;
         }
 
-        .back-link {
-            display: inline-block;
-            margin-top: 25px;
-            color: #1e40af;
-            text-decoration: none;
-            font-weight: 600;
+        .technician-card:hover .technician-action {
+            color: #105b62;
         }
 
-        @media (max-width: 800px) {
+        /* ==========================================
+           MARCO NORMATIVO
+        ========================================== */
+
+        .technician-legal {
+            display: flex;
+            justify-content: center;
+            margin: 35px 0;
+        }
+
+        .technician-legal a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 25px;
+
+            background: #153b46;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: 650;
+
+            transition: background .2s ease,
+                        transform .2s ease;
+        }
+
+        .technician-legal a:hover {
+            background: #176b72;
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================
+           ENLACE DE REGRESO
+        ========================================== */
+
+        .technician-back-link {
+            display: inline-block;
+            margin: 25px 0;
+            color: #176b72;
+            text-decoration: none;
+            font-weight: 650;
+        }
+
+        .technician-back-link:hover {
+            color: #153b46;
+            text-decoration: underline;
+        }
+
+        /* ==========================================
+           RESPONSIVE
+        ========================================== */
+
+        @media (max-width: 900px) {
+            .technician-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .technician-section-heading {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 5px;
+            }
+        }
+
+        @media (max-width: 600px) {
             .technician-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .technician-header {
+                padding: 26px;
+            }
+
+            .technician-header::after {
+                right: 5px;
+                font-size: 115px;
+            }
+
+            .technician-card {
+                min-height: 245px;
             }
         }
     </style>
@@ -111,7 +264,10 @@
 
     <main class="container">
 
+        <!-- PRESENTACIÓN DEL PORTAL -->
+
         <section class="technician-header">
+
             <p class="eyebrow">PORTAL TÉCNICO</p>
 
             <h1>Recuperación y aprovechamiento tecnológico</h1>
@@ -121,6 +277,7 @@
                 y componentes y realiza seguimiento a los procesos
                 de aprovechamiento y recuperación tecnológica.
             </p>
+
         </section>
 
         {% if notice %}
@@ -129,10 +286,13 @@
         </div>
         {% endif %}
 
-        <section class="section-heading">
+        <!-- MÓDULOS PRINCIPALES -->
+
+        <section class="technician-section-heading">
+
             <div>
                 <p class="eyebrow">MÓDULO TÉCNICO</p>
-                <h2>Selecciona una funcionalidad</h2>
+                <h2>Herramientas de gestión tecnológica</h2>
             </div>
 
             <p>
@@ -140,11 +300,12 @@
                 tecnológicos destinados a reparación, reutilización
                 y aprovechamiento.
             </p>
+
         </section>
 
         <section class="technician-grid">
 
-            <!-- OPCIÓN 1: LOTES DISPONIBLES -->
+            <!-- CONSULTAR LOTES -->
 
             <a href="/form/tecnico/lotes"
                class="technician-card">
@@ -161,9 +322,10 @@
                 <span class="technician-action">
                     Consultar recursos →
                 </span>
+
             </a>
 
-            <!-- OPCIÓN 2: SOLICITUDES -->
+            <!-- SOLICITUDES -->
 
             <a href="/form/tecnico/solicitar"
                class="technician-card">
@@ -180,9 +342,10 @@
                 <span class="technician-action">
                     Registrar solicitud →
                 </span>
+
             </a>
 
-            <!-- OPCIÓN 3: SEGUIMIENTO -->
+            <!-- SEGUIMIENTO -->
 
             <a href="/form/tecnico/seguimiento"
                class="technician-card">
@@ -200,154 +363,155 @@
                 <span class="technician-action">
                     Consultar seguimiento →
                 </span>
+
             </a>
 
         </section>
 
-        <div style="text-align: center; margin: 30px 0;">
-    <a href="/form/marco-normativo"
-       style="display: inline-block;
-              padding: 13px 25px;
-              background: #1e3a5f;
-              color: white;
-              text-decoration: none;
-              border-radius: 9px;
-              font-weight: 600;">
-        ⚖️ Consultar marco normativo
-    </a>
-</div>
-        
-<!-- ==========================================
-     SALIDAS COMUNES DE AGORA RAEE
-========================================== -->
+        <!-- MARCO NORMATIVO -->
 
-<section class="common-outcomes">
+        <div class="technician-legal">
 
-    <div class="common-outcomes-heading">
+            <a href="/form/marco-normativo">
+                ⚖️ Consultar marco normativo
+            </a>
 
-        <p class="eyebrow">RESULTADOS DEL SISTEMA</p>
+        </div>
 
-        <h2>Resultados y seguimiento de la gestión</h2>
+        <!-- RESULTADOS COMUNES DE ÁGORA RAEE -->
 
-        <p>
-            Ágora RAEE articula las actividades de ciudadanía,
-            instituciones, gestores y técnicos mediante tres
-            resultados comunes orientados a la gestión responsable
-            de los residuos de aparatos eléctricos y electrónicos.
-        </p>
+        <section class="common-outcomes">
 
-    </div>
+            <div class="common-outcomes-heading">
 
-    <div class="outcomes-grid">
+                <p class="eyebrow">RESULTADOS DEL SISTEMA</p>
 
-        <!-- SALIDA 1 -->
+                <h2>Resultados y seguimiento de la gestión</h2>
 
-        <article class="outcome-card">
+                <p>
+                    Ágora RAEE articula las actividades de ciudadanía,
+                    instituciones, gestores y técnicos mediante tres
+                    resultados comunes orientados a la gestión responsable
+                    de los residuos de aparatos eléctricos y electrónicos.
+                </p>
 
-            <div class="outcome-icon">♻️</div>
+            </div>
 
-            <h3>1. Gestión integral y aprovechamiento de los RAEE</h3>
+            <div class="outcomes-grid">
 
-            <p>
-                Promover la gestión adecuada de los residuos
-                mediante procesos de recuperación y aprovechamiento.
-            </p>
+                <!-- RESULTADO 1 -->
 
-            <ul>
-                <li>RAEE registrados y clasificados.</li>
-                <li>RAEE reparados.</li>
-                <li>RAEE reutilizados.</li>
-                <li>RAEE aprovechados.</li>
-                <li>RAEE entregados a gestores.</li>
-                <li>RAEE dispuestos adecuadamente.</li>
-            </ul>
+                <article class="outcome-card">
 
-            <span class="outcome-status">
-                Resultado esperado
-            </span>
+                    <div class="outcome-icon">♻️</div>
 
-        </article>
+                    <h3>1. Gestión integral y aprovechamiento de los RAEE</h3>
 
+                    <p>
+                        Promover la gestión adecuada de los residuos
+                        mediante procesos de recuperación y aprovechamiento.
+                    </p>
 
-        <!-- SALIDA 2 -->
+                    <ul>
+                        <li>RAEE registrados y clasificados.</li>
+                        <li>RAEE reparados.</li>
+                        <li>RAEE reutilizados.</li>
+                        <li>RAEE aprovechados.</li>
+                        <li>RAEE entregados a gestores.</li>
+                        <li>RAEE dispuestos adecuadamente.</li>
+                    </ul>
 
-        <article class="outcome-card">
+                    <span class="outcome-status">
+                        Resultado esperado
+                    </span>
 
-            <div class="outcome-icon">🚚</div>
+                </article>
 
-            <h3>2. Trazabilidad y coordinación logística</h3>
+                <!-- RESULTADO 2 -->
 
-            <p>
-                Facilitar el seguimiento de los residuos y la
-                articulación entre los actores involucrados
-                durante las etapas de gestión.
-            </p>
+                <article class="outcome-card">
 
-            <ul>
-                <li>Actor responsable.</li>
-                <li>Gestión asignada y coordinada.</li>
-                <li>Destino de los residuos.</li>
-                <li>Punto de entrega.</li>
-                <li>Ruta logística.</li>
-                <li>Estado de gestión.</li>
-            </ul>
+                    <div class="outcome-icon">🚚</div>
 
-            <span class="outcome-status">
-                Resultado esperado
-            </span>
+                    <h3>2. Trazabilidad y coordinación logística</h3>
 
-        </article>
+                    <p>
+                        Facilitar el seguimiento de los residuos y la
+                        articulación entre los actores involucrados
+                        durante las etapas de gestión.
+                    </p>
 
+                    <ul>
+                        <li>Actor responsable.</li>
+                        <li>Gestión asignada y coordinada.</li>
+                        <li>Destino de los residuos.</li>
+                        <li>Punto de entrega.</li>
+                        <li>Ruta logística.</li>
+                        <li>Estado de gestión.</li>
+                    </ul>
 
-        <!-- SALIDA 3 -->
+                    <span class="outcome-status">
+                        Resultado esperado
+                    </span>
 
-        <article class="outcome-card">
+                </article>
 
-            <div class="outcome-icon">📊</div>
+                <!-- RESULTADO 3 -->
 
-            <h3>3. Indicadores de gestión e impacto ambiental y social</h3>
+                <article class="outcome-card">
 
-            <p>
-                Consolidar información que permita evaluar
-                el desarrollo de las actividades y la participación
-                de los actores del sistema.
-            </p>
+                    <div class="outcome-icon">📊</div>
 
-            <ul>
-                <li>RAEE registrados.</li>
-                <li>Gestores participantes.</li>
-                <li>RAEE reutilizados.</li>
-                <li>RAEE aprovechados.</li>
-                <li>Participación institucional.</li>
-                <li>Participación de comunidades rurales.</li>
-                <li>Impacto ambiental y social estimado.</li>
-            </ul>
+                    <h3>3. Indicadores de gestión e impacto ambiental y social</h3>
 
-            <span class="outcome-status">
-                Indicadores por consolidar
-            </span>
+                    <p>
+                        Consolidar información que permita evaluar
+                        el desarrollo de las actividades y la participación
+                        de los actores del sistema.
+                    </p>
 
-        </article>
+                    <ul>
+                        <li>RAEE registrados.</li>
+                        <li>Gestores participantes.</li>
+                        <li>RAEE reutilizados.</li>
+                        <li>RAEE aprovechados.</li>
+                        <li>Participación institucional.</li>
+                        <li>Participación de comunidades rurales.</li>
+                        <li>Impacto ambiental y social estimado.</li>
+                    </ul>
 
-    </div>
+                    <span class="outcome-status">
+                        Indicadores por consolidar
+                    </span>
 
-    <div class="outcome-note">
-        <strong>Nota:</strong>
-        Los resultados e indicadores representan los objetivos
-        del modelo de gestión. Su medición depende del registro,
-        seguimiento y consolidación de la información generada
-        durante los procesos del sistema.
-    </div>
+                </article>
 
-</section>
+            </div>
 
+            <div class="outcome-note">
 
-        <a href="/" class="back-link">
+                <strong>Nota:</strong>
+
+                Los resultados e indicadores representan los objetivos
+                del modelo de gestión. Su medición depende del registro,
+                seguimiento y consolidación de la información generada
+                durante los procesos del sistema.
+
+            </div>
+
+        </section>
+
+        <!-- REGRESAR AL INICIO -->
+
+        <a href="/" class="technician-back-link">
             ← Volver al inicio
         </a>
 
         <footer>
-            <strong>Ágora RAEE · Prototipo académico - Contacta a soporte al: maybelline756kw@gmail.com</strong>
+            <strong>
+                Ágora RAEE · Prototipo académico - Contacta a soporte al:
+                maybelline756kw@gmail.com
+            </strong>
 
             <p>
                 Articulación tecnológica para la recuperación
