@@ -750,14 +750,6 @@ def inventario_institucional(request: Request):
 # GESTOR: REGISTRO DE EMPRESA
 # ==========================================
 
-@app.get("/form/gestor/registro", response_class=HTMLResponse)
-def gestor_registro_form(request: Request):
-    return templates.TemplateResponse(
-        request=request,
-        name="gestor/registro.html",
-        context={"request": request},
-    )
-
 
 @app.post("/form/gestor/registro")
 def gestor_registro_submit(
@@ -776,6 +768,7 @@ def gestor_registro_submit(
     servicios: str = Form(...),
     raee_types: list[str] = Form(default=[]),
 ):
+    # Validar capacidad operativa
     if capacidad <= 0:
         raise HTTPException(
             status_code=400,
@@ -794,59 +787,28 @@ def gestor_registro_submit(
             detail="La capacidad ocupada no puede superar la capacidad máxima.",
         )
 
+    # Validar autorización ambiental
     authorized = 1 if autorizaciones == "Vigentes" else 0
 
-    authorized = 1 if autorizaciones == "Vigentes" else 0
+    # Validar tipos de RAEE seleccionados
+    tipos_raee_validos = {
+        "pequenos_electrodomesticos",
+        "computadores",
+        "cables_y_accesorios",
+    }
 
-# Validar los tipos de RAEE seleccionados
-tipos_raee_validos = {
-    "pequenos_electrodomesticos",
-    "computadores",
-    "cables_y_accesorios",
-}
-
-raee_types = list(dict.fromkeys(
-    tipo for tipo in raee_types
-    if tipo in tipos_raee_validos
-))
-
-if not raee_types:
-    raise HTTPException(
-        status_code=400,
-        detail="Debes seleccionar al menos un tipo de RAEE válido."
-    )
-
-# Registrar empresa en la base de datos
-with connect() as conn:
-    conn.execute("""
-        INSERT INTO managers (
-            name, raee_types, max_capacity_kg, occupied_kg, distance_km,
-            authorized, address, zone_type, coordinate_source, nit,
-            legal_representative, email, phone, authorization_status,
-            environmental_authority, coverage, municipalities, main_service
-        )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """, (
-        empresa,
-        json.dumps(raee_types, ensure_ascii=False),
-        capacidad,
-        ocupado,
-        0,
-        authorized,
-        ubicacion,
-        "No clasificada",
-        "pendiente",
-        nit,
-        representante,
-        correo,
-        telefono,
-        autorizaciones,
-        autoridad,
-        cobertura,
-        municipios,
-        servicios,
+    raee_types = list(dict.fromkeys(
+        tipo for tipo in raee_types
+        if tipo in tipos_raee_validos
     ))
 
+    if not raee_types:
+        raise HTTPException(
+            status_code=400,
+            detail="Debes seleccionar al menos un tipo de RAEE válido.",
+        )
+
+    # Registrar empresa en la base de datos
     with connect() as conn:
         conn.execute("""
             INSERT INTO managers (
@@ -858,7 +820,7 @@ with connect() as conn:
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             empresa,
-            json.dumps([]),
+            json.dumps(raee_types, ensure_ascii=False),
             capacidad,
             ocupado,
             0,
@@ -883,6 +845,7 @@ with connect() as conn:
         url="/form/gestor?notice=Empresa+registrada+correctamente",
         status_code=303,
     )
+
 
 
 # ==========================================
