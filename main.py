@@ -745,7 +745,15 @@ def inventario_institucional(request: Request):
         },
     )
 
+# Mostrar el formulario para Gestor
 
+@app.get("/form/gestor/registro", response_class=HTMLResponse)
+def gestor_registro_form(request: Request):
+    return templates.TemplateResponse(
+        request=request,
+        name="gestor/registro.html",
+        context={"request": request},
+    )
 # ==========================================
 # GESTOR: REGISTRO DE EMPRESA
 # ==========================================
