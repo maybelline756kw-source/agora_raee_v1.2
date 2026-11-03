@@ -253,6 +253,28 @@ def init_db():
             )
         """)
 
+        # ----------------------------------
+        # TABLA: LOT_APPLICATIONS
+        # ----------------------------------
+
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS lot_applications (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                container_id INTEGER NOT NULL,
+                manager_id INTEGER NOT NULL,
+                status TEXT NOT NULL DEFAULT 'Pendiente',
+                created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+                UNIQUE(container_id, manager_id),
+
+                FOREIGN KEY (container_id)
+                    REFERENCES containers(id),
+
+                FOREIGN KEY (manager_id)
+                    REFERENCES managers(id)
+            )
+        """)
+
         
         # ----------------------------------
         # TABLA: TECHNICAL_REQUESTS
