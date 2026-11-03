@@ -142,16 +142,43 @@
                         ✓ Compatible con tu perfil
                     </p>
 
-                    <form method="POST"
-                          action="/form/gestor/lotes/{{ lote.id }}/postular">
+                    {% if lote.gestores_compatibles %}
 
-                        <button type="submit"
-                                class="button primary"
-                                style="width: 100%; margin-top: 1rem;">
-                            Postularme al lote
-                        </button>
+<form method="POST"
+      action="/form/gestor/lotes/{{ lote.id }}/postular">
 
-                    </form>
+    <label for="manager-{{ lote.id }}">
+        Selecciona tu empresa gestora
+    </label>
+
+    <select
+        id="manager-{{ lote.id }}"
+        name="manager_id"
+        required
+        style="width: 100%; margin-bottom: 1rem;"
+    >
+        <option value="">Seleccionar empresa</option>
+
+        {% for gestor in lote.gestores_compatibles %}
+            <option value="{{ gestor.id }}">
+                {{ gestor.nombre }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit"
+            class="button primary"
+            style="width: 100%; margin-top: 1rem;">
+        Postularme al lote
+    </button>
+
+</form>
+
+{% else %}
+
+<p>No hay gestores compatibles para este lote.</p>
+
+{% endif %}
 
                     {% else %}
 
