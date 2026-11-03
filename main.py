@@ -774,6 +774,7 @@ def gestor_registro_submit(
     cobertura: str = Form(...),
     municipios: str = Form(""),
     servicios: str = Form(...),
+    raee_types: list[str] = Form(default=[]),
 ):
     if capacidad <= 0:
         raise HTTPException(
@@ -794,6 +795,57 @@ def gestor_registro_submit(
         )
 
     authorized = 1 if autorizaciones == "Vigentes" else 0
+
+    authorized = 1 if autorizaciones == "Vigentes" else 0
+
+# Validar los tipos de RAEE seleccionados
+tipos_raee_validos = {
+    "pequenos_electrodomesticos",
+    "computadores",
+    "cables_y_accesorios",
+}
+
+raee_types = list(dict.fromkeys(
+    tipo for tipo in raee_types
+    if tipo in tipos_raee_validos
+))
+
+if not raee_types:
+    raise HTTPException(
+        status_code=400,
+        detail="Debes seleccionar al menos un tipo de RAEE válido."
+    )
+
+# Registrar empresa en la base de datos
+with connect() as conn:
+    conn.execute("""
+        INSERT INTO managers (
+            name, raee_types, max_capacity_kg, occupied_kg, distance_km,
+            authorized, address, zone_type, coordinate_source, nit,
+            legal_representative, email, phone, authorization_status,
+            environmental_authority, coverage, municipalities, main_service
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    """, (
+        empresa,
+        json.dumps(raee_types, ensure_ascii=False),
+        capacidad,
+        ocupado,
+        0,
+        authorized,
+        ubicacion,
+        "No clasificada",
+        "pendiente",
+        nit,
+        representante,
+        correo,
+        telefono,
+        autorizaciones,
+        autoridad,
+        cobertura,
+        municipios,
+        servicios,
+    ))
 
     with connect() as conn:
         conn.execute("""
