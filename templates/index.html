@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="es">
 
@@ -7,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>Ágora RAEE | Gestión comunitaria</title>
-
     <link rel="stylesheet" href="/static/styles.css">
 
     <style>
@@ -51,22 +49,10 @@
             font-size: 20px;
         }
 
-        .role-gestor .role-icon {
-            background: #dcfce7;
-        }
-
-        .role-ciudadania .role-icon {
-            background: #dbeafe;
-        }
-
-        .role-instituciones .role-icon {
-            background: #fef3c7;
-        }
-
-        .role-tecnico .role-icon {
-            background: #e2e8f0;
-        }
-
+        .role-gestor .role-icon { background: #dcfce7; }
+        .role-ciudadania .role-icon { background: #dbeafe; }
+        .role-instituciones .role-icon { background: #fef3c7; }
+        .role-tecnico .role-icon { background: #e2e8f0; }
 
         /* =====================================
            FORO COMUNITARIO
@@ -96,14 +82,8 @@
             font-size: 25px;
         }
 
-        .forum-content {
-            flex: 1;
-        }
-
-        .forum-content .eyebrow {
-            color: #7c3aed;
-            margin-bottom: 6px;
-        }
+        .forum-content { flex: 1; }
+        .forum-content .eyebrow { color: #7c3aed; margin-bottom: 6px; }
 
         .forum-content h2 {
             color: #4c1d95;
@@ -133,27 +113,144 @@
             transition: background .2s;
         }
 
-        .forum-button:hover {
-            background: #5b21b6;
+        .forum-button:hover { background: #5b21b6; }
+
+        /* =====================================
+           MARKETPLACE RAEE
+        ===================================== */
+
+        .marketplace-section { margin: 42px 0; }
+
+        .marketplace-intro {
+            color: #64748b;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 22px;
         }
 
+        .marketplace-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .marketplace-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 4px 14px rgba(15, 23, 42, .04);
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .marketplace-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 24px rgba(91, 33, 182, .09);
+        }
+
+        .marketplace-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .marketplace-icon {
+            display: grid;
+            place-items: center;
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: #f3e8ff;
+            font-size: 23px;
+        }
+
+        .marketplace-badge {
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 20px;
+            padding: 6px 11px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .marketplace-card h3 {
+            color: #35245c;
+            font-size: 17px;
+            margin: 0 0 10px;
+            text-transform: capitalize;
+        }
+
+        .marketplace-card p {
+            color: #64748b;
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 8px 0;
+            overflow-wrap: anywhere;
+        }
+
+        .marketplace-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 18px 0;
+        }
+
+        .marketplace-detail {
+            padding: 11px;
+            border-radius: 10px;
+            background: #f8fafc;
+        }
+
+        .marketplace-detail span {
+            display: block;
+            color: #64748b;
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+
+        .marketplace-detail strong {
+            color: #334155;
+            font-size: 13px;
+        }
+
+        .marketplace-description {
+            padding-top: 14px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .marketplace-empty {
+            padding: 35px 20px;
+            text-align: center;
+            background: #faf5ff;
+            border: 1px dashed #d8b4fe;
+            border-radius: 14px;
+            color: #6b5b80;
+        }
+
+        .marketplace-empty span {
+            display: block;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
 
         /* =====================================
            RESPONSIVE
         ===================================== */
 
         @media (max-width: 800px) {
-            .role-buttons-grid {
+            .role-buttons-grid,
+            .marketplace-grid {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
-            .community-forum-card {
-                flex-wrap: wrap;
-            }
+            .community-forum-card { flex-wrap: wrap; }
         }
 
         @media (max-width: 500px) {
-            .role-buttons-grid {
+            .role-buttons-grid,
+            .marketplace-grid {
                 grid-template-columns: 1fr;
             }
 
@@ -164,7 +261,6 @@
             }
         }
     </style>
-
 </head>
 
 <body>
@@ -196,9 +292,7 @@
            style="background: rgba(255,255,255,0.2); color: white;">
             Explorar API ↗
         </a>
-
     </header>
-
 
     <main class="container">
 
@@ -207,7 +301,6 @@
         <!-- ================================== -->
 
         <section class="section-heading">
-
             <div>
                 <p class="eyebrow">ACCESO RÁPIDO</p>
                 <h2>Selecciona tu perfil</h2>
@@ -217,51 +310,33 @@
                 Elige una opción para acceder a las funcionalidades
                 correspondientes a tu rol.
             </p>
-
         </section>
-
 
         <div class="role-buttons-grid">
 
-            <a href="/form/gestor"
-               class="role-button role-gestor">
-
+            <a href="/form/gestor" class="role-button role-gestor">
                 <span class="role-icon">♻️</span>
                 <span>Gestor</span>
-
             </a>
 
-
-            <a href="/form/ciudadania"
-               class="role-button role-ciudadania">
-
+            <a href="/form/ciudadania" class="role-button role-ciudadania">
                 <span class="role-icon">🌱</span>
                 <span>Ciudadanía</span>
-
             </a>
 
-
-            <a href="/form/instituciones"
-               class="role-button role-instituciones">
-
+            <a href="/form/instituciones" class="role-button role-instituciones">
                 <span class="role-icon">🏢</span>
                 <span>Instituciones</span>
-
             </a>
 
-
-            <a href="/form/tecnico"
-               class="role-button role-tecnico">
-
+            <a href="/form/tecnico" class="role-button role-tecnico">
                 <span class="role-icon">🔧</span>
                 <span>Técnico</span>
-
             </a>
 
         </div>
 
-
-        <!-- ================================== -->
+                <!-- ================================== -->
         <!-- FORO COMUNITARIO -->
         <!-- ================================== -->
 
@@ -270,11 +345,7 @@
             <div class="forum-icon">💬</div>
 
             <div class="forum-content">
-
-                <p class="eyebrow">
-                    ESPACIO COLABORATIVO
-                </p>
-
+                <p class="eyebrow">ESPACIO COLABORATIVO</p>
                 <h2>Conversemos sobre la gestión RAEE</h2>
 
                 <p>
@@ -282,7 +353,6 @@
                     otros actores para construir soluciones
                     ambientales en comunidad.
                 </p>
-
             </div>
 
             <a href="/foro" class="forum-button">
@@ -291,151 +361,114 @@
 
         </section>
 
-        /* =====================================
-   MARKETPLACE RAEE
-===================================== */
+        <!-- ================================== -->
+        <!-- MARKETPLACE DE RECURSOS RAEE -->
+        <!-- ================================== -->
 
-.marketplace-section {
-    margin: 42px 0;
-}
+        <section class="marketplace-section">
 
-.marketplace-intro {
-    color: #64748b;
-    font-size: 14px;
-    line-height: 1.6;
-    margin-bottom: 22px;
-}
+            <div class="section-heading">
+                <div>
+                    <p class="eyebrow">VITRINA COLABORATIVA</p>
+                    <h2>Marketplace de recursos RAEE</h2>
+                </div>
 
-.marketplace-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 20px;
-}
+                <p>
+                    Conecta recursos electrónicos disponibles con
+                    oportunidades de aprovechamiento y reutilización.
+                </p>
+            </div>
 
-.marketplace-card {
-    background: white;
-    border: 1px solid #e5e7eb;
-    border-radius: 16px;
-    padding: 22px;
-    box-shadow: 0 4px 14px rgba(15, 23, 42, .04);
-    transition: transform .2s, box-shadow .2s;
-}
+            <p class="marketplace-intro">
+                Consulta los materiales publicados por ciudadanos e
+                instituciones para promover su aprovechamiento responsable.
+            </p>
 
-.marketplace-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 24px rgba(91, 33, 182, .09);
-}
+            {% if marketplace_resources %}
 
-.marketplace-card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 18px;
-}
+            <div class="marketplace-grid">
 
-.marketplace-icon {
-    display: grid;
-    place-items: center;
-    width: 46px;
-    height: 46px;
-    border-radius: 12px;
-    background: #f3e8ff;
-    font-size: 23px;
-}
+                {% for resource in marketplace_resources %}
 
-.marketplace-badge {
-    background: #dcfce7;
-    color: #166534;
-    border-radius: 20px;
-    padding: 6px 11px;
-    font-size: 11px;
-    font-weight: 700;
-}
+                <article class="marketplace-card">
 
-.marketplace-card h3 {
-    color: #35245c;
-    font-size: 17px;
-    margin-bottom: 10px;
-    text-transform: capitalize;
-}
+                    <div class="marketplace-card-header">
+                        <div class="marketplace-icon">♻️</div>
 
-.marketplace-card p {
-    color: #64748b;
-    font-size: 13px;
-    line-height: 1.6;
-}
+                        <span class="marketplace-badge">
+                            {{ resource.marketplace_status }}
+                        </span>
+                    </div>
 
-.marketplace-details {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin: 18px 0;
-}
+                    <h3>
+                        {{ resource.equipment_type|replace('_', ' ') }}
+                    </h3>
 
-.marketplace-detail {
-    padding: 11px;
-    border-radius: 10px;
-    background: #f8fafc;
-}
+                    <div class="marketplace-details">
 
-.marketplace-detail span {
-    display: block;
-    color: #64748b;
-    font-size: 11px;
-    margin-bottom: 5px;
-}
+                        <div class="marketplace-detail">
+                            <span>Cantidad</span>
+                            <strong>{{ resource.quantity }}</strong>
+                        </div>
 
-.marketplace-detail strong {
-    color: #334155;
-    font-size: 13px;
-}
+                        <div class="marketplace-detail">
+                            <span>Condición</span>
+                            <strong>{{ resource.condition }}</strong>
+                        </div>
 
-.marketplace-description {
-    padding-top: 14px;
-    border-top: 1px solid #f1f5f9;
-}
+                    </div>
 
-.marketplace-empty {
-    padding: 35px 20px;
-    text-align: center;
-    background: #faf5ff;
-    border: 1px dashed #d8b4fe;
-    border-radius: 14px;
-    color: #6b5b80;
-}
+                    {% if resource.characteristics %}
+                    <p>
+                        <strong>Características:</strong>
+                        {{ resource.characteristics }}
+                    </p>
+                    {% endif %}
 
-.marketplace-empty span {
-    display: block;
-    font-size: 32px;
-    margin-bottom: 10px;
-}
+                    {% if resource.origin %}
+                    <p>
+                        <strong>Procedencia:</strong>
+                        {{ resource.origin }}
+                    </p>
+                    {% endif %}
 
-@media (max-width: 800px) {
-    .marketplace-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
+                    {% if resource.marketplace_description %}
+                    <div class="marketplace-description">
+                        <p>{{ resource.marketplace_description }}</p>
+                    </div>
+                    {% endif %}
 
-@media (max-width: 500px) {
-    .marketplace-grid {
-        grid-template-columns: 1fr;
-    }
-}
+                </article>
 
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="marketplace-empty">
+                <span>🌱</span>
+                <strong>Aún no hay recursos publicados</strong>
+
+                <p>
+                    Cuando ciudadanos e instituciones publiquen recursos
+                    RAEE, aparecerán aquí para su consulta.
+                </p>
+            </div>
+
+            {% endif %}
+
+        </section>
 
         <!-- ================================== -->
         <!-- MENSAJES DEL SISTEMA -->
         <!-- ================================== -->
 
         {% if notice %}
-
         <div class="notice">
             ✓ {{ notice.replace('+', ' ') }}
         </div>
-
         {% endif %}
-
 
         <!-- ================================== -->
         <!-- MÉTRICAS GENERALES -->
@@ -444,61 +477,41 @@
         <section class="metrics">
 
             <article class="metric">
-
                 <span>Puntos de recolección</span>
-
                 <strong>{{ total }}</strong>
-
                 <small>Registrados en la demo</small>
-
             </article>
 
-
             <article class="metric">
-
                 <span>Alertas críticas</span>
-
                 <strong class="{% if critical %}red-text{% endif %}">
                     {{ critical }}
                 </strong>
-
                 <small>Ocupación ≥ 85%</small>
-
             </article>
 
-
             <article class="metric">
-
                 <span>Requieren atención</span>
-
                 <strong class="{% if attention %}amber-text{% endif %}">
                     {{ attention }}
                 </strong>
-
                 <small>Ocupación ≥ 60%</small>
-
             </article>
 
         </section>
-
 
         <!-- ================================== -->
         <!-- MÓDULO 01: CONTENEDORES -->
         <!-- ================================== -->
 
         <div class="section-heading">
-
             <div>
                 <p class="eyebrow">MÓDULO 01</p>
                 <h2>Contenedores inteligentes</h2>
             </div>
 
-            <p>
-                Simulación del sensor de distancia tipo HC-SR04
-            </p>
-
+            <p>Simulación del sensor de distancia tipo HC-SR04</p>
         </div>
-
 
         <section class="container-grid">
 
@@ -507,86 +520,56 @@
             <article class="container-card">
 
                 <div class="card-top">
-
                     <div class="device-icon">⌁</div>
 
                     <span class="status status-{{ c.status|lower }}">
                         {{ c.status }}
                     </span>
-
                 </div>
-
 
                 <h3>{{ c.name }}</h3>
 
                 <p class="muted">
                     {{ c.location }} ·
-                    {{ c.raee_type.replace('_', ' ') }}
+                    {{ c.raee_type|replace('_', ' ') }}
                 </p>
 
-
                 <div class="fill-row">
-
                     <span>Nivel de ocupación</span>
-
                     <strong>{{ c.occupancy_percent }}%</strong>
-
                 </div>
 
-
                 <div class="progress">
-
                     <div class="progress-fill
                         {% if c.status == 'Crítico' %}fill-red
                         {% elif c.status == 'Atención' %}fill-amber
                         {% endif %}"
-
                         style="width: {{ c.occupancy_percent }}%">
                     </div>
-
                 </div>
-
 
                 <div class="data-pair">
-
-                    <span>
-                        Ocupado <b>{{ c.occupied_kg }} kg</b>
-                    </span>
-
-                    <span>
-                        Disponible <b>{{ c.available_kg }} kg</b>
-                    </span>
-
+                    <span>Ocupado <b>{{ c.occupied_kg }} kg</b></span>
+                    <span>Disponible <b>{{ c.available_kg }} kg</b></span>
                 </div>
-
 
                 <div class="sensor-note">
-
                     Distancia simulada:
                     <b>{{ c.distance_cm }} cm</b>
-
                 </div>
-
 
                 <div class="actions">
 
-                    <form method="post"
-                          action="/simulate/{{ c.id }}">
-
+                    <form method="post" action="/simulate/{{ c.id }}">
                         <button class="button secondary" type="submit">
                             Simular lectura
                         </button>
-
                     </form>
 
-
-                    <form method="post"
-                          action="/requests/{{ c.id }}">
-
+                    <form method="post" action="/requests/{{ c.id }}">
                         <button class="button primary" type="submit">
                             Solicitar recolección
                         </button>
-
                     </form>
 
                 </div>
@@ -597,13 +580,11 @@
 
         </section>
 
-
-        <!-- ================================== -->
+                <!-- ================================== -->
         <!-- MÓDULO 02: MATCHING DE GESTORES -->
         <!-- ================================== -->
 
         <div class="section-heading">
-
             <div>
                 <p class="eyebrow">MÓDULO 02</p>
                 <h2>Matching de gestores</h2>
@@ -612,16 +593,12 @@
             <p>
                 Datos ficticios para demostrar compatibilidad y capacidad
             </p>
-
         </div>
-
 
         <section class="table-wrap">
 
             <table>
-
                 <thead>
-
                     <tr>
                         <th>Gestor</th>
                         <th>Tipos aceptados</th>
@@ -629,56 +606,32 @@
                         <th>Distancia demo</th>
                         <th>Condición</th>
                     </tr>
-
                 </thead>
-
 
                 <tbody>
 
                     {% for m in managers %}
 
                     <tr>
-
-                        <td>
-                            <strong>{{ m.name }}</strong>
-                        </td>
-
-                        <td>
-                            {{ m.raee_types|join(', ')|replace('_', ' ') }}
-                        </td>
-
+                        <td><strong>{{ m.name }}</strong></td>
+                        <td>{{ m.raee_types|join(', ')|replace('_', ' ') }}</td>
                         <td>{{ m.available_kg }} kg</td>
-
                         <td>{{ m.distance_km }} km</td>
-
                         <td>
-
                             {% if m.authorized %}
-
-                            <span class="pill good">
-                                Autorizado (demo)
-                            </span>
-
+                            <span class="pill good">Autorizado (demo)</span>
                             {% else %}
-
-                            <span class="pill neutral">
-                                No autorizado
-                            </span>
-
+                            <span class="pill neutral">No autorizado</span>
                             {% endif %}
-
                         </td>
-
                     </tr>
 
                     {% endfor %}
 
                 </tbody>
-
             </table>
 
         </section>
-
 
         <!-- ================================== -->
         <!-- MÓDULO 03 Y 04 -->
@@ -686,45 +639,29 @@
 
         <div class="two-col">
 
-
             <!-- SOLICITUDES -->
 
             <section>
-
                 <div class="section-heading compact">
-
                     <div>
                         <p class="eyebrow">MÓDULO 03</p>
                         <h2>Solicitudes recientes</h2>
                     </div>
-
                 </div>
-
 
                 <div class="list-card">
 
                     {% for r in requests %}
 
                     <div class="list-item">
-
                         <div>
-
                             <strong>
-                                Solicitud #{{ r.id }} ·
-                                {{ r.container_name }}
+                                Solicitud #{{ r.id }} · {{ r.container_name }}
                             </strong>
-
-                            <p>
-                                {{ r.requested_kg }} kg ·
-                                {{ r.created_at }}
-                            </p>
-
+                            <p>{{ r.requested_kg }} kg · {{ r.created_at }}</p>
                         </div>
 
-                        <span class="small-status">
-                            {{ r.status }}
-                        </span>
-
+                        <span class="small-status">{{ r.status }}</span>
                     </div>
 
                     {% else %}
@@ -737,56 +674,41 @@
                     {% endfor %}
 
                 </div>
-
             </section>
-
 
             <!-- BITÁCORA -->
 
             <section>
-
                 <div class="section-heading compact">
-
                     <div>
                         <p class="eyebrow">MÓDULO 04</p>
                         <h2>Bitácora de eventos</h2>
                     </div>
-
                 </div>
-
 
                 <div class="list-card">
 
                     {% for e in events %}
 
                     <div class="list-item">
-
                         <div>
-
                             <strong>{{ e.message }}</strong>
-
                             <p>{{ e.created_at }}</p>
-
                         </div>
 
                         <span class="event-dot dot-{{ e.level }}"></span>
-
                     </div>
 
                     {% else %}
 
-                    <p class="muted empty">
-                        Sin eventos registrados.
-                    </p>
+                    <p class="muted empty">Sin eventos registrados.</p>
 
                     {% endfor %}
 
                 </div>
-
             </section>
 
         </div>
-
 
         <!-- ================================== -->
         <!-- PIE DE PÁGINA -->
@@ -794,7 +716,10 @@
 
         <footer>
 
-            <strong>Prototipo académico - versión 1.2 - Ágora RAEE por Eyleen Catalina Rodríguez Fonseca</strong>
+            <strong>
+                Prototipo académico - versión 1.2 -
+                Ágora RAEE por Eyleen Catalina Rodríguez Fonseca
+            </strong>
 
             <p>
                 Los sensores, gestores, distancias, capacidades y
@@ -803,16 +728,17 @@
             </p>
 
             <p>
-        <strong>¿Necesitas ayuda?</strong><br>
-        Contacta a soporte al:
-        <a href="mailto:maybelline756kw@gmail.com">
-            maybelline756kw@gmail.com
-        </a>
-    </p>
+                <strong>¿Necesitas ayuda?</strong><br>
+                Contacta a soporte al:
+                <a href="mailto:maybelline756kw@gmail.com">
+                    maybelline756kw@gmail.com
+                </a>
+            </p>
 
-</footer>
+        </footer>
 
-</main>
+    </main>
 
 </body>
 </html>
+
