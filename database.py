@@ -213,11 +213,22 @@ def init_db():
 
                 status TEXT NOT NULL DEFAULT 'Registrado',
 
+                marketplace_status TEXT NOT NULL DEFAULT 'No publicado',
+                marketplace_description TEXT,
+                published_at TEXT,
+
                 created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
             )
         """)
 
-                # ----------------------------------
+        # Columnas para el marketplace.
+        add_missing_columns(conn, "raee_records", {
+            "marketplace_status": "TEXT NOT NULL DEFAULT 'No publicado'",
+            "marketplace_description": "TEXT",
+            "published_at": "TEXT"
+        })
+
+        # ----------------------------------
         # TABLA: PICKUP_REQUESTS
         # ----------------------------------
 
