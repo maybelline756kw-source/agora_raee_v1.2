@@ -87,6 +87,68 @@ def matching(container, requested_kg=None):
         })
     return sorted(candidates, key=lambda m: (m["eligible"], m["score"]), reverse=True)
 
+def create_lot_application(container_id: int, manager_id: int):
+    # Buscar el contenedor
+    container = next(
+        (c for c in get_containers() if c["id"] == container_id),
+        None
+    )
+
+    if not container:
+        return {"success": False, "message": "El lote no existe."}
+
+    # Buscar el gestor
+    manager = next(
+        (m for m in get_managers() if m["id"] == manager_id),
+        None
+    )
+
+    if not manager:
+        return {"success": False, "message": "El gestor no existe."}
+
+    # Comprobar que el gestor sea elegible
+    matches = matching(container)
+    selected = next(
+        (m for m in matches if m["id"] == manager_id),
+        None
+    )
+
+    if not selected or not selected["eligible"]:
+        return {
+            "success": False,
+            "message": "El gestor no cumple los requisitos para este lote."
+        }
+
+    # Registrar la postulación
+    try:
+        with connect() as conn:
+            conn.execute("""
+                INSERT INTO lot_applications
+                (container_id, manager_id)
+                VALUES (?, ?)
+            """, (container_id, manager_id))
+
+            conn.commit()
+
+        log_event(
+            "success",
+            f"El gestor #{manager_id} se postuló al lote #{container_id}."
+        )
+
+        return {
+            "success": True,
+            "message": "¡Postulación registrada correctamente!"
+        }
+
+    except Exception as e:
+        if "UNIQUE constraint failed" in str(e):
+            return {
+                "success": False,
+                "message": "Este gestor ya se postuló a este lote."
+            }
+
+        raise
+
 def create_request(container_id: int):
     container = next((c for c in get_containers() if c["id"] == container_id), None)
     if not container:
