@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,13 +8,50 @@
     <link rel="stylesheet" href="/static/styles.css">
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f7f6;
+            font-family: Arial, sans-serif;
+            color: #374151;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding: 18px 35px;
+            background: #176B50;
+            color: white;
+        }
+
+        .header h2 {
+            margin: 0;
+        }
+
+        .header a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .header a:hover {
+            text-decoration: underline;
+        }
+
         .form-container {
+            width: calc(100% - 30px);
             max-width: 950px;
             margin: 35px auto;
             padding: 30px;
             background: white;
             border-radius: 16px;
-            box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
         }
 
         .form-header {
@@ -26,9 +63,14 @@
             margin-bottom: 8px;
         }
 
+        .form-header p {
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
         .form-section {
             margin-bottom: 28px;
-            padding-bottom: 20px;
+            padding-bottom: 22px;
             border-bottom: 1px solid #e5e7eb;
         }
 
@@ -40,7 +82,7 @@
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 18px;
         }
 
@@ -48,6 +90,7 @@
             display: flex;
             flex-direction: column;
             gap: 7px;
+            min-width: 0;
         }
 
         .form-group.full {
@@ -62,17 +105,26 @@
         .form-group input,
         .form-group select,
         .form-group textarea {
+            width: 100%;
             padding: 11px;
             border: 1px solid #d1d5db;
             border-radius: 8px;
             font-size: 14px;
-            width: 100%;
-            box-sizing: border-box;
+            background: white;
+            font-family: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #176B50;
+            box-shadow: 0 0 0 3px rgba(23, 107, 80, 0.12);
         }
 
         .form-group textarea {
             resize: vertical;
-            min-height: 90px;
+            min-height: 100px;
         }
 
         .photo-box {
@@ -83,29 +135,65 @@
             background: #f9fafb;
         }
 
+        .photo-box p {
+            margin-top: 0;
+        }
+
+        .photo-box input {
+            max-width: 100%;
+        }
+
+        .photo-box small {
+            display: block;
+            margin-top: 10px;
+            color: #6b7280;
+        }
+
         .form-actions {
             display: flex;
             justify-content: flex-end;
+            flex-wrap: wrap;
             gap: 12px;
             margin-top: 25px;
+        }
+
+        .btn-submit,
+        .btn-cancel {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.2s ease;
         }
 
         .btn-submit {
             background: #176B50;
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
+        }
+
+        .btn-submit:hover {
+            background: #12543f;
         }
 
         .btn-cancel {
             background: #e5e7eb;
             color: #374151;
-            padding: 12px 24px;
+        }
+
+        .btn-cancel:hover {
+            background: #d1d5db;
+        }
+
+        .notice {
+            margin-bottom: 22px;
+            padding: 13px 16px;
             border-radius: 8px;
-            text-decoration: none;
+            background: #e8f5ed;
+            color: #176B50;
+            border: 1px solid #b7dfc7;
         }
 
         @media (max-width: 650px) {
@@ -114,8 +202,22 @@
             }
 
             .form-container {
-                margin: 15px;
+                margin: 15px auto;
                 padding: 20px;
+            }
+
+            .header {
+                padding: 16px 20px;
+            }
+
+            .form-actions {
+                flex-direction: column-reverse;
+            }
+
+            .btn-submit,
+            .btn-cancel {
+                text-align: center;
+                width: 100%;
             }
         }
     </style>
@@ -132,149 +234,256 @@
 
     <div class="form-header">
         <h1>Registrar residuos RAEE</h1>
-        <p>Completa la información de los equipos electrónicos que deseas entregar.</p>
+        <p>
+            Completa la información de los equipos electrónicos
+            que deseas entregar.
+        </p>
     </div>
 
-    <form id="raeeForm" method="POST" action="/form/ciudadania/registrar">
+    {% if notice %}
+        <div class="notice">
+            {{ notice }}
+        </div>
+    {% endif %}
 
-        <!-- TIPO DE EQUIPO -->
+    <form id="raeeForm"
+          method="POST"
+          action="/form/ciudadania/registrar">
+
+        <!-- 1. TIPO DE EQUIPO -->
         <section class="form-section">
+
             <h2>1. Tipo de equipo</h2>
 
             <div class="form-grid">
 
                 <div class="form-group">
                     <label for="equipment_type">Tipo de equipo</label>
-                    <select name="equipment_type" required>
+
+                    <select
+                        id="equipment_type"
+                        name="equipment_type"
+                        required>
+
                         <option value="">Seleccionar</option>
-                        <option>Computador</option>
-                        <option>Portátil</option>
-                        <option>Celular</option>
-                        <option>Tableta</option>
-                        <option>Televisor o monitor</option>
-                        <option>Electrodoméstico</option>
-                        <option>Periférico</option>
-                        <option>Baterías y pilas</option>
-                        <option>Otro</option>
+                        <option value="Computador">Computador</option>
+                        <option value="Portátil">Portátil</option>
+                        <option value="Celular">Celular</option>
+                        <option value="Tableta">Tableta</option>
+                        <option value="Televisor o monitor">Televisor o monitor</option>
+                        <option value="Electrodoméstico">Electrodoméstico</option>
+                        <option value="Periférico">Periférico</option>
+                        <option value="Baterías y pilas">Baterías y pilas</option>
+                        <option value="Otro">Otro</option>
+
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="quantity">Cantidad</label>
-                    <input type="number" id="quantity" min="1" required>
+
+                    <input
+                        type="number"
+                        id="quantity"
+                        name="quantity"
+                        min="1"
+                        step="1"
+                        placeholder="Ej. 2"
+                        required>
                 </div>
 
             </div>
         </section>
 
-        <!-- ESTADO -->
+        <!-- 2. ESTADO DEL EQUIPO -->
         <section class="form-section">
+
             <h2>2. Estado del equipo</h2>
 
             <div class="form-group">
+
                 <label for="condition">Condición actual</label>
-                <select id="condition" required>
+
+                <select
+                    id="condition"
+                    name="condition"
+                    required>
+
                     <option value="">Seleccionar</option>
-                    <option>Funcional</option>
-                    <option>Parcialmente funcional</option>
-                    <option>Dañado</option>
-                    <option>Inservible</option>
+                    <option value="Funcional">Funcional</option>
+                    <option value="Parcialmente funcional">Parcialmente funcional</option>
+                    <option value="Dañado">Dañado</option>
+                    <option value="Inservible">Inservible</option>
+
                 </select>
+
             </div>
         </section>
 
-        <!-- CARACTERISTICAS Y ORIGEN -->
+        <!-- 3. CARACTERÍSTICAS Y ORIGEN -->
         <section class="form-section">
+
             <h2>3. Características y origen</h2>
 
             <div class="form-grid">
 
                 <div class="form-group">
                     <label for="origin">Origen del residuo</label>
-                    <select id="origin" required>
+
+                    <select
+                        id="origin"
+                        name="origin"
+                        required>
+
                         <option value="">Seleccionar</option>
-                        <option>Hogar</option>
-                        <option>Institución educativa</option>
-                        <option>Empresa</option>
-                        <option>Comercio</option>
-                        <option>Otro</option>
+                        <option value="Hogar">Hogar</option>
+                        <option value="Institución educativa">Institución educativa</option>
+                        <option value="Empresa">Empresa</option>
+                        <option value="Comercio">Comercio</option>
+                        <option value="Otro">Otro</option>
+
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="registration_date">Fecha de registro</label>
-                    <input type="date" id="registration_date" required>
+
+                    <input
+                        type="date"
+                        id="registration_date"
+                        name="registration_date"
+                        required>
                 </div>
 
                 <div class="form-group full">
-                    <label for="characteristics">Descripción y características</label>
-                    <textarea id="characteristics"
+                    <label for="characteristics">
+                        Descripción y características
+                    </label>
+
+                    <textarea
+                        id="characteristics"
+                        name="characteristics"
                         placeholder="Marca, modelo, antigüedad, daños visibles o componentes faltantes..."></textarea>
                 </div>
 
             </div>
         </section>
 
-        <!-- FOTOGRAFIAS -->
+        <!-- 4. FOTOGRAFÍAS -->
         <section class="form-section">
+
             <h2>4. Fotografías</h2>
 
             <div class="photo-box">
+
                 <p>📷 Adjunta fotografías del residuo electrónico.</p>
-                <input type="file" id="photos" accept="image/*" multiple>
-                <small>Puedes seleccionar varias fotografías.</small>
+
+                <input
+                    type="file"
+                    id="photos"
+                    accept="image/*"
+                    multiple>
+
+                <small>
+                    Puedes seleccionar varias fotografías.
+                    Esta función estará disponible cuando se conecte
+                    el almacenamiento de archivos.
+                </small>
+
             </div>
         </section>
 
-        <!-- DATOS DEL GENERADOR -->
+        <!-- 5. DATOS DEL GENERADOR -->
         <section class="form-section">
+
             <h2>5. Datos del generador</h2>
 
             <div class="form-grid">
 
                 <div class="form-group">
                     <label for="generator_type">Tipo de generador</label>
-                    <select id="generator_type" required>
+
+                    <select
+                        id="generator_type"
+                        name="generator_type"
+                        required>
+
                         <option value="">Seleccionar</option>
-                        <option>Persona natural</option>
-                        <option>Institución</option>
-                        <option>Empresa</option>
+                        <option value="Persona natural">Persona natural</option>
+                        <option value="Institución">Institución</option>
+                        <option value="Empresa">Empresa</option>
+
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="generator_name">Nombre o razón social</label>
-                    <input type="text" id="generator_name" required>
+
+                    <input
+                        type="text"
+                        id="generator_name"
+                        name="generator_name"
+                        placeholder="Nombre completo o razón social"
+                        required>
                 </div>
 
                 <div class="form-group">
                     <label for="document_number">Documento o NIT</label>
-                    <input type="text" id="document_number" required>
+
+                    <input
+                        type="text"
+                        id="document_number"
+                        name="document_number"
+                        placeholder="Número de documento"
+                        required>
                 </div>
 
                 <div class="form-group">
                     <label for="phone">Teléfono</label>
-                    <input type="tel" id="phone" required>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder="Número de contacto"
+                        required>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Correo electrónico</label>
-                    <input type="email" id="email">
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="correo@ejemplo.com">
                 </div>
 
                 <div class="form-group">
                     <label for="address">Dirección o ubicación</label>
-                    <input type="text" id="address" required>
+
+                    <input
+                        type="text"
+                        id="address"
+                        name="address"
+                        placeholder="Dirección de recolección"
+                        required>
                 </div>
 
             </div>
         </section>
 
+        <!-- BOTONES -->
         <div class="form-actions">
-            <a href="/form/ciudadania" class="btn-cancel">Cancelar</a>
+
+            <a href="/form/ciudadania" class="btn-cancel">
+                Cancelar
+            </a>
+
             <button type="submit" class="btn-submit">
                 Registrar residuo
             </button>
+
         </div>
 
     </form>
@@ -282,12 +491,23 @@
 </main>
 
 <script>
-    // Asignar la fecha actual automáticamente
-    document.getElementById("registration_date").value =
-        new Date().toISOString().split("T")[0];
+    // Asignar automáticamente la fecha actual
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const dateInput = document.getElementById("registration_date");
+
+        if (dateInput && !dateInput.value) {
+            const today = new Date();
+            const localDate = new Date(
+                today.getTime() - today.getTimezoneOffset() * 60000
+            ).toISOString().split("T")[0];
+
+            dateInput.value = localDate;
+        }
 
     });
 </script>
 
 </body>
 </html>
+```
