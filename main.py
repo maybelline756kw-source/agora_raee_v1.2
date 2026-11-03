@@ -17,6 +17,7 @@ from services import (
     get_requests,
     simulate_reading,
     create_request,
+    create_lot_application,
     log_event,
     matching,
 )
@@ -837,15 +838,23 @@ def gestor_registro_submit(
 # ==========================================
 
 @app.get("/form/gestor/lotes", response_class=HTMLResponse)
-def gestor_lotes(request: Request):
+def gestor_lotes(request: Request, notice: str = ""):
     containers = get_containers()
     lotes = []
 
     for container in containers:
         matches = matching(container)
-        compatible = any(
-            manager["eligible"] for manager in matches
-        )
+
+        gestores_compatibles = [
+            {
+                "id": manager["id"],
+                "nombre": manager["name"],
+            }
+            for manager in matches
+            if manager["eligible"]
+        ]
+
+        compatible = len(gestores_compatibles) > 0
 
         lotes.append({
             "id": container["id"],
@@ -855,11 +864,18 @@ def gestor_lotes(request: Request):
             "ubicacion": container["location"],
             "estado": container["status"],
             "compatible": compatible,
+            "gestores_compatibles": gestores_compatibles,
         })
 
     compatibles = sum(
         1 for lote in lotes if lote["compatible"]
     )
+
+    # Consultar el total de postulaciones registradas.
+    with connect() as conn:
+        postulaciones = conn.execute("""
+            SELECT COUNT(*) FROM lot_applications
+        """).fetchone()[0]
 
     return templates.TemplateResponse(
         request=request,
@@ -868,11 +884,30 @@ def gestor_lotes(request: Request):
             "request": request,
             "lotes": lotes,
             "compatibles": compatibles,
-            # Las postulaciones reales aún no están implementadas.
-            "postulaciones": 0,
+            "postulaciones": postulaciones,
+            "notice": notice,
         },
     )
 
+@app.post("/form/gestor/lotes/{container_id}/postular")
+def gestor_postular_lote(
+    container_id: int,
+    manager_id: int = Form(...),
+):
+    result = create_lot_application(
+        container_id=container_id,
+        manager_id=manager_id,
+    )
+
+    if result["success"]:
+        notice = "Postulacion+registrada+correctamente"
+    else:
+        notice = "Error+" + result["message"].replace(" ", "+")
+
+    return RedirectResponse(
+        url=f"/form/gestor/lotes?notice={notice}",
+        status_code=303,
+    )
 
 # ==========================================
 # GESTOR: RUTAS Y GEOREFERENCIACIÓN
